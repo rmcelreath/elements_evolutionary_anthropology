@@ -1,0 +1,48 @@
+% Save file as: ENDNOTE.STY            Source: FILESERV@SHSU.BITNET  
+% Use \endnote{1}{text}. At the end of your document, type
+% \producenotes to actually flush all end notes to be printed.
+%
+% macros for making endnotes instead of footnotes
+% We make @ signs act like letters, temporarily, to avoid conflict
+% between user names and internal control sequences of plain format.
+\catcode`@=11
+\newbox\endnotebox
+
+\def\setendnotefont#1{\gdef\endnotefont{#1}}
+\setendnotefont{\footnotesize\rm}
+\@definecounter{endnotei}
+\def\theendnotei{\arabic{endnotei}}
+\def\labelendnotei{(\theendnotei)}
+
+\def\endnote#1{\let\@sf\empty
+  \ifhmode\edef\@sf{\spacefactor\the\spacefactor}\/\fi
+  \stepcounter{endnotei}$^{\theendnotei}$\@sf% \vendnote
+   {\global\setbox\endnotebox=
+   \vbox{\parindent=0pt\endnotefont\unvbox\endnotebox\bgroup \theendnotei.\
+   #1\@endnote}}}
+
+\def\hendnote#1#2{\let\@sf\empty
+  \ifhmode\edef\@sf{\spacefactor\the\spacefactor}\/\fi
+  \stepcounter{endnotei}\hyperlink{#2}{$^{\theendnotei}$}\@sf% \vendnote
+   {\global\setbox\endnotebox=
+   \vbox{\parindent=0pt\endnotefont\unvbox\endnotebox\bgroup \theendnotei.\
+   #1\@endnote}}}
+
+ \def\endnotetitle#1{\let\@sf\empty
+  \ifhmode\edef\@sf{\spacefactor\the\spacefactor}\/\fi
+   {\global\setbox\endnotebox=
+   \vbox{\parindent=0pt\endnotefont\bf\unvbox\endnotebox\bgroup \
+   #1\@endnote}}}
+
+\def\no@te{\ifcat\bgroup\noexpand\next \let\next\n@@te
+  \else\let\next\n@t\fi }%\next}
+
+\def\n@@te{\bgroup\aftergroup\@endnote\let\next}
+
+\def\n@t#1{#1\@endnote}
+
+\def\@endnote{\strut\unskip\hfil \penalty -\@M\relax \egroup} %
+
+\def\producenotes{%
+\ifvoid\endnotebox\else\medskip\unvbox\endnotebox\par\fi}
+\catcode`@=12 % at signs are no longer letters

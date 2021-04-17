@@ -1,0 +1,1796 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\RequirePackage{snapshot} % for listing external dependencies
+
+\documentclass[10pt,reqno]{amsbook}
+
+\usepackage{graphicx}
+
+\synctex=1
+
+% showframe, showcrop
+%\usepackage[driver=xetex,paperwidth=7in,paperheight=10in,text={5.5in,8.5in},left=0.65in,top=0.75in,headheight=0.25in,headsep=0.4in,footskip=0.4in]{geometry}
+%\usepackage[driver=xetex, paperwidth=7in, paperheight=10in, layoutwidth=7in, layoutheight=10in, text={5in,8.5in}, left=0.65in, top=0.75in, headheight=0.25in, headsep=0.4in, footskip=0.4in, showcrop, layouthoffset=0in, layoutvoffset=0in]{geometry}
+\usepackage[driver=xetex, paperwidth=6in, paperheight=9in, layoutwidth=6in, layoutheight=9in, text={4.5in,7in}, left=0.6in, top=1in, headheight=0.25in, headsep=0.5in, footskip=0.5in, showcrop, layouthoffset=0in, layoutvoffset=0in]{geometry}
+%\usepackage{subfigure}
+\usepackage{amsmath,amssymb,amsthm}
+%\usepackage[utf8]{inputenc}
+
+% color options
+% switch commenting to enable RGB or CMYK model
+
+% new 1-color process
+%\usepackage[xetex]{xcolor}
+%\definecolor{shadecolor}{gray}{0.95}%
+%\definecolor{myblue}{gray}{0.2}%
+%\graphicspath{{figures/}}
+
+% RGB
+%\usepackage[xetex]{xcolor}
+%\definecolor{shadecolor}{rgb}{0.95,0.95,0.99}%
+%\definecolor{myblue}{rgb}{0.1,0.2,0.8}%
+\graphicspath{{figures/}}
+\usepackage{graphbox}
+
+% line numbering
+\usepackage[switch,pagewise]{lineno}
+\newcommand*\patchAmsMathEnvironmentForLineno[1]{%
+  \expandafter\let\csname old#1\expandafter\endcsname\csname #1\endcsname
+  \expandafter\let\csname oldend#1\expandafter\endcsname\csname end#1\endcsname
+  \renewenvironment{#1}%
+     {\linenomath\csname old#1\endcsname}%
+     {\csname oldend#1\endcsname\endlinenomath}}% 
+\newcommand*\patchBothAmsMathEnvironmentsForLineno[1]{%
+  \patchAmsMathEnvironmentForLineno{#1}%
+  \patchAmsMathEnvironmentForLineno{#1*}}%
+\AtBeginDocument{%
+\patchBothAmsMathEnvironmentsForLineno{equation}%
+\patchBothAmsMathEnvironmentsForLineno{align}%
+\patchBothAmsMathEnvironmentsForLineno{flalign}%
+\patchBothAmsMathEnvironmentsForLineno{alignat}%
+\patchBothAmsMathEnvironmentsForLineno{gather}%
+\patchBothAmsMathEnvironmentsForLineno{multline}%
+}
+
+%%%% WATERMARK for drafts
+%\usepackage{draftwatermark}
+%\SetWatermarkText{draft}
+%\SetWatermarkScale{1.5}
+%\SetWatermarkColor[gray]{0.95}
+
+% CMYK
+\usepackage[xetex,cmyk]{xcolor}
+\definecolor{shadecolor}{cmyk}{0,0.04,0.07,0.05}%peach
+%\definecolor{shadecolor}{cmyk}{0.09,0.01,0.05,0.01}%grayer
+\definecolor[named]{myblue}{cmyk}{1,0,0,0}%
+\definecolor[named]{myblack}{cmyk}{0,0,0,1}%
+%\definecolor[named]{bemphcol}{rgb}{0.83984375 ,0.12109375, 0.05859375}%
+\definecolor[named]{bemphcol}{cmyk}{ 0 , .95 , 1.00 , 0 }%
+%\graphicspath{{figurescmyk/}}
+
+%\definecolor{tintedcolor}{gray}{0.80}%
+\definecolor{mygray}{cmyk}{0,0,0,0.9}%
+
+%\makeatletter
+%\newcommand{\globalcolor}[1]{%
+%  \color{#1}\global\let\default@color\current@color
+%}
+%\makeatother
+
+%\AtBeginDocument{\globalcolor{myblack}}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usetikzlibrary{arrows, automata}
+\pgfplotsset{
+    compat=1.9,
+    log ticks with fixed point, % no scientific notation in plots
+    table/col sep=tab, % only tabs are column separators
+    unbounded coords=jump, % better have skips in a plot than appear to be interpolating
+    filter discard warning=false, % Don't complain about empty cells
+    }
+
+\usepackage{framed}
+\setlength{\FrameSep}{8pt}
+\setlength{\fboxrule}{2pt}
+\setlength{\fboxsep}{16pt}
+
+\usepackage[most]{tcolorbox}
+\tcbset{colback=shadecolor!80!white, colframe=bemphcol!90!black, boxsep=1pt, boxrule=0.5pt, left=8pt, right=8pt, top=6pt, bottom=6pt, before upper={\parindent10pt}}
+
+%\usepackage{sidecap}
+\usepackage{natbib}
+\usepackage{bibentry}
+\nobibliography*
+%\usepackage{makeidx}
+%\usepackage{amsmidx}
+\citeindextrue
+\usepackage{alltt}
+\usepackage{marginnote}
+\usepackage{endnote}
+%\usepackage{endnotes}
+\usepackage{todonotes}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage[final]{microtype}
+\usepackage{ragged2e}
+
+
+%\bibpunct[, ]{(}{)}{,}{a}{}{,}
+
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\logit}{logit}
+
+\newcommand*{\xhat}[2]{#2\kern#1\hat{\phantom{#2}}}
+\newcommand*{\xwidehat}[2]{#2\kern#1\widehat{\phantom{#2}}}
+
+\newcommand{\indep}{\perp \!\!\! \perp}
+\newcommand{\nindep}{\not\!\perp\!\!\!\perp}
+
+% code for adding space to superscripts / exponents in mathmode (helps with Caslon typeface tilt)
+\newcommand{\upsup}[1]{\sp{\:\!#1}}
+\begingroup\lccode`~=`^\lowercase{\endgroup\let~\upsup}
+\AtBeginDocument{%
+  \catcode`^=12
+  \mathcode`^="8000
+}
+
+\newcommand{\bemph}[1]{{\textbf{\textcolor{bemphcol}{#1}}}}
+\newcommand{\ssred}[1]{{\textsf{\textcolor{bemphcol}{#1}}}}
+
+%% my margin figure captions
+\newcommand{\margincap}[2][10pt]{\marginnote{\small\emph{#2}}[#1]}
+\newcounter{myfigure}[chapter]
+\newcommand{\figmarlab}[2][18pt]{%
+  \refstepcounter{myfigure}%
+  \label{#2}%
+  \margincap[#1]{Figure\\\thechapter.\themyfigure}%
+}
+\newcommand{\myfigref}[1]{Figure~\thechapter.\ref{#1}}
+
+% draws element box with letter and number
+\newcommand\DrawElement[2]{%
+\begin{tikzpicture}[remember picture,overlay]
+\draw[thick] (0,0) rectangle (2.1,2.1);
+\fontsize{40pt}{50pt}\selectfont 
+\node at (1.05,0.95) {#1};
+\fontsize{18pt}{30pt}\selectfont
+\node at (1.05,1.82) {#2};
+\end{tikzpicture}%
+}
+
+% version with smaller letter and title underneath
+\newcommand\DrawElementTOC[3]{%
+\begin{tikzpicture}[remember picture,overlay]
+\draw[thick] (0,0) rectangle (2.1,2.1);
+\fontsize{30pt}{50pt}\selectfont 
+\node at (1.05,0.95) {#1};
+\fontsize{18pt}{30pt}\selectfont
+\node at (1.05,1.82) {#2};
+\fontsize{9pt}{30pt}\selectfont
+\node at (1.05,0.52) {#3};
+\end{tikzpicture}%
+}
+
+% inline node circle tikz
+\newcommand{\nodeinline}[1]{%
+	\hspace{-2pt}\raisebox{-2.7pt}{
+	\begin{tikzpicture} \tikzstyle{every state}=[
+        draw = black,
+        thick,
+        fill = white,
+        	inner sep = 0.5mm,
+			minimum size = 0.8mm,
+			scale = 0.8
+    ] \node[state] (x) {#1}; \end{tikzpicture}
+    }\hspace{-2pt}%
+}
+
+% contents line replacement
+%\renewcommand\tocchapter[3]{%
+%\DrawElementTOC{X}{#2}{#3}
+%}
+
+
+% redefine chapter heading
+%\makeatletter
+%\def\@makechapterhead#1{\global\topskip 7.5pc\relax \begingroup \fontsize{\@xivpt}{18}\bfseries\centering
+%\ifnum\c@secnumdepth>\m@ne \leavevmode \hskip-\leftskip \rlap{\vbox to\z@{\vss
+%\centerline{\normalsize\mdseries \uppercase\@xp{\chaptername}\enspace\thechapter}
+%\vskip 3pc}}\hskip\leftskip\fi #1\par \endgroup
+%\skip@34\p@ \advance\skip@-\normalbaselineskip \vskip\skip@ }
+%\makeatother
+\makeatletter
+\def\@makechapterhead#1{\global\topskip 7.5pc\relax \begingroup \fontsize{\@xivpt}{18}\noindent
+\ifnum\c@secnumdepth>\m@ne \leavevmode \hskip-\leftskip \rlap{\vbox to\z@{\vss
+\vskip 3pc}}\hskip\leftskip\fi {\DrawElement{\chapterElement}{\thechapter} \hspace{76pt}}\raisebox{14pt}{\begin{minipage}[b]{4.5in}\fontsize{24pt}{26pt}\selectfont \emph{#1}\end{minipage}}\par \endgroup
+\skip@34\p@ \advance\skip@-\normalbaselineskip \vskip\skip@ \noindent\vskip\skip@}
+\makeatother
+
+% redefine chapter* (without number)
+\makeatletter
+\def\@makeschapterhead#1{\global\topskip 7.5pc\relax \begingroup \fontsize{\@xivpt}{18}\bfseries\noindent
+\ifnum\c@secnumdepth>\m@ne \leavevmode \hskip-\leftskip \rlap{\vbox to\z@{\vss
+\vskip 3pc}}\hskip\leftskip\fi \begin{minipage}[b]{4.5in}\fontsize{17pt}{19pt}\selectfont  \emph{#1}\end{minipage}\par \endgroup
+\skip@34\p@ \advance\skip@-\normalbaselineskip \vskip\skip@ \noindent}
+\makeatother
+
+% redefine section to be larger
+%\makeatletter 
+%\renewcommand\section{\@startsection{section}{1}
+%\z@{.7\linespacing\@plus\linespacing}{.5\linespacing}
+%{\large\bfseries\centering}}
+%\makeatother
+
+\makeatletter 
+\renewcommand\section{\@startsection{section}{1}
+\z@{.7\linespacing\@plus\linespacing}{.5\linespacing}
+{\large\bfseries\itshape}}
+\makeatother
+
+% redefine subsection to remove indent
+%\makeatletter 
+%\renewcommand\subsection{\@startsection{subsection}{2}
+%\normalparindent{.5\linespacing\@plus.7\linespacing}{-.5em}%
+%{\normalfont\normalsize\bfseries}}
+%\makeatother
+
+\makeatletter 
+\renewcommand\subsection{\@startsection{subsection}{2}
+\z@{.5\linespacing\@plus.7\linespacing}{-.5em}%
+{\normalfont\normalsize\bfseries}}
+\makeatother
+
+% redefine subsubsection to have some space above it, like subsection:
+\makeatletter 
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}
+\normalparindent{.5\linespacing\@plus.7\linespacing}{-.5em}%
+{\normalfont\normalsize\itshape}}
+\makeatother
+
+% redefine numbering to include chapter
+\renewcommand{\thefigure}{\thechapter.\arabic{figure}}
+\renewcommand{\theequation}{\thechapter.\arabic{equation}}
+\renewcommand{\thesection}{\thechapter.\arabic{section}}
+
+\numberwithin{equation}{chapter}
+\newcounter{codesnip}[chapter]
+%\newcommand{\codenum}{\addtocounter{codesnip}{1}\marginnote{\textsf{\tiny R code\\\vspace{-3pt}\small\thechapter.\arabic{codesnip}}}[20pt]}
+\newcommand{\codenum}[1]{\addtocounter{codesnip}{1}\immediate\write\tempfile{## R code \thechapter.\arabic{codesnip}}\marginnote{{\footnotesize #1\\\vspace{-3pt}\small\thechapter.\arabic{codesnip}}}[-6pt]}
+
+\newcommand{\codeboxb}[1]{\vspace{-4pt}\begin{shaded}\codenum{#1}\vspace{-2pt}\footnotesize}
+\newcommand{\codeboxe}{\end{shaded}}
+\newcommand{\outputboxb}{\footnotesize}
+\newcommand{\outputboxe}{\normalsize}
+
+\newcommand{\codeboxbT}{\vspace{-4pt}\begin{shaded}\codenum\vspace{-2pt}\footnotesize}
+\newcommand{\outputboxbT}{\footnotesize}
+
+\newcommand{\figscale}{0.75} % scale of default R graphics
+
+% math boxes sections
+% float version
+\newenvironment{mathbox}[2]
+{\begin{table}[#1]
+\justify\begin{tcolorbox}[enhanced, oversize]\footnotesize\noindent\textbf{\emph{#2}}}
+{\end{tcolorbox}\end{table}}
+
+% multi-page version that breaks across pages
+\newenvironment{mathboxmp}[1]
+{\begin{tcolorbox}[breakable, enhanced, oversize]\footnotesize\noindent\textbf{\emph{#1}}}
+{\end{tcolorbox}}
+
+% precis box at start of sections
+\newenvironment{precis}
+{\noi\itshape}
+{\vspace{6pt}}
+
+% "overthinking" sections
+\newenvironment{overthinking}[1]
+{\vspace{6pt}\begin{spacing}{0.95}\noindent\textcolor{myblue}{\rule{5.5in}{0.5pt}}\\\small\noindent\textbf{Overthinking: {#1}}}
+{~\newline\textcolor{myblue}{\rule{5.5in}{0.5pt}}\end{spacing}\vspace{6pt}}
+
+%%%%%%%%%%%%%%%%%%
+% new verbatim environment 'VerbSaver' that writes code to file
+\newwrite\tempfile
+
+\usepackage{verbatim}
+\makeatletter
+\newwrite\Code@out % temp file for writing out and reading back in for display
+
+\newcommand\VerbSaver{\obeylines\expandafter\VerbSaverArg\noexpand}
+
+\newcommand\VerbSaverArg[1][code.txt]{%
+    \gdef\FName{xcodetempx.txt}%
+    \begingroup
+        \@bsphack%
+        \immediate\openout\Code@out\FName%
+        \let\do\@makeother\dospecials%
+        \catcode`\^^M\active%
+        \def\verbatim@processline{%
+            \immediate\write\tempfile{\the\verbatim@line}
+            \immediate\write\Code@out{\the\verbatim@line}}%
+        \verbatim@start}
+
+\def\endVerbSaver{%
+    \immediate\write\tempfile{}
+    \immediate\closeout\Code@out\@esphack
+    \endgroup
+    \verbatiminput{\FName}}
+
+\makeatother
+% end of VerbSaver stuff
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%
+% various convenience commands follow
+
+% ref shortcuts
+\newcommand{\figref}[1]{{\textsc{\color{myblue}Figure~\ref{#1}}}}
+\newcommand{\figrefpp}[1]{{\textsc{Figure~\ref{#1}} (page~\pageref{#1})}}
+
+% new end notes that contain hyperlinks back to source page
+%\newcommand{\noteend}[2]{\endnote{#2 [\pageref{#1}]}\label{#1}}
+%\newcommand{\noteend}[2]{\endnote{~\hypertarget{#1 anchor}~#2 [\pageref{#1}]}\hyperlink{#1 anchor}{$^\star$}\label{#1}}
+\newcommand{\noteend}[2]{\hendnote{~\hypertarget{#1 anchor}~#2 [\pageref{#1}]}{#1 anchor}\label{#1}}
+% version of noteend with a \filbreak at bottom so it tries to keep all note text together on page
+\newcommand{\noteendfb}[2]{\hendnote{~\hypertarget{#1 anchor}~#2 [\pageref{#1}]\filbreak}{#1 anchor}\label{#1}}
+
+% glossary term formatting
+\newcommand{\gterm}[1]{{\textsc{\textbf{\textcolor{myblue}{#1}}}}\index{#1}}
+\newcommand{\gtermalt}[2]{{\textsc{\textbf{\textcolor{myblue}{#1}}}}\index{#2}}
+
+% some maths shortcuts
+\newcommand{\mr}{\mathrm}
+%\newcommand{\flab}[1]{\text{\textsf{\textsc{\small{\textcolor{mygray}{#1}}}}}}
+\newcommand{\flab}[1]{\tag*{\textsf{\textsc{\small{\textcolor{mygray}{[#1]}}}}}}
+\newcommand{\clab}[1]{\tag*{{\texttt{\small{\textcolor{mygray}{#1}}}}}}
+\newcommand{\pmat}[1]{\begin{pmatrix} #1 \end{pmatrix}}
+\newcommand{\bmat}[1]{\begin{bmatrix} #1 \end{bmatrix}}
+\newcommand{\ttilde}{\textasciitilde}
+\newcommand{\ttx}[1]{\texttt{#1}}
+\newcommand{\noi}{\noindent}
+
+% icon macros
+\newcommand{\iconrain}{\raisebox{-3pt}{\includegraphics[height=12pt]{icon_rain.eps}}}
+\newcommand{\iconshine}{\raisebox{-3.3pt}{\includegraphics[height=12pt]{icon_shine.eps}}}
+\newcommand{\julialogo}{\raisebox{-2pt}{\includegraphics[height=11pt,natwidth=220,natheight=142]{julia_logo.svg.png}}}
+
+\newcommand{\marbleblue}{\hspace{1pt}\tikz[baseline=-0.6ex]\draw[black,thick,fill=myblue] (0,0) circle (.65ex);\hspace{1pt}}%
+\newcommand{\marblewhite}{\hspace{1pt}\tikz[baseline=-0.6ex]\draw[black,thick] (0,0) circle (.65ex);\hspace{1pt}}%
+
+%\usepackage{hyperendnotes}
+
+% typefaces
+
+\usepackage{mathspec,xltxtra,xunicode}
+\defaultfontfeatures{Mapping=tex-text}
+\setsansfont[Scale=MatchLowercase,Mapping=tex-text]{Helvetica}
+%\setmonofont[Scale=0.88]{Andale Mono}
+\setmonofont[Scale=0.85,Mapping=tex-text-sq]{Source Code Pro}
+
+% Kanji MS Mincho
+\usepackage{xeCJK}
+%\setCJKmainfont[BoldFont=STHeiti,ItalicFont=STKaiti]{STSong}
+\setCJKmainfont[BoldFont=STHeiti,ItalicFont=STKaiti]{Toppan Bunkyu Mincho}
+
+% Caslon typefaces
+\setromanfont[Scale=1.0,Ligatures={Common}]{Adobe Caslon Pro}
+\setmathrm[Scale=1.0]{Adobe Caslon Pro}
+\setmathfont(Digits,Latin)[Scale=1.0]{Adobe Caslon Pro}
+
+\usepackage{upquote}
+
+\usepackage{fix-cm}
+
+\usepackage{lipsum}
+
+% fix quotes in verbatim text
+%\makeatletter
+%\let \@sverbatim \@verbatim
+%\def \@verbatim {\@sverbatim \verbatimplus}
+%{\catcode`'=13 \gdef \verbatimplus{\catcode`'=13 \chardef '=13 }} 
+%\makeatother
+
+%\makeindex{index-a}
+%\usepackage{imakeidx}
+	\makeindex
+	\renewcommand{\indexname}{Citation index}
+	%\makeindex[name=authors,title=Authors,columns=3]
+
+\begin{document}
+
+% file output for code blocks
+\immediate\openout\tempfile=code.txt
+
+% title page hacks
+\cleardoublepage
+\thispagestyle{empty}
+%\setcounter{page}{0}
+
+\title{Elements of Evolutionary Anthropology}
+\author{Richard McElreath}
+
+\begin{center}
+
+
+
+{
+\begin{minipage}[t]{0.9\textwidth}
+\begin{center}
+\fontsize{48}{48}\selectfont 
+Elements of \\
+Evolutionary \\
+Anthropology
+\end{center}
+\end{minipage}
+}
+
+
+\vspace{20pt}
+
+{
+\begin{minipage}[t]{0.9\textwidth}
+\begin{center}
+\fontsize{20}{20}\selectfont 
+\emph{A Theoretical Minimum for \\
+Studying Human Evolution}
+\end{center}
+\end{minipage}
+}
+
+\vfil
+
+\hspace{-60pt}
+{\DrawElement{F}{1}}\hspace{64pt}
+{\DrawElement{L}{3}}\hspace{64pt}
+{\DrawElement{C}{7}}\hspace{64pt}
+{\DrawElement{A}{5}}
+
+\vfil
+
+{Richard McElreath}
+
+\vfil
+
+{This version compiled \today}
+
+\end{center}
+
+\newpage
+
+\frontmatter
+
+\setcounter{page}{7}
+
+\setcounter{tocdepth}{0}
+{
+\renewcommand{\baselinestretch}{0.5}\small
+\tableofcontents
+\renewcommand{\baselinestretch}{1.0}
+}
+\normalsize
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{Preface}
+
+The big problems in human evolution are all woven together. A typical research project is threaded with demography, development, cognition, evolution, and probability theory. Every specific empirical case is colored by details of cultural institutions like kinship and politics. 
+
+Anthropology is inherently undisciplined. 
+
+The goal of this text is to present and support one view of the theoretical minimum a researcher requires to conduct responsible research in human evolution and ecology.
+
+The goal is not to engender mastery in all aspects. Mastery comes with practice and application. Besides, for many research skills, mastery means only recognizing contexts where some technique or fact is useful. You can look up the rest afterwards.  
+
+The elements metaphor is only playful. There is no natural or unique typology of topics. The structure I've chosen is designed to reduce complexity into chunks that can be individually studied and referenced, as well as to indicate which chunks are foundational to others. For example, a student wishing to research the evolutionary reasons for human menopause will need to become acquainted with age-structured life history theory, among other things, and that itself requires first studying some relevant mathematics. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mainmatter
+
+\linenumbers
+\modulolinenumbers[5]
+
+
+\part{Light Elements}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% what is fitness
+
+\def \chapterElement {F}
+\chapter{What the Fitness}\label{link1F}
+
+No one reads Herbert Spencer anymore. Spencer was the most authoritative philosopher of his generation, selling over a million copies of his various works. Along the way he invented the phrase \bemph{survival of the fittest}. This loathsome phrase is the only part of his work that is remembered. It too should be forgotten.
+
+The concept of evolutionary or Darwinian \bemph{fitness} is central to the study of evolution. It is a beguilingly simple concept, nearly always taught incorrectly. The problem is that evolution does not in general favor the survival of the fittest, under common definitions of ``fitness.'' And what evolution does care about has no simple, universal definition other than perhaps ``the ability to persist in the long run.'' This sounds like a platitude, and we should aspire to more than platitude. 
+
+Before getting any deeper into evolutionary theory, you need to better understand fitness. Otherwise you might misunderstand how to evaluate evolutionary explanations. Let's tour some common misunderstandings. In this chapter, I'll present two realistic factors that complicate real fitness: timing and variation. In later chapters, these factors will be important for understand theories of the evolution of aging and learning. 
+
+
+\section*{Reproductive success}
+
+\begin{precis}Different genotypes with the same lifetime reproductive success can differ dramatically in number of descendants.
+\end{precis}
+
+Fitness is most often defined as the \bemph{average reproductive success} of a certain genotype. Reproductive success means the number of offspring produced by an individual in its lifetime. Sometimes this is called ``counting babies.'' Counting babies isn't a sound guide to which genotypes persist. You can dress this definition up with decorations like ``offspring who themselves survive to reproduce,'' but a costume doesn't fix it. Counting babies is in principle wrong, even if it sometimes gives the right answer. Understanding the principle matters, unless you are happy to be right only by accident.
+
+Consider the following example. Imagine a species in which individuals live for exactly two years. There are two genotypes. The \bemph{early} genotype starts breeding in the first year and produces \bemph{2} offspring each year. The \bemph{late} genotype does not reproduce in its first year, but it produces \bemph{4} offspring in the second year. The early type has a lifetime reproductive success of 4. The late type also has a lifetime reproductive success of 4.
+
+It will be useful to draw these alternative genotypes as life history diagrams. Let's start with the late-reproducing genotype, since it is simpler.
+
+\vspace{-6pt}
+\figmarlab{fig11}
+\tikzset{every loop/.style={min distance=7mm,looseness=10}}
+\begin{center}
+\begin{tikzpicture}[
+            > = stealth, % arrow head style
+            shorten > = 1pt, % don't touch arrow head to node
+            auto,
+            node distance = 3cm, % distance between nodes
+            semithick % line style
+        ]
+
+        \tikzstyle{every state}=[
+            draw = black,
+            thick,
+            fill = white,
+            minimum size = 4mm
+        ]
+
+        \node[state] (n1) {$L_1$};
+        \node[state] (n2) [right of=n1] {$L_2$};
+        
+        \path[->] (n1) edge node {$1$} (n2);
+        \path[->] (n2) edge[densely dashed,bend right=50] node[above] {$4$} (n1);
+
+    \end{tikzpicture}
+\end{center}
+
+\noi In this diagram, the circles are the age classes, with one-year-olds on the left and two-year-olds on the right. The arrow from $L_1$ to $L_2$ represents aging. In this model, there is no mortality during aging, so the 1 on this path represents 1 two-year-old for each one-year-old. Then there is reproduction,  represented by the dashed arrow from 2 to 1. Each two-year-old contributes four offspring to the one-year-olds in the next year---that's the dashed arrow with the $4$ on it represents. We can draw a similar diagram for the early-reproducing genotype:
+
+\vspace{-6pt}
+\figmarlab{fig12}
+\tikzset{every loop/.style={min distance=7mm,looseness=10}}
+\begin{center}
+\begin{tikzpicture}[
+            > = stealth, % arrow head style
+            shorten > = 1pt, % don't touch arrow head to node
+            auto,
+            node distance = 3cm, % distance between nodes
+            semithick % line style
+        ]
+
+        \tikzstyle{every state}=[
+            draw = black,
+            thick,
+            fill = white,
+            minimum size = 4mm
+        ]
+
+        \node[state] (n1) {$E_1$};
+        \node[state] (n2) [right of=n1] {$E_2$};
+        
+        \path[->] (n1) edge node {$1$} (n2);
+        \path[->] (n2) edge[densely dashed,bend right=50] node[above] {$2$} (n1);
+        \path[->] (n1) edge[densely dashed,loop above] node {$2$} (n1);
+
+    \end{tikzpicture}
+\end{center}
+
+\noi This diagram is very similar to the previous, but now there is a second dashed reproduction arrow, looping from 1 back to 1. This represents reproduction of one-year-olds. 
+
+\textbf{These two genotypes have the same reproductive success, but one of them will very quickly replace the other.} 
+To see this, you have to leave heuristics and metaphors behind and just calculate. To make the calculation easier, let's start with just one individual of each genotype of each age. So the population, to begin, has just 4 individuals: an early type of age 1, an early type of age 2, a late type of age 1, and a late type of age 2. Let's abbreviate the numbers of these types as $E_1$, $E_2$, $L_1$, and $L_2$. So this is the state of the population in the first year:
+\begin{center}
+\begin{tabular}{ccccc}
+Year & $E_1$ & $E_2$ & $L_1$ & $L_2$\\
+\hline
+1 & 1 & 1 & 1 & 1
+\end{tabular}
+\end{center}
+
+When a year passes, we must update the \bemph{state variables} (here $E_1$, $E_2$, $L_1$, $L_2$) according to the rules expressed in the diagrams above. There is a simple algorithm for translating a diagram into a set of equations for updating the numbers of each type. Here it is:
+\begin{enumerate}
+\item Pick a variable. 
+\item Find each arrow entering the variable. Each arrow contributes individuals in the next year. The number it contributes is equal to the the variable at the source of the arrow multiplied by the rate on the arrow itself.
+\item The value of the variable in the next year is the sum of the arrow products.
+\end{enumerate}
+Let's apply this to $E_1$. There are two arrows entering $E_1$. The first is the loop from $E_1$ back to itself. And the rate on the arrow is 2. So this arrow contributes $2\times E_1$ individuals in the next year. The second arrow is the one from $E_2$. The rate is again 2. So this arrow contributes $2\times E_2$. Adding the contributions of the two arrows:
+\begin{align*}
+	E_{1,t+1} = 2 E_{1,t} + 2 E_{2,t}
+\end{align*}
+Applying the same procedure to the other state variables, we get four equations that let us update the state of the population each year:
+\begin{align*}
+	E_{1,t+1} &= 2 E_{1,t} + 2 E_{2,t}  &  
+	L_{1,t+1} &= 4 L_{2,t} \\
+	E_{2,t+1} &= E_{1,t}  &
+	L_{2,t+1} &= L_{1,t}
+\end{align*}
+Now we plug in the values from year 1, $t=1$, to update.
+\begin{align*}
+	E_{1,t+1} &= 2 (1) + 2 (1) = 4  &  
+	L_{1,t+1} &= 4 (1) = 4 \\
+	E_{2,t+1} &= 1  &
+	L_{2,t+1} &= 1
+\end{align*}
+The genotypes are still tied. But let's do another year, and then update the table: 
+\begin{center}
+\begin{tabular}{ccccc}
+Year & $E_1$ & $E_2$ & $L_1$ & $L_2$\\
+\hline
+1 & 1 & 1 & 1 & 1\\
+2 & 4 & 1 & 4 & 1\\
+3 & 10 & 4 & 4 & 4
+\end{tabular}
+\end{center}
+The early type has now pulled ahead, with $10+4$ individuals compared to late's $4+4$. If you keep turning the crank on this calculation, you'll see that early explodes compared to late. Here's some simple code to turn the crank for you.\footnote{This is Julia code. Julia is a high-performance scientific computing language. It's faster and better designed than R or Python. Download it at https://julialang.org/.} Let's do 6 years of population growth.
+\codeboxb{\julialogo}
+\begin{VerbSaver}
+let E1=1, E2=1, L1=1, L2=1
+    println("\tE1","\tE2","\tL1","\tL2")
+    for t in 1:6
+        E1 , E2 = 2*(E1+E2) , E1
+        L1 , L2 = 4*L2 , L1
+        println(t,"\t",E1,"\t",E2,"\t",L1,"\t",L2)
+    end
+end
+\end{VerbSaver}
+\codeboxe
+\outputboxb
+\begin{verbatim}
+    E1  E2  L1  L2
+1   4   1   4   1
+2   10  4   4   4
+3   28  10  16  4
+4   76  28  16  16
+5   208 76  64  16
+6   568 208 64  64
+\end{verbatim}
+\outputboxe
+The early type has a huge advantage, despite having the same lifetime reproductive success. By year 10, there are more than 10 times as many $E_1$ as $L_1$. The advantage of the early type is so big, that you can give the late type a higher reproductive success, and early can still win. Repeat the calculation above, but modify the code so that the late type produces 6 offspring instead of 4. You should get:
+\outputboxb
+\begin{verbatim}
+    E1  E2  L1  L2
+1   4   1   6   1
+2   10  4   6   6
+3   28  10  36  6
+4   76  28  36  36
+5   208 76  216 36
+6   568 208 216 216
+\end{verbatim}
+\outputboxe
+So the early type grows faster, even though it has lower reproductive success. 
+
+Of course if the late type's reproductive success is large enough, it will beat the early type. It is possible to find a general condition for the early type to beat the late type, and the box on the next page shows you how. These calculations will be emphasized much more in later chapters. But for now, I'll smuggle them into optional boxes. You don't have to understand everything at once.
+
+\begin{mathbox}{p}{Condition for early reproduction to beat late reproduction.}
+We can write the population dynamics as a system of \bemph{recursions}, equations that update the numbers of each type. I'll replace the fixed values in the example with variables, so we can find which values allow the early type to beat the late type.
+\begin{align*}
+	E_{1,t+1} &= b_1 E_{1,t} + b_2 E_{2,t} &
+	L_{1,t+1} &= B L_{2,t} \\
+	E_{2,t+1} &= E_{1,t} &
+	L_{2,t+1} &= L_{1,t}
+\end{align*}
+The variables $b_1$ and $b_2$ are the fertilities of age 1 and 2 early types, and $B$ is the fertility of age 2 late types. Assume $B > b_1 + b_2$. When can the early type beat the late type, even though the late type has higher lifetime reproductive success?
+
+To find the answer, we calculate the \bemph{long-term growth rate} of each type. The long-term growth rate is the per-year growth rate of the population in the long run. For the late type, we can find it first with intuition. The late type grows by a factor of $B$ every two years. Look at the table on the previous page. In that example $B=4$.  The late type population starts at 5, then grows to 20 two years later, then to 80 two years after that. This means that after a large number of years $x$, the population will be approximately $B^{x/2}$ times larger. The growth rate per year is then the $x$-th root, $(B^{x/2})^{1/x}=\sqrt{B}$. 
+
+Intuition is nice, but isn't always reliable. We can also prove this in a principled way. The long term growth rate $\lambda_L$ of the late type satisfies these equations:
+\begin{align*}
+	L_{1,t+1}  &= \lambda_L L_{1,t} & L_{2,t+1} &= \lambda_L L_{2,t} 
+\end{align*}
+Why? Because the long-term growth rate is just the relative size of population from one year to the next. So $\lambda_L=L_{1,t+1}/L_{1,t}=L_{2,t+1}/L_{2,t}$. Substituting in the recursions and removing the $t$ subscripts:
+\begin{align*}
+	B L_2 &= \lambda_L L_{1}   &  L_1 &= \lambda_L L_2  
+\end{align*}
+Solve for $\lambda_L$ and you'll get two solutions: $\lambda_L = \pm \sqrt{B}$. Only the positive solution makes biological sense here. So $\lambda_L = \sqrt{B}$ is the long-term growth rate of the late type. The same procedure for the early type produces these two equations:
+\begin{align*}
+	b_1 E_1 + b_2 E_2 &= \lambda_E E_1 & 
+	E_1 &= \lambda_E E_2
+\end{align*}
+Solve for the growth rate $\lambda_E$. Again you'll find two roots, but only one is positive. All of this work gives us a long-term growth rate for each type:
+\begin{align*}
+	\lambda_E &= \frac{1}{2} \! \left( b_1 + \sqrt{b_1^2 + 4 b_2} \right) &
+	\lambda_L &= \sqrt{B}
+\end{align*}
+Before moving on, note that neither of these expressions resembles \bemph{lifetime reproductive success}. Lifetime reproductive success of the early type is $b_1 + b_2$. And of the late type is $B$. Don't count babies.
+
+Now we ask when $\lambda_E > \lambda_L$. After some algebra, the condition simplifies to:
+%\begin{align*}
+%	b_2 + \frac{1}{2} b_1 \left( b_1 + \sqrt{b_1^2 + 4 b_2} \right) > B
+%\end{align*}
+%This can be simplified dramatically:
+\begin{align*}
+	%b_1 \sqrt{B} + b_2 &> B \\
+	b_1 &> \frac{B - b_2}{\sqrt{B}}
+\end{align*}
+Arranged this way, we can see how much more important reproduction in the first year is for long-term growth. Suppose $b_2=0$ for example. Then the above simplifies to $b_1 > \sqrt{B}$. So a species that produces 11 offspring in its first year and dies can out-compete (in the long run) one that waits one year and then produces 100 offspring. This is the extraordinary advantage of early reproduction, at least in a population that grows without bound. In a later chapter, you'll see that this advantage may depend upon \bemph{population regulation}, how population density influences survival and reproduction. Different mechanisms of population regulation influence natural selection in different ways.
+\end{mathbox}
+
+The early type grows faster because it reproduces earlier. There is no risk in this example of dying before reproduction, so that isn't the early type's advantage. Instead the advantage is that early's offspring start reproducing earlier themselves. Late in contrast takes a year off, and then its offspring take a year off. One way to summarize this result is that early has a shorter \bemph{generation time}, and shorter generation times can help a population grow.
+
+But the broadest lesson is that we should not use heuristics like lifetime reproductive success to understand the genotypes and phenotypes that appear in nature. Adding another heuristic like ``shorter generations are better'' is no good either. Sometimes natural selection favors a longer generation time.
+
+If you really want a heuristic to walk away with, I suggest \textbf{``timing matters''}. 
+
+\section*{Average reproductive success}
+
+\begin{precis}Even when reproductive success is what matters, more than the average may matter.\end{precis}
+
+Another problem with defining fitness as \bemph{average reproductive success} is the average part. When reproductive success varies from year to year or individual to individual, the entire distribution can matter, not just the average.
+
+Again consider a simple example, a species that lives and reproduces for only one year. There are two genotypes. The \bemph{constant} (C) genotype always produces 2 offspring and then dies. The \bemph{variable} (V) genotype produces 1 offspring in each even year and 3 offspring in each odd year, for an average of 2. The average reproductive success of both genotypes is the same.
+
+However the growth rates of these genotypes are not the same. 
+Suppose there are 10 individuals of each type. Now let's compute the population size of each genotype over the next 7 years.
+\codeboxb{\julialogo}
+\begin{VerbSaver}
+let C=10, V=10
+    println("\tC\tV")
+    for t in 1:7
+        C = 2*C
+        V = (t%2==0) ? 1*V : 3*V
+        println(t,"\t",C,"\t",V)
+    end
+end
+\end{VerbSaver}
+\codeboxe
+\outputboxb
+\begin{verbatim}
+    C    V
+1   20   30
+2   40   30
+3   80   90
+4   160  90
+5   320  270
+6   640  270
+7   1280 810
+\end{verbatim}
+\outputboxe
+The constant type races ahead, even though both genotypes have the same average reproductive success.
+
+The average isn't what matters, because population growth is not an additive process. The size of a population is not the sum of the offspring produced in previous years. Instead, population growth is multiplicative. If ever there are zero offspring, then the genotype goes extinct. One zero is enough for extinction. 
+
+Variation in reproductive success interacts with the multiplicative nature of population growth in very powerful ways. To figure out why, and see how this explains why the constant type wins in our example, we need to get formal. Let the population size of the constant type in a given year $t$ be $C_t$. In the next year, $t+1$, the population size is:
+\begin{align*}
+	C_{t+1} = 2 C_t
+\end{align*}
+The population of constant individuals doubles every year. After another year, the population size is:
+\begin{align*}
+	C_{t+2} = 2 C_{t+1} = 2 \times 2 C_t = 2^2 C_t
+\end{align*}
+After yet another year:
+\begin{align*}
+	C_{t+3} = 2 C_{t+2} = 2 \times 2^2 C_t = 2^3 C_t
+\end{align*}
+You can probably see now that in any year $t+x$, the population size will be:
+\begin{align*}
+	C_{t+x} = 2^x C_t
+\end{align*}
+
+But what about the other type? Recall that the variable type V produces 1 offspring in an even year and 3 in an odd year. Suppose year $t$ is even. Then in the next year, the population size of the variable type will be:
+\begin{align*}
+	V_{t+1} = 3 V_t
+\end{align*}
+And in the next year, which is even again:
+\begin{align*}
+	V_{t+2} = 1 V_{t+1} = (1)(3) V_t
+\end{align*}
+And the next, which his odd again:
+\begin{align*}
+	V_{t+3} = 3 V_{t+2} = (1)(3^2) V_t
+\end{align*}
+And one more year to draw out the implications:
+\begin{align*}
+	V_{t+4} = 1 V_{t+3} = (1^2)(3^2) V_t
+\end{align*}
+Yes, that $1^2$ just equals 1, but if that 1 were a different fertility, the term would make a difference. So it is worth keeping it there.
+
+This is obviously more complicated than the constant type. Note first that we do not average over years, because in no year does the V genotype get 2 offspring. It alternates between getting 1 and 3. And the population size in any year is the product of those previous fertilities---one 3 for each odd year and one 1 for each even year---and the initial population size $V_t$.
+
+In the long run, over very many years $x$ after year $t$, V will experience nearly the same number of even and odd years, $x/2$ even years and $x/2$ odd years. So it's population size will be approximately:
+\begin{align*}
+	V_{t+x} = (1^{x/2}) (3^{x/2}) V_t
+\end{align*}
+We can compare this growth to the growth of C. If the initial populations are the same size, $C_t=V_t$, then C will be larger than V when:
+\begin{align*}
+	2^x > (1^{x/2}) (3^{x/2})
+\end{align*}
+To compare the left and right sides, we need to get rid of $x$. To get $x$ out of this, we can take the $x$-th root. This means raising each side to the power $1/x$, like this:
+\begin{align*}
+	(2^x)^{1/x}  &>  \big( (1^{x/2}) (3^{x/2}) \big)^{1/x} \\
+	2 &> 1^{1/2} 3^{1/2}
+\end{align*}
+Now square both sides:
+\begin{align*}
+	2^2 > (1)(3)
+\end{align*}
+This condition is true. The constant type has a higher growth rate. 
+
+The average isn't what matters, in general. In this example, what matters is actually the \bemph{geometric mean} of the reproductive success over years. Without noticing, we calculated the geometric mean growth of each genotype. I provide the details in the math box below. The geometric mean isn't what matters in general. It just happens to be what matters in simple models like this one. If the species lives more than one year, something else will matter. 
+
+Also in the math box, I show that a constant type with lower average reproductive success can beat a variable type with higher average reproductive success provided the variance is large enough. As an intuitive extreme case, if the variable type ever experiences a year with zero reproductive success, it will go extinct. One zero is sufficient.
+
+
+
+%\newpage
+\begin{mathboxmp}{Geometric mean fitness.} 
+To abstract the derivation in the main text, notice that the growth rate of the variable type is the product of two terms, $1^{\!1/2}$ and $3^{\!1/2}$. Each of these terms is a possible fertility, 1 or 3, raised to the probability that it happens in a long sequence of years. In many years, half the years will result in a growth factor 1 and half instead in 3. This applies to more complex models, with more possible growth factors with different probabilities, as long as there is no age structure. If there is age structure or stage structure or any number of other complications, then this result doesn't perfectly generalize. But the intuition you get from it remains valuable in more complicated models, and understanding the general derivation can help you compute what matters in more complicated models. So it's worth understanding.
+
+Suppose for example that there are $m$ possible growth factors $f_i$. In a long sequence of $x$ years, each factor occurs with proportion $p_i$. Then the growth rate over these $x$ years is given by:
+\begin{align*}
+	 f_1^{\,p_1 x} f_2^{\,p_2 x} f_3^{\,p_3 x} \hdots f_m^{\,p_m x}  =  \prod_{i=1}^m f_i^{\,p_i x} 
+\end{align*}
+which you can read as ``the product of all growth factors, each raised to the number of times it happened in the sequence.'' If we wish to compare the growth record to some other lineage over the same number of years $x$, it will be convenient to remove $x$ from the expression. The only way to do that is to take the $x$-th root:
+\begin{align*}
+	 \left( \prod_{i=1}^m f_i^{\,p_i x} \right)^{\!\!1/x} = \prod_{i=1}^m f_i^{\,p_i }
+\end{align*}
+This expression is a \bemph{geometric mean} growth rate, because the geometric mean is defined as the $x$-th root of the product of $x$ values. This proves that what selection cares about in this model is not \bemph{average lifetime reproductive success}, but rather \bemph{geometric mean lifetime reproductive success}. It other models, it cares about other quantities.
+
+It is typical to see this expression on the log scale, in which case it becomes:
+\begin{align*}
+	\log \prod_{i=1}^m f_i^{\,p_i} = \sum_{i=1}^m p_i \log(f_i)
+\end{align*}
+The summation is often easier to manipulate, and you can interpret it as the average log lifetime reproductive success. So if you really want to salvage baby counting as a measure of fitness, you could try with this expression, as long as you are willing to count logarithmic babies instead of whole babies.
+
+There are important consequences of this fitness concept. For example, if an organism can do something to increase a small $f$ value, that will have a bigger impact on its long-term growth than increasing a large $f$ value by the same amount. We can prove this by asking how quickly the growth rate (call it $R$) changes as a function of any specific $f_i$, and the answer is:
+\begin{align*}
+	\frac{\partial R}{\partial f_i} = \frac{p_i}{f_i}
+\end{align*}
+This is a consequence of the fact that the derivative of $\log(x)$ with respect to $x$ is $1/x$, a useful fact to remember. The consequences of this mathematical fact are biologically enormous. When $f_i$ is small, the rate above is large. So a small change to a small growth factor will make a big difference in growth. There is a fundamental asymmetry to growth processes in that it is harder to recover from losses than it is to lose gains, and this arises from the multiplicative nature of growth.
+
+Another consequence is that variation in fitness, keeping the same average fitness, is usually bad for growth. To see this, suppose the long-term growth rate is given again by 
+$R = \sum_i p_i \log(f_i) = \E \log(f\,)$. 
+We don't know the distribution of $f$. But we can still say something useful about it through an approximation called a \bemph{Taylor expansion}. In this case, we'll approximate $R$ assuming that individual $f_i$ values tend to be close to the mean, $\E(f\,)$. How close? Close enough that $(f_i - \E f\,)^3 \approx 0$. This gives us:
+\begin{align*}
+	%R &\approx \E \log(f\,) + \frac{d \E \log(f+x)}{dx}|_{x=0}x + \frac{1}{2} \frac{d^2 \E \log(f+x)}{dx^2}|_{x=0}x^2  \\
+	R &\approx \log \E ( f \,) - \frac{\E \! \big((f-\E f\,)^{\!2} \big)}{2 \E(f\,)^{\!2}}
+\end{align*}
+You may know that the \bemph{variance} of a random variable is defined as the average squared deviation from the mean. In this case that's $\var(f\,)=\E((f - \E f\,)^2)$, which appears on top of the second term above. So we can write it as:
+\begin{align*}
+	R &\approx \log(\E f \,) - \frac{\var(f\,)}{2 \E(f\,)^{\!2}}
+\end{align*}
+This says that the growth rate is approximately the (log) average reproductive success minus a term that is proportional to the variance in reproductive success. So the larger the variance, the lower the growth rate. And if the variance is small enough, then average reproductive success is a good approximation of the growth rate. Many evolutionary analyses either explicitly or implicitly assume that the variance is small and use arithmetic mean reproductive success as a measure of the growth rate. And a lot can be learned that way. 
+
+But a lot can be missed as well. Notably, behavior that reduces variance in reproductive success can be beneficial. A lineage with lower average reproductive success can spread, provided its variance is also sufficiently lower. Suppose a constant genotype has mean reproductive success $\E(k)$. A variable type has mean reproductive success $\E(v) > \E(k)$. The constant type will nevertheless grow faster, if:
+\begin{align*}
+	\frac{\var(v)}{\E(v)^2} > 2 \big( \log \E(v) - \log \E(k) \big) 
+\end{align*}
+This is just an approximation of course, and it depends upon the simple population structure and life history of the example. But it is a symptom of the general fact that natural selection does not inherently care only about average reproductive success.
+\end{mathboxmp}
+
+
+\section*{Lessons}
+
+The previous sections presented two simple evolutionary scenarios in which average reproductive success, the most common definition of fitness, gives the wrong answer. There are many core problems in the study of evolution, including human evolution, where this matters.
+
+If you study enough models, you get a sense for general principles, like for example that variation is usually bad for a species. Or that shorter generation times are better. But sometimes variation is good. And sometimes a longer generation time is better. In a novel scenario, there is just no getting around making a formal model and doing the work. Intuition is not enough.
+
+\section*{Invasion Fitness}
+
+The previous sections focus on the long-term growth rate of an individual genotype, or lineage. They give the impression that the correct way to compare genotypes is to compute their long-term growth rates in isolation. The genotype with the highest growth rate will win, in the long run. 
+
+But this is not correct. A genotype does not spread and become common because of its growth rate in isolation. Instead it spreads because of its growth rate in the presence of other genotypes. Once common, a genotype could actually have a lower growth rate than the genotypes it replaced. There are published, peer-reviewed papers that make this mistake.\footnote{Cite that evolution of menopause paper} These papers ask which genotype maximizes population growth rate and then assume that genotype will replace the others. Sometimes this approach gives the right answer, by accident. But it is never the correct approach.
+
+Many aspects of social behavior contain some tradeoff between the ability of a phenotype to spread when rare and to persist when common. Kin selection, cooperation, conflict, parental care, sexual selection, and learning all present powerful examples. We'll work through these examples in detail in later chapters. 
+
+Let's consider a very simple example, to illustrate the basic procedure. 
+
+
+\section*{Empirical fitness}
+
+[how to sensibly estimate lineage growth rate]
+
+Age at first reproduction can be the most important thing. If fitness varies with temporal environmental variation, then cross-sectional data may mislead.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% probability
+
+\def \chapterElement {P}
+\chapter{Probability}\label{link2P}
+
+The greatest confusion with probability is believing it exists.\footnote{This paraphrases Bruno de Finetti, who wrote PROBABILITY DOES NOT EXIST. All caps in original. He felt very strongly about it.}
+
+Consider a coin toss. 
+An early Roman coin was made of bronze and simply called ``a bronze,'' \emph{aes}. An \emph{aes} had a head on one side and a ship on the other. The head belonged to Janus, the Roman god of duality, among other things. Janus' head was usually displayed with two faces, one looking to the future and the other into the past. 
+
+Janus was supposed to have been the first Italian to make coins, his faces embossed on one side. The ship on the other side commemorated Saturn, who arrived in Italy by ship and taught Janus how to farm, among other things. When Romans decided things by the toss of a coin, asking Janus to decide the outcome, they called it ``heads or ships'' (\emph{capita aut navia}) rather than ``heads or tails.''
+
+\vspace{1em}
+\begin{center}
+	\includegraphics[width=2in]{01_01_aes.png}\\
+	\emph{A Roman \emph{aes} from around 230 BCE}
+\end{center}
+\vspace{1em}
+
+Coin tosses are useful, because they are \bemph{random}. The outcome cannot be easily influenced nor predicted, and so both parties may trust the coin to resolve a decision fairly. But what is it about the toss of a coin---or the roll of the dice---that makes it random? Coins are physical objects, and their behavior is determined by physical law. A precise experiment, which applies the same forces every time, can repeat the outcome every time.\footnote{Diaconis, Holmes, Montgomery paper.} Coin tosses are deterministic. Neither Janus nor any other deity influences the toss.
+
+The random numbers that your computer generates are technically known as \bemph{pseudo-random numbers}. Computer calculations are also deterministic, and computers produce random sequences of numbers using mathematical algorithms. Some of these algorithms have flaws that allow clever individuals to predict parts of the sequence. For this reason, some people prefer to tap natural phenomena, like atmospheric noise and radio static, for their random numbers. The service \ttx{RANDOM.ORG} does exactly this. Since 1998, it has supplied artisanal \bemph{true random numbers}, distilled from the atmosphere. Of course atmospheric noise is also deterministic. Atmospheric dynamics may be chaotic and difficult to predict. But the initial conditions completely determine the outcome, just as with a coin toss.
+
+Randomness is not a property of natural phenomena. It is a property of knowledge. 
+The randomness of a coin toss is not a property of the coin. It is a property of our lack of information about the physical conditions that determine the outcome. The randomness of radio static is no more ``true'' than the randomness of numbers generated inside a computer. Both are produced by deterministic phenomena. In both cases, the precision of knowledge necessary to accurately predict the outcome is practically unobtainable. But the randomness in both cases is a property of us. Our lack of information makes it possible for us to use a coin or radio static as a social device for making decisions.
+
+The strictly epistemological---belief based---nature of randomness is not controversial. But some scientists do not like it. Two clever objections immediately come up. The first is what I call ``quantum begging.'' The second is to claim that randomness is a property of sequences of numbers. Both objections are mistaken.
+
+\bemph{Quantum begging} is appealing to the hypothetically indeterminate nature of quantum phenomena. At some level of description, quantum phenomena are currently only describable by probability distributions. There has been a century of debate about whether this indeterminacy is merely epistemological---like all other randomness---or rather fundamentally real. Einstein famously sided with determinism. This debate is not over, although many books and films present it as such. However, this debate is entirely irrelevant to coins and dice, because coins and dice are not quantum objects. Every model agrees that physics at the scale of human lives is deterministic.
+
+The second objection is to say that only \bemph{sequences} can be random. A sequence of coin tosses may be defined as random, if heads and ships appear nearly as often in the sequences and there is no useful information in previous outcomes to help you predict future outcomes. This definition is fine, but it doesn't solve the problem. A single coin toss can be usefully random, provided neither party knows whether heads or ships will turn up. The coin doesn't even have to be fair, have to present heads and ships with equal frequency in a very long sequence of tosses.
+
+Why is a book about human evolution getting into the philosophy of randomness? Because all evolutionary theory is built from probability theory, and the conventional view of probability is wrong. It's not that all evolutionary theory is wrong---although some of it is. Rather to understand how to read and construct evolutionary theory, you must stop believing that probability exists.
+
+\section*{The conventional view}
+
+The conventional view is that probability is defined as the proportion of some event in an infinite sequence of repeated trials. But all randomness, probability, is epistemological. It is defined by the observer's state of information. 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Optimization
+%\setcounter{chapter}{17}
+\def \chapterElement {O}
+\chapter{Optimality}
+
+\lipsum[15-17]
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Cooperation
+%\setcounter{chapter}{17}
+\def \chapterElement {C}
+\chapter{Cooperation}
+
+\lipsum[12-14]
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Kinship systems
+%\setcounter{chapter}{17}
+\def \chapterElement {K}
+\chapter{Kinship}
+
+\lipsum[12-14]
+
+
+%%%%%%
+\part{Transition Elements}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% senescence
+
+\setcounter{chapter}{10}
+\def \chapterElement {Se}
+\chapter{Senescence}
+
+
+\lipsum[2-4]
+
+\section*{Extrinsic mortality}
+% Day and Abrams 2-class example?
+
+Imagine a species that lives for a maximum of two years.\footnote{This example is based on the model in the appendix to [\bibentry{dayabrams2020}].} Let $n_{1,t}$ be the number of individuals of age $1$ of year $t$, and $n_{2,t}$ is the number of two-year-olds. In order to reproduce, an individual must first survive through the winter. Let $s_i$ be the probability of surviving to reach age $i$. So babies are only counted if with probability $s_1$, and one-year-olds reach age 2 with probability $s_2$. Let $f_i$ be the fertility of an individual of age $i$. For the moment, assume there is no population regulation---the environment is boundless and the species can growth exponentially forever. Diagrammatically, the model looks like this:
+
+\vspace{-6pt}
+\figmarlab{figSe1}
+\tikzset{every loop/.style={min distance=7mm,looseness=10}}
+\begin{center}
+\begin{tikzpicture}[
+            > = stealth, % arrow head style
+            shorten > = 1pt, % don't touch arrow head to node
+            auto,
+            node distance = 3cm, % distance between nodes
+            semithick % line style
+        ]
+
+        \tikzstyle{every state}=[
+            draw = black,
+            thick,
+            fill = white,
+            minimum size = 4mm
+        ]
+
+        \node[state] (n1) {$1$};
+        \node[state] (n2) [right of=n1] {$2$};
+        
+        \path[->] (n1) edge node {$s_2$} (n2);
+        \path[->] (n2) edge[densely dashed,bend right=50] node[above] {$f_2 s_1$} (n1);
+        \path[->] (n1) edge[densely dashed,loop above] node {$f_1 s_1$} (n1);
+
+    \end{tikzpicture}
+\end{center}
+If you aren't familiar with these state-and-arrow life history diagrams, each circle is a state. In this example, each state is an \bemph{age class}. The arrows represent contributions of each age class to another or itself in the next time step. So the arrow \nodeinline{$1$}$\rightarrow$\nodeinline{$2$} represents survival to age 2, which happens with probability $s_2$. The other two arrows are reproduction. Each one-year-old contributes on average $f_1 s_1$ new one-year-olds and each two-year-old contributes $f_2 s_1$.
+
+These diagrams don't just look pretty. They also give us an algorithm for writing down a mathematical model of the population dynamics. Each node (circle) has a state variable. In this case, these are $n_1$ and $n_2$. To find a mathematical rule for updating these state variables each year, we just look at all the arrows entering a node. For each arrow, we multiple the state variable of the arrow's origin by the factors on the arrow itself. 
+
+So to update the two-year-olds, there is just one arrow, the arrow from \nodeinline{$1$} to \nodeinline{$2$}. The state variable for the source \nodeinline{$1$} is $n_1$. We multiply this by the factor on the arrow, $s_2$, and get an equation to update $n_2$:
+\begin{align*}
+	 n_{2,t+1} &= n_{1,t} \, s_2 
+\end{align*}
+The number of two-year-olds is just the number of surviving one-year-olds. 
+And the same procedure yields an update equation for $n_1$. But now there are two arrows. 
+\begin{align*}
+	 n_{1,t+1} &= n_{1,t} \, s_1 \, f_1   + n_{2,t} \, s_1 \, f_2  
+\end{align*}
+The number of one-year-olds is the total births from both age classes. Now we have two \bemph{recursions}---updating equations---for the two state variables of the model.
+
+In a moment, we'll let these survival and fertility parameters evolve. But for now let's just figure out how the population grows, given any specific values of $s_1$, $s_2$, $f_1$, and $f_2$. 
+The growth rate of this species depends upon reproduction in both age classes. So again we cannot simply count babies, the lifetime reproductive success, because timing matters (see chapter~\bemph{1F}). The textbook way to calculate the growth rate in this example is to calculate something called the \bemph{dominant eigenvalue}\footnote{The term eigenvalue comes from German \emph{Eigenwert}, which just means the characteristic value (of a matrix). The use of \emph{Eigen} in English causes unnecessary angst for many students.} of the transition matrix for the population. It is absolutely worth knowing how to do that, and it isn't even hard. So we'll do it. But it isn't at all intuitive why it works. So first let's also do the same calculation a possibly more intuitive way.
+
+The long-term growth rate of the species is achieved when the population is at its \bemph{stable age distribution}. Not all models have stable age distributions---populations can fluctuate forever for example. But this one does. At the stable age distribution, the relative numbers of each age class are not changing, and every age class is growing at the same rate. Otherwise it wouldn't be stable. Call this stable rate of growth $\lambda$, which is the convention. Then at the stable age distribution it must be true that:
+\begin{align*}
+	\lambda = \frac{N_{t+1}}{N_t} = \frac{n_{1,t+1}}{n_{1,t}} = \frac{n_{2,t+1}}{n_{2,t}}
+\end{align*}
+Let's pull out those relations of each age class with $\lambda$ and express them this way:
+\begin{align*}
+	\lambda n_{1,t} &= n_{1,t+1} & \lambda n_{2,t} &= n_{2,t+1}
+\end{align*}
+After substituting in the full recursions for $n_{1,t+1}$ and $n_{2,t+1}$, this gives us two simultaneous equations that we can use to find $\lambda$. Here they are:
+\begin{align*}
+	\lambda n_{1,t} &= n_{1,t} \, s_1 \, f_1   + n_{2,t} \, s_1 \, f_2 \\
+	\lambda n_{2,t} &= n_{1,t} \, s_2 
+\end{align*}
+Solving for $\lambda$ gives two roots. If your algebra is rusty, start by solving the little equation for $n_{2,t} = n_{1,t} \, s_2 / \lambda$. Then substitute this expression for $n_{2,t}$ into the big equation and solve for $\lambda$. It will be quadratic, so use the quadratic formula. Only one of the roots is positive for reasonable values of $s_1$, $f_1$, $s_2$, and $f_2$. It is:
+\begin{align*}
+	\lambda^{\!\star} = \frac{1}{2} \left( s_1 \, f_1  + \sqrt{s_1 ( s_1 \, f_1^{\;2} + 4 \, s_2 \, {f_2} )  } \right)
+\end{align*}
+This is definitely not average lifetime reproductive success, which is (for this model) just $s_1 \, f_1  +  s_1  s_2 \,  f_2 $. It is however the \bemph{dominant eigenvalue}, the same as you'd get doing the convention matrix approach. To see the conventional matrix approach, dive into the shaded box on the next page. If you are curious about the solution for the stable age distribution itself, also look into the box.
+
+%%%%%%%
+\begin{mathbox}{p}{Eigenvalues and eigenvectors.}
+To compute the growth rate $\lambda^{\!\!\star}$ using the conventional matrix approach, we first organize the system of recursions into a \bemph{transition matrix}. This is a square matrix with one row and one column for each \bemph{state variable} of the system. The state variables in this case are $n_1$ and $n_2$. The entries in the matrix express the \emph{per capita} contribution of the column variable to the row variable in the next time step. In our case, the matrix is:
+\begin{align*}
+	\mathbf L = \begin{pmatrix} s_1 f_1 & s_1 f_2 \\ s_2 & 0 \end{pmatrix}
+\end{align*}
+If we look at the recursions, you'll see these factors in front of each state variable on the right side of each equation. Here are the recursions again, with these factors highlighted in brackets:
+\begin{align*}
+	 n_{1,t+1} &= n_{1,t} \, \big[ s_1 \, f_1 \big]  + n_{2,t} \, \big[ s_1 \, f_2 \big]   \\
+	 n_{2,t+1} &= n_{1,t} \, \big[ s_2 \big]
+\end{align*}
+Each one-year-old contributes on average $s_1 f_1$ new one-year-olds to the population, as well as $s_2$ two-year-olds (if they survive to the second year). This gives us the first column of the matrix $\mathbf L$. The second column has a zero in it, because two-year-olds contribute zero two-year-olds. %The same set of recursions, expressed now as a matrix equation, is:
+%\begin{align*}
+%	\begin{pmatrix} n_{1,t+1} \\ n_{2,t+1} \end{pmatrix} =  
+%	\mathbf L \begin{pmatrix} n_{1,t} \\ n_{2,t} \end{pmatrix}
+%\end{align*}
+
+The matrix $\mathbf{L}$ is handy, because it provides a shortcut for all that algebra we did. It turns out that we can compute the dominant eigenvalue from $\mathbf L$ alone, yielding the longterm growth rate. %The meaning of an eigenvalue depends upon context. But the procedure for calculating one does not. 
+We find the values of $\lambda$ that satisfy:
+\begin{align*}
+	\det ( \mathbf L - \lambda \mathbf I ) = \det \! \begin{pmatrix} s_1 f_1 - \lambda & s_1 f_2 - 0 \\ s_2 - 0 & 0 - \lambda \end{pmatrix} = 0
+\end{align*}
+That ``det'' means the determinate of the matrix. For a two-by-two matrix $\left(\begin{smallmatrix}A & B \\ C & D \end{smallmatrix}\right)$, the determinate is just $AD-BC$. So we solve:
+\begin{align*}
+	( s_1 f_1 - \lambda )(0 - \lambda) - (s_1 f_2)(s_2) = 0
+\end{align*}
+This is quadratic in $\lambda$, so you get two solutions, and the largest will match $\lambda^{\!\!\star}$ on the previous page. 
+
+In the notebook, I show you how to use Mathematica's \textcolor{bemphcol}{\ttx{Eigenvalues}} function to do this. The corresponding \textcolor{bemphcol}{\ttx{Eigenvectors}} give the relative proportions of each age class in the stationary age distribution. The term \bemph{eigenvector} is even less helpful than eigenvalue. But it is just a list of the relative abundances of each age class. You can find it readily without the matrix, in fact. Resuming the derivation in the main text, the little equation implies that:
+\begin{align*}
+	\frac{n_{2,t}}{n_{1,t}} = \frac{s_2}{\lambda}
+\end{align*}
+The left side is the ratio of two-year-olds to one-year-olds. So once you have your solution for $\lambda$, just substitute it into the above to get an expression for this ratio. Call this ratio $R_{21}$. The proportion of two-year-olds at the stable age distribution is just $R_{21}/(1+R_{21})$. Why? Let $p_2$ be the proportion of two-year-olds and $p_1 = 1 - p_2$ the proportion of one-year-olds. Then it must be true that $R_{21} = {p_2}/{p_1} = {p_2}/({1 - p_2})$. 
+Solve for $p_2$, and you get $p_2 = R_{21}/(1+R_{21})$.
+
+For a model with only two age classes, the matrix approach doesn't save you much work. But for larger models, it can be much easier to just find the eigenvalues and eigenvectors than to slosh around solving a large system of equations. Technically, both approaches are identical. However there are situations in which the matrix approach can trick you. For example, if the transition matrix depends upon population density, you have to be careful.\footnote{Cite Caswell \& Takada 2004}
+\end{mathbox}
+%%%%%
+
+Now let's make things interesting by adding a \bemph{tradeoff} in survival across age classes and asking how natural selection will manage this tradeoff. Suppose that survivorship is a function of a baseline amount of mortality that is independent of age. Call this $x$. This is the \bemph{extrinsic} mortality. Survivorship is also a function of an age-specific factor $a$ that has to be allocated by a genotype across age classes. This is the \bemph{intrinsic} mortality. So let's redefine $s_1$ and $s_2$ this way:
+\begin{align*}
+	s_1 &= (1-x) a \\
+	s_2 &= (1-x) (1-a)
+\end{align*}
+Both $x$ and $a$ are between zero and one. If $a=1$, then the genotype invests everything in surviving to reproduce in the first year. As $a$ declines, the genotype invests more in surviving to reproduce in the second year. This function assumes a perfectly linear tradeoff in allocating $a$.
+
+We already have the longterm growth rate. We can just replace $s_1$ and $s_2$ with the new expressions above, yielding the longterm growth rate of any genotype with a particular value of $a$. So which value of $a$ has the highest longterm growth rate? We can find that by finding the value of $a$ that maximizes $\lambda^{\!\star}$. Why? Because if many genotypes are present in the population, then they will all be growing exponentially, but the one with the largest $\lambda$ will come to dominate the environment, because its exponential growth rate will be larger. 
+
+I appreciate that it is weird to think about a bunch of exponentially growing lineages competing in an environment with no limits. We'll introduce population limits soon. But that will be more complicated, so it's kinder to do this exponential growth circus first.
+
+We ask which values of $a$ satisfy $\tfrac{\mr d \lambda^{\!\star}}{\mr d a} = 0$. 
+The derivative is unpleasant, but if you use a symbolic system like Mathematica, it'll make quick work of it. Then when you solve for $a$, be careful to note the constraints on the variables: $f_1>0$, $f_2>0$, $0<a<1$, and $0<x<1$. In the notebook for this chapter, I show you how to do this properly with Mathematica's \textcolor{bemphcol}{\ttx{Reduce}} function. The answer is satisfyingly simple:
+\begin{align*}
+	a^{\!\star} = \frac{1}{2 - f_1 / \! \sqrt{f_2}}
+\end{align*}
+Notice that $x$ is not present. This means that exogenous mortality has no impact on the evolutionary end point. This is not what happens in general. And we'll make a change next that leads to $x$ mattering.
+
+Before we do that however, consider how fertility matters. What matters is the ratio $f_1/\!\sqrt{f_2}$. Consider first what happens when $f_1 = \sqrt{f_2}$. Then $a^{\!\star} = 1$, which means the organism invests everything in one-year-olds and no individuals survive to the second year. But as $f_2$ increases, $a^{\!\star}$ approaches $1/2$, which means that the species invests equally in one-year-olds and two-year-olds. Here is a plot of $a^{\!\star}$ against $f_2$, with $f_1=1$. 
+
+\vspace{-6pt}
+\figmarlab{figSe2}
+%%%%% plot of a against f_2
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    	axis lines=middle,
+    	axis line style={-},
+    	height=0.4\textwidth,width=0.5\textwidth,
+    	xmin=0,xmax=10,ymin=0,ymax=1,
+    	xlabel=$f_2$,
+    	xtick={1,10},ytick={0,0.5,1},
+    	extra y ticks={0},
+    	yticklabel style = {font=\scriptsize,xshift=0.5ex},
+        xticklabel style = {font=\scriptsize,yshift=0.5ex},
+        x label style={at={(current axis.right of origin)},anchor=west,right=1mm},
+        y label style={at={(current axis.north west)},above=0.1mm},
+    	samples=50]
+  	\addplot[bemphcol,thick,domain=1:10] {1/(2-1/x^0.5)};
+	\addplot[black,thin,dashed,domain=0:10] {0.5};
+	\node[bemphcol] at (axis cs: 4,0.8) {$a^{\!\star}$};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+In this model, evolution can never favor $a^{\!\star} < 1/2$. 
+Why $1/2$? This is the value of $a$ that maximizes the probability of attaining age 2. The probability an individual lives to the second year is not just $s_2$. They have the survive the first year as well. So the probability an individual lives to age 2 is $s_1 s_2$. Substituting in $s_1 = (1-x)a$ and $s_2=(1-x)(1-a)$:
+\begin{align*}
+	a(1-a)(1-x)^2
+\end{align*}
+The term $a(1-a)$ is maximized for $a=1/2$. This is a symptom of the fact that all two-year-olds were once one-year-olds. To maximize the chance of living to a later age, an organism must invest in earlier ages as well.
+
+Before moving on, let's consider what $a$ does to the \bemph{expected lifespan at birth}, which I'll label $\ell$. Which conditions favor longer life? The expected lifespan in this model is:
+\begin{align*}
+	\ell &= \sum_{i=0}^2 \Pr(\text{die at age~}i)(i) \\
+	\ell & = (1-s_1)(0) +  s_1 (1-s_2) (1) +  s_1 s_2 (2) = s_1( 1 + s_2 )
+\end{align*}
+where age 0 means a newborn. Substituting in the tradeoff functions for $s_1$ and $s_2$:
+\begin{align*}
+	\ell = a (2 - x) (1 - x) + a^2 (1 - x)^2
+\end{align*}
+This expression is always increasing with $a$, so larger values of $a$ always increase expected lifespan. How is it possible that $a=1/2$ maximizes the chance of living to age 2, but $a=1$ maximizes lifespan? When $a=1$, $s_1=1-x$ while $s_2=0$, so the expected lifespan is just $1-x$. Suppose an organism decreases $a$ below 1 by a tiny amount. %Now $s_1 \approx (1-x)(1 -\epsilon)$ and $s_2 \approx (1-x) \epsilon$. 
+This can never increase $\ell$, because the reduction in $s_1$ means additional individuals will now die before ever experiencing the better $s_2$. You may get a mathematical intuition for this by looking again at $\ell=s_1(1+s_2)$ and seeing that $s_1$ moderates any gains in $s_2$.
+
+In this simple model, evolution can favor survival in later years, but it will not result in longer expected lifespans. Any additional years of life are consumed by individuals not living to be even one year old. However, if you just census living individuals in the population, the average age will be older, for smaller values of $a$. This is only because you cannot census the dead.
+
+
+\section*{Extrinsic mortality with density dependence}
+
+\begin{precis}
+When population growth depends upon population size, extrinsic mortality can influence selection for aging.
+\end{precis}
+
+In the previous example, extrinsic mortality had no influence of the evolution of senescence. All this demonstrates is that extrinsic mortality, defined as a source of mortality that affects all age classes, does not always influence selection for lifespan. Now here is an example where it does. 
+
+In real populations, eventually the environment fills up. Either there aren't enough nest spots or there isn't enough food or both. As scarcity arrives, either fertility or survival or both decrease. When this happens, the population experiences \bemph{density dependent} population regulation. It will no longer grow without bound. It might level off around some stable population size or it might fluctuate, crashing down before growing again.
+
+Let's modify the model so that the population levels off. To do this, we need to pick some biological mechanism. 
+Suppose that in our example species the first thing that goes wrong when the population grows is that fertility declines. 
+There are many ways that population size could impact fertility---there could be for example a fixed number of breeding sites. To keep things simple, let's suppose that fertility gradually declines with increasing population size $N_t = n_{1,t} + n_{2,t}$. Specifically, we'll suppose the new fertility functions are
+\begin{align*}
+	f_1 &= b_1 \exp(-k N_t) \\
+	f_2 &= b_2 \exp(-k N_t)
+\end{align*}
+Those $b$ variables are the maximum fertilities of each age class. The term $\exp(-k N_t)$ starts out a 1, when $N_t=0$, and declines to zero as $N_t$ increases. The variable $k$ controls how rapidly this happens. It looks like this, for $k=0.1$:
+
+%%%%% plot of exp(-kN) against N
+\vspace{-6pt}
+\figmarlab{figSe3}
+\begin{center}
+\begin{tikzpicture}
+\def\k{0.1}
+\begin{axis}[
+    	axis lines=middle,
+    	axis line style={-},
+    	height=0.4\textwidth,width=0.5\textwidth,
+    	xmin=0,xmax=50,ymin=0,ymax=1,
+    	xlabel=$N_t$,
+    	xtick={0,50,100},ytick={0,0.5,1},
+    	extra y ticks={0},extra x ticks={0},
+    	yticklabel style = {font=\scriptsize,xshift=0.5ex},
+        xticklabel style = {font=\scriptsize,yshift=0.5ex},
+        x label style={at={(current axis.right of origin)},anchor=west,right=1mm},
+        y label style={at={(current axis.north west)},above=0.1mm},
+    	samples=50,
+		restrict y to domain=0:1]
+  	\addplot[bemphcol,thick,domain=0:50] {exp(-\k*x};
+	\node[bemphcol] at (axis cs: 18,0.6) {$\exp(-k N_t)$};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+So as $N_t$ increases, effective fertility approaches zero, eventually halting population growth.
+
+Substituting these new definitions into our old $\lambda^{\!\star}$ growth rate gives us a new, complicated expression for the growth rate. I won't repeat it here, since there is no intuition to draw from it. But it's in the notebook for this chapter. 
+%\begin{align*}
+%	\lambda^{\!\star} = \frac{1}{2} \exp({-kn}) (1-x) \left(\sqrt{a \left(a b_1^{\,2} + 4 (1-a) {b_2} \exp(-kn) \right) }+a \text{b1}\right)
+%\end{align*}
+
+The new $\lambda^{\!\star}$ will allow us to find the \bemph{evolutionarily stable} value of $a$. Like before, we want to find the value of $a$ that maximizes $\lambda^{\!\star}$. But unlike before, $\lambda^{\!\star}$ cannot in the long run be greater than 1. The reason is that the population increases only until fertility declines to match mortality. So things are more subtle now. But there turns out to be a simple solution strategy. Let me try to reason you into it, so it's not just math magic.
+
+Consider a population with given values of $b_1$, $b_2$, $x$, and $k$. There is one genotype with with a particular value $a$. This genotype, after a short while, reaches a particular \bemph{demographic equilibrium} with a particular stable population size $\xwidehat{-0.57em}{N}$. This $\xwidehat{-0.57em}{N}$ is a property of the genotype. So different genotypes have different stable population sizes, even though they all regulate one another through density dependence, when they co-occur.
+
+Now suppose there is a mutation. A new genotype appears with a slightly different value of $a$. The new genotype will tend to spread, if its own particular $\xwidehat{-0.57em}{N}$ is larger than that of the common genotype. The reason is that even though all those common genotypes are reducing our heroic mutant's fertility, the mutant isn't suppressed to demographic equilibrium, because it has a better value of $a$ and is better at spreading. So it will grow and eventually replace the previously common genotype, itself becoming the new common genotype.
+
+A series of mutants like this can move the population towards values of $a$ that are near the evolutionarily stable value of $a$. To solve for this special value of $a$, we ask again which value of $a$ maximizes $\lambda^{\!\star}$, while also requiring that we are at demographic equilibrium. First let's find a function $\xwidehat{-0.57em}{N}$. We do this by setting $\lambda^{\!\star} = 1$ and solving for $N$. This yields:
+\begin{align*}
+	\xwidehat{-0.57em}{N} = \frac{1}{k} \log \! \Big( a (1-x) \big( b_2 (1-a) (1-x) + {b_1} \big) \Big)
+\end{align*}
+If we plot this equilibrium population size as a function of $a$, you'll see that there is a clear peak. But first let's solve for that peak, the value of $a$ that satisfies $\mr d \xwidehat{-0.57em}{N} \! / \mr d a = 0$.
+\begin{align*}
+	a^{\star} = \frac{b_1 + b_2(1-x)}{2 b_2 (1-x) } = 
+				\frac{1}{2} \left( 1 + \frac{b_1}{b_2(1-x)} \right)
+\end{align*}
+First note that $x$ appears in the answer. Extrinsic mortality matters now. Let's plot both $\xwidehat{-0.57em}{N}$ as a function of $a$ (for $x=0.2$) and $a^{\!\star}$ as a function of $x$. Other variables are fixed at: $b_1=1$, $b_2=9$, and $k=10^{-3}$.
+
+%%%%% plot of Nhat against a
+\vspace{-6pt}
+\figmarlab{figSe4}
+\begin{center}
+\begin{tikzpicture}
+\def\xx{0.2}
+\def\k{0.001}
+\def\bone{1}
+\def\btwo{9}
+\begin{axis}[
+    	axis lines=middle,
+    	axis line style={-},
+    	height=0.4\textwidth,width=0.5\textwidth,
+    	xmin=0,xmax=1,ymin=0,ymax=700,
+    	xlabel=$a$,
+    	xtick={0,0.5,1},ytick={0,700},
+    	extra y ticks={0},extra x ticks={0},
+    	yticklabel style = {font=\scriptsize,xshift=0.5ex},
+        xticklabel style = {font=\scriptsize,yshift=0.5ex},
+        x label style={at={(current axis.right of origin)},anchor=west,right=1mm},
+        y label style={at={(current axis.north west)},above=0.1mm},
+    	samples=50]
+  	\addplot[bemphcol,thick,domain=0:1] { (1/\k)*ln(x*(1-\xx)*(\btwo*(1-x)*(1-\xx)+\bone ) ) };
+	\node[bemphcol,circle,fill,inner sep=1.5pt] at (axis cs:0.569444,624.749) {};
+	\node[bemphcol] at (axis cs: 0.25,450) {$\xwidehat{-0.57em}{N}$};
+\end{axis}
+\end{tikzpicture}
+~$\quad$~
+%%%%% plot of a against x
+\begin{tikzpicture}
+\def\bone{1}
+\def\btwo{9}
+\begin{axis}[
+    	axis lines=middle,
+    	axis line style={-},
+    	height=0.4\textwidth,width=0.5\textwidth,
+    	xmin=0,xmax=1,ymin=0,ymax=1,
+    	xlabel=$x$,
+    	xtick={0,0.5,1},ytick={0,0.5,1},
+    	extra y ticks={0},extra x ticks={0},
+    	yticklabel style = {font=\scriptsize,xshift=0.5ex},
+        xticklabel style = {font=\scriptsize,yshift=0.5ex},
+        x label style={at={(current axis.right of origin)},anchor=west,right=1mm},
+        y label style={at={(current axis.north west)},above=0.1mm},
+    	samples=50,
+		restrict y to domain=0:1]
+  	\addplot[bemphcol,thick,domain=0:1] {(1/2)*(1+\bone/(\btwo*(1-x))};
+	\addplot[black,thin,dashed,domain=0:1] {0.5};
+	\node[bemphcol] at (axis cs: 0.65,0.8) {$a^{\!\star}$};
+\end{axis}
+\end{tikzpicture}
+
+\end{center}
+
+The influence of $x$ is to reduce investment in survival to age 2. You can see this in the expression above, if you first imagine that $x=0$ and $b_2$ is much larger than $b_1$, so that $a^\star \approx 1/2$. This just like the previous model. Now as we increase $x$, the amount of extrinsic mortality, it cuts away at $b_2$ in the expression. This increases $a^\star$ until it caps out at 1. The larger the ratio $b_2/b_1$, the more of an impact $x$ will have on selection. But it's impact is always to reduce investment in survival to age 2. Quantitatively, the impact is rather small unless $x$ is large. But when $x$ is large, the species may just go extinct ($\xwidehat{-0.57em}{N} = 0$).
+
+
+This model shows only that there are conditions under which extrinsic mortality influences life history evolution. There are also conditions under which it does not. For example, if we modify this model so that density dependence influences survival rather than fertility, extrinsic mortality will not matter. Suppose we let fertility be simply $f_1$ and $f_2$ again, unaffected by density, but now we define survival as:
+\begin{align*}
+	s_1 &= (1-x)a \exp(-kN_t) \\
+	s_2 &= (1-x)(1-a) \exp(-kN_t)
+\end{align*}
+Repeat the same solution steps as above: find the stable population size at $\lambda=1$ and then solve for the $a$ that maximizes it. If you do this, you get the same result as in the original, density-independent model:
+\begin{align*}
+	a^{\!\star} = \frac{1}{2 - f_1 / \! \sqrt{f_2}}
+\end{align*}
+I show the complete derivation in the chapter notebook. 
+
+
+\section*{Extrinsic confusion}
+
+What explains these results? For something like extrinsic mortality to influence aging, it must somehow lead to differential selection across age classes. Since the extrinsic mortality in these models influence all ages the same way, why does it influence life history at all? And why only when fertility, instead of survival, is regulated by density? 
+
+To make sense of the different results, let's zoom out to the general model again. At demographic steady state, the model says:
+\begin{align*}
+	n_{1,t+1} &= \lambda n_{1,t} = n_{1,t} \, s_1 \, f_1   + n_{2,t} \, s_1 \, f_2 \\
+	n_{2,t+1} &= \lambda n_{2,t} = n_{1,t} \, s_2 
+\end{align*}
+There is a hidden implication of this model, and many other similar models, that will help us understand why selection acts as it does. To reveal it, let's eliminate $n_{2,t}$ from the model and write down the expression for $n_{1,t}$. Why? Because this will give a \bemph{renewal} equation, an expression for number of births each year. To begin, divide by $\lambda$:
+\begin{align*}
+	n_{1,t} = n_{1,t} \frac{ s_1 \, f_1}{\lambda}   +  n_{2,t} \frac{ s_1 \, f_2}{\lambda}
+\end{align*}
+Now we can eliminate $n_{2,t}$ by noting that $n_{2,t}=n_{1,t} \, s_2 / \lambda$. This gives us:
+\begin{align*}
+	n_{1,t} = n_{1,t} \frac{ s_1 \, f_1}{\lambda}   +  n_{1,t} \frac{s_2}{\lambda} \frac{ s_1 \, f_2}{\lambda} = n_{1,t} \frac{ s_1 \, f_1}{\lambda}   +  n_{1,t} \frac{ s_1  s_2 \, f_2}{\lambda^2}
+\end{align*}
+Now since $n_{1,t}$ is in every term, we can divide both sides by $n_{1,t}$ to eliminate it as well. 
+\begin{align*}
+	1 = \frac{ s_1 \, f_1}{\lambda} +  \frac{ s_1  s_2 \, f_2}{\lambda^2}
+\end{align*}
+Maybe this doesn't look like much. But we can learn a lot by studying its structure. This equation is a special case of the \bemph{Euler-Lotka equation}, a general fact about this type of age-structured evolutionary model. See the box on the next page for a more general derivation. 
+
+The left side, the 1, means ``all of the babies,'' 100\% of them. The right side is a decomposition of all of the babies. Each term on the right is the contribution of each age class to the renewal of the population. Like this:
+\begin{align*}
+	\text{all of the babies} = \text{babies from one-year-olds} + \text{babies from two-year-olds}
+\end{align*}
+
+Each term on the right side of the expression is the contribution of each age class to the renewal of the population in each year. Whatever the values of the $s$ and $f$ variables, the population growth $\lambda$ will adjust so that the sum of these terms is exactly 1. Likewise, if $\lambda$ is fixed by for example population regulation, then the equation tells us how the $s$ and $f$ variables must adjust. 
+
+Let's walk through each of the three previous models and see what Euler-Lotka tells us. Recall that our model assigns $s_1 = (1-x)a$ and $s_2=(1-x)(1-a)$. Substituting:
+\begin{align*}
+	1 = \frac{ (1-x)a \, f_1}{\lambda} +  \frac{ (1-x)^{\!2} a (1-a) \, f_2}{\lambda^2}
+\end{align*}
+Notice that exogenous mortality $x$ hits the second term twice. It does so because both $s_1$ and $s_2$ appear in the term for the second age class. The population growth $\lambda$ also hits the second term twice, but on the bottom. 
+
+First, consider the model without density dependence. In this model, there are two forces influencing selection on age, and they happen to cancel one another. The first force is the ordinary advantage of reproducing early. When a genotype reproduces early, and the population is growing, then offspring can take advantage of population growth. This is why the early reproducing type was favored back in chapter~\bemph{1F}. That same effect occurs in this model. The other force is extrinsic mortality. When extrinsic mortality increases, it has two effects. It makes it is harder to reach higher age classes, because the more years go by the more chances for the asteroid to strike. But extrinsic mortality simultaneous reduces population growth, which weakens the advantage of reproducing early. These two forces cancel one another, and when populations are unregulated by density dependence---they grow exponentially forever---then extrinsic mortality does not influence selection for age-specific effects.
+
+Now consider the model with density dependence influencing fertility. In this model, the population no longer grows exponentially forever. Most of the time, it will be near its stable population size, so selection acts at $\lambda=1$, not as some $\lambda>1$. This means in turn that the pure advantage of reproducing early is absent, because the population isn't growing. But the force of extrinsic mortality making it harder to reach later age classes effectively reduces selection on later age-specific effects. So extrinsic mortality does matter in this model, and it tends to reduce investment in later age classes.
+
+The last model also has density dependence, and so the advantage of reproducing early is also canceled. So why does extrinsic mortality not matter in this case? In this model, the population is regulated through survival. When the population is at its stable size, survival has been reduced by crowding. Now imagine increasing the amount of extrinsic mortality in such a population. This will push it below the stable population size, density dependence will weaken, and survival (the part controlled by density dependence) will increase. So the impact of extrinsic mortality is canceled by the way that survival regulates population size.
+
+All this might sound persuasive, or not. But I haven't really proved the explanation above. To do that, we need a broader view on life history evolution. That's the goal of the next section.
+
+
+\begin{mathbox}{t}{The Euler-Lotka equation.}
+General derivation
+\end{mathbox}
+
+
+\section*{Menopause}
+
+Needs its own chapter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% sex roles and parental investment
+\setcounter{chapter}{17}
+\def \chapterElement {V}
+\chapter{Parental Investment}
+
+% anisogamy and parental investment
+% monogamy & polygamy
+
+\lipsum[12-14]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Social learning
+%\setcounter{chapter}{17}
+\def \chapterElement {Sl}
+\chapter{Social Learning}
+
+\noi In series: \textbf{1F}
+
+\vspace{2em}
+
+\lipsum[12-13]
+
+\newpage
+\section*{Rogers' paradox}
+
+\begin{precis}Natural selection may favor social learning, but social learning may bring no evolutionary benefit for the population.
+\end{precis}
+
+A \bemph{paradox} is a self-contradictory statement. But in evolutionary theory, it tends to mean something that violates intuition. Evolutionary theory is full of paradoxes. The paradox we'll consider in this section is that natural selection can easily favor social learning, at least in theory. But social learning alone brings no benefit to the population, in terms of population growth or lineage survival. In fact, it can do real damage. This paradox is known as \bemph{Rogers' paradox}, after the population geneticist who pointed it out.\footnote{Rogers 1989. This paper focuses as well on the general question of whether we should expect behavior to be adaptive, if learning evolves by natural selection. It's a great paper, easy to read, and timelessly relevant to debates in the evolutionary sciences.} Of course it is no paradox at all that natural selection can favor traits in individuals that do not benefit the lineage. And Rogers' paradox is only another example of that fact. But it does have its own interesting features, features which persist in many models of cultural evolution. So it's worth study, even if you don't perceive any paradox.
+
+Consider an organism with a simple life cycle.  Each year, individuals are born and live for only one year. Reproduction depends upon knowledge of the environment. When an individual possesses relevant knowledge to aid in reproduction, we'll call them \bemph{skilled}. Whether an individual is skilled or not depends upon the state of the environment, obviously. The environment changes over time, and when it does, all previously learned behavior becomes unskilled. Unskilled behavior produces $b$ offspring, and skilled behavior produce $B > b$ offspring.
+
+Skilled behavior can only be learned---it is not encoded genetically. But learning strategy is influenced by genes. Suppose there are two genotypes. The first is \bemph{innovate} ($I$), which attempts to innovate a new skilled behavior. An innovation attempt reduces adult fertility by a factor $C_I > 0$ and succeeds with probability $d$ (for ``discover''). With these assumptions, the fertility of an $I$ individual is:
+\begin{align*}
+	f_I = \underbrace{d(B-C_I)}_{\text{innovation succeeds}} + \underbrace{(1-d)(b-C_I)}_{\text{innovation fails}} = b + d( B - b ) - C_I
+\end{align*}
+Let's assume, to keep things simple, that all individuals survive to reproduce. With these assumptions, the growth rate of the $I$ genotype is just $f_I$. If you are not sure why, then you should review 1F and possible Se as well.
+
+The second genotype we'll consider is \bemph{social} ($S$), which attempts to acquire a previously innovated behavior through some combination of social and individual learning mechanisms. For example, the $S$ individual might observe an adult acquiring some food resource and then figure out on its own how to do the same. This is less costly than innovation, carrying a cost factor $C_S < C_I$. Let $q$ be the probability of acquiring skilled behavior through social learning. Then the expected fertility of $S$ is:
+\begin{align*}
+	f_S = q(B-C_S) + (1-q)(b-C_S) =  b + q( B - b ) - C_S
+\end{align*}
+This is structurally identical to $f_I$, but with $q$ replacing $s$. However, $q$ is very different from $s$, because $q$ is dynamic. It evolves, changing each generation as a consequence of both social learning and environmental change. So $f_S$ isn't constant, and we need to specify instead the expected fertility in a specific year $y$:
+\begin{align*}
+	f_{S,y} = b + q_y( B - b ) - C_S
+\end{align*}
+
+And now we need to figure out $q_y$. It's not immediately obvious how to do that, so let's figure out something else instead. Let's figure out $q_t$, where $t$ is the number of years since the environment most recently changed. It turns out we can write a function for this, and then we can use it to define the long-term growth rate of $S$. 
+
+Let $p$ be the proportion of the adult population that are social learners. We need this, because the probability of acquiring skilled behavior through social learning will depend upon how many role models are themselves social learners. Let's assume that cultural dynamics are sufficiently fast, relative to gene dynamics, that $p$ is almost constant from one year to the next. Our goal is to write a function $q_t$ that tells us the proportion of skilled adults (who can be observed and learned from) in a population that experienced a change in the environment $t$ years ago. When $t=0$, this is straightforward:
+\begin{align*}
+	q_0 = \underbrace{(1-p) d}_\text{innovators} + \underbrace{p (0)}_\text{social learners} = (1-p)d
+\end{align*}
+The innovators are a proportion $1-p$ of the population and succeed $d$ of the time. The social learners are a proportion $p$ of the population and succeed never, because there are no skilled adults just after the environment changes. Now 
+when the environment doesn't change, in the next year, the same logic gives us:
+\begin{align*}
+	q_1 &= (1-p) d + p q_0 \\
+	& = (1-p) d + p (1-p) d = d(1-p)(1+p) = d(1-p^2)
+\end{align*}
+And in yet another year:
+\begin{align*}
+	q_2 = (1-p) d + p q_1 = (1-p) d + p d (1-p^2) = d (1-p^3)
+\end{align*}
+You can probably see now that $t$ years after a change in the environment, the proportion of skilled individuals in the population will be:
+\begin{align*}
+	q_t = d (1-p^{t+1})
+\end{align*}
+We'll plot this function in a moment. But we can learn some things about it right away. First, as $t$ increases, $q_t$ approaches $d$: 
+\begin{align*}
+	\lim_{t \rightarrow \infty} d (1-p^{t+1}) = d
+\end{align*}
+The proportion of skilled individuals in the population can never exceed the success rate of innovation. This is a hint about the overall dynamics in this model---social learning does not increase the pool of skill in the population.
+
+To make this more visceral, we can plot $q_t$ as a function of $t$, showing how the proportion of skilled individuals increases since the last change in the environment. Here is $q_t$ plotted for $p=0.5$ and $d=0.8$:
+
+\vspace{-6pt}
+\figmarlab{figSl1}
+%%%%% plot of q_t against t
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    	axis lines=middle,
+    	axis line style={-},
+    	height=0.4\textwidth,width=0.5\textwidth,
+    	xmin=0,xmax=10,ymin=0,ymax=1,
+    	xlabel=$t$,
+    	xtick={0,10},ytick={0,0.5,1},
+    	extra y ticks={0},
+    	yticklabel style = {font=\scriptsize,xshift=0.5ex},
+        xticklabel style = {font=\scriptsize,yshift=0.5ex},
+        x label style={at={(current axis.right of origin)},anchor=west,right=1mm},
+        y label style={at={(current axis.north west)},above=0.1mm},
+    	samples=50]
+  	\addplot[bemphcol,thick,domain=0:10] {0.8*(1-0.5^x)};
+	\addplot[black,thin,dashed,domain=0:10] {0.8};
+	\node[bemphcol] at (axis cs: 4,0.65) {$q_t$};
+	\node[black] at (axis cs: 1,0.86) {$d$};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+In any realized sequence of years, the function above gets reset to zero every time the environment changes. And changes in the environment are random, with respect to the value of $q_t$. Remember (2P), \bemph{random} in these models just means we aren't modeling the causes. Of course changes in the environment are deterministic. Epistemology aside, an example series of years may look like:
+
+\vspace{-6pt}
+\figmarlab{figSl2}
+%%%%% plot of q_t against t
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    	axis lines=middle,
+    	axis line style={-},
+    	height=0.4\textwidth,width=0.9\textwidth,
+    	xmin=0,xmax=20,ymin=0,ymax=1,
+    	xlabel=year,
+    	xtick={0,5,10,15,20},ytick={0,0.5,1},
+    	extra y ticks={0},
+    	yticklabel style = {font=\scriptsize,xshift=0.5ex},
+        xticklabel style = {font=\scriptsize,yshift=0.5ex},
+        x label style={at={(current axis.right of origin)},anchor=west,right=1mm},
+        y label style={at={(current axis.north west)},above=0.1mm},
+    	samples=50]
+  	\addplot[bemphcol,thick,domain=0:5] {0.8*(1-0.5^x)};
+	\addplot[bemphcol,thick,domain=5:7] {0.8*(1-0.5^(x-5))};
+	\addplot[bemphcol,thick,domain=7:17] {0.8*(1-0.5^(x-7))};
+	\addplot[bemphcol,thick,domain=17:20] {0.8*(1-0.5^(x-17))};
+	\addplot[black,thin,dashed,domain=0:20] {0.8};
+	%\node[bemphcol] at (axis cs: 4,0.65) {$q_t$};
+	\node[black] at (axis cs: 1,0.86) {$d$};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\noi The red curves are again the proportion of the skilled individuals in the population. Every time the environment changes, the curve is reset to zero. This happens in years 0, 5, and 17, in the example above. 
+
+When $q$ is high, the growth rate of $S$ is high. When $q$ is low, the growth rate is low. So natural selection fluctuates as the environment fluctuates. In the long run, the growth rate of $S$ is determined by the distribution of $q$ values, and that distribution is determined by the rate of environmental change. We haven't specified yet how the environment changes. There are many possibilities. But whatever we choose, let $v(t)$ be the probability that the environment goes $t$ years without changing. Then we can write the long-term growth rate of $S$. First, let's define the fertility of $S$ using $q_t$:
+\begin{align*}
+	f_{S,t} = b+q_t(B-b) - C_S = b + d (1-p^{t+1})(B-b)  - C_S
+\end{align*}
+Embedding this in the same geometric mean growth expression introduced way back in  \hyperref[link1F]{\bemph{1F}}, we get the long-term growth rate that averages over all the $q$ values:
+\begin{align}
+	\log W_S = \sum_{t=0}^\infty v(t) \log f_{S,t} \label{eqRogersParadoxGrowthRate}
+\end{align}
+A key implication of this expression is that small values of $f_{S,t}$ will influence the growth rate more than large values. 
+
+
+
+Now supposing that gene frequencies change slowly, selection will respond to something called the \bemph{stationary distribution} of $q_t$. This means the distribution where each of the $q_t$ values is weighted by its probability. So what is the probability of each $t$? The simplest model is to let $u$ be the probability the environment changes in any year.\footnote{Real environmental change, at the scale people experience it at least, tends to be negatively autocorrelated. This means that change is unlikely to be quickly followed by more change. This favors more social learning than the independent-change model analyzed here.} This implies a specific probability distribution for the probability of each $t$:
+\begin{align*}
+	v(t) = u(1-u)^t
+\end{align*}
+To motivate this function, consider that $v(0)=u$, because $u$ is the chance the environment just changed. Now what is the chance of reaching $t=1$? For that to happen, you need $u(1-u)$. For $t=2$, you need $u(1-u)(1-u)$. And so on. 
+This is a geometric distribution. It is important to check that this is a proper probability distribution, by checking that it sums to one. The fact that the sum has an infinite number of terms is no trouble. I show you the calculation on the next page. 
+
+\begin{mathbox}{p}{Proving $v(t)$ sums to one.}
+You can confirm that $v(t)=u(1-u)^t$ is a valid probability distribution by checking that it sums to one. Let $Z$ be the sum of all the possible terms:
+\begin{align*}
+	Z = \sum_{t=0}^\infty u(1-u)^t = u + u(1-u) + u(1-u)^2 + ...
+\end{align*}
+This is an infinite series, but it is an infinite \bemph{geometric series}. These are nearly always easy to close, by factoring the terms until you can express $Z$ again on the right side of the equation. In this case, let's factor $1-u$ out of every term after the first one:
+\begin{align*}
+	Z = u + (1-u)( u + u(1-u) + u(1-u)^2 + ... ) = u + (1-u) Z 
+\end{align*}
+Solving for $Z$:
+\begin{align*}
+	Z = \frac{u}{1-(1-u)} = 1
+\end{align*}
+All probability accounted for.
+\end{mathbox}
+
+What does the stationary distribution of $q_t$ look like? Let's plot it, then we'll calculate with it. To visualize the distribution, imagine taking the curves in \myfigref{figSl2} on the previous page and just plotting the histogram of the $q$ values through the years. After enough years, the histogram stabilizes. That's the stationary distribution. 
+Suppose for example that $p=0.5$, $u=0.1$, and $d=0.8$. Then the observable expected values of $q_t$ are:
+\begin{center}
+\begin{tabular}{cccccc}
+$t$ & 0 & 1 & 2 & 3 & ...\\
+$q_t$ & 0.4 & 0.6 & 0.7 & 0.75 & ... \\
+$v(t)$ & 0.1 & 0.09 & 0.081 & 0.0729 & ...
+\end{tabular}
+\end{center}
+The first row are the $t$ values, the number of years since the last change in the environment. Each of these $t$ values implies a unique $q_t$ and $v(t)$. The $v(t)$ values tell us how often each of the unique $q_t$ values will appear in a long time series. Let's plot these values:
+
+\vspace{-6pt}
+%%%%% plot of p(q) against q for stationary distribution
+\figmarlab{figSl3}
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    	axis lines=middle,
+    	axis line style={-},
+    	height=0.4\textwidth,width=0.5\textwidth,
+    	xmin=0,xmax=1,ymin=0,ymax=0.35,
+    	xlabel=$q$,
+		ylabel=$f\,(q)$,
+    	xtick={0,0.4,0.8,1},ytick={0,0.1,0.35},
+    	extra y ticks={0},
+    	yticklabel style = {font=\scriptsize,xshift=0.5ex},
+        xticklabel style = {font=\scriptsize,yshift=0.5ex},
+        x label style={at={(current axis.right of origin)},anchor=west,right=1mm},
+        y label style={at={(current axis.north west)},above=0.1mm},
+    	samples=50]
+	\addplot [bemphcol,thick] coordinates { (0.4, 0) (0.4, 0.1) }; % q(0)
+	\addplot [bemphcol,thick] coordinates { (0.6, 0) (0.6, 0.09) }; % q(1)
+	\addplot [bemphcol,thick] coordinates { (0.7, 0) (0.7, 0.081) }; % q(2)
+	\addplot [bemphcol,thick] coordinates { (0.75, 0) (0.75, 0.0729) }; % q(3)
+	\addplot [bemphcol,thick] coordinates { (0.775, 0) (0.775, 0.06561) }; % q(4)
+	\addplot [bemphcol,thick] coordinates { (0.7875, 0) (0.7875, 0.059049) }; % q(5)
+	\addplot [bemphcol,thick] coordinates { (0.79375, 0) (0.79375, 0.0531441) }; % q(6)
+	\addplot [bemphcol,thick] coordinates { (0.796875, 0) (0.796875, 0.04782969) }; % q(7)
+	\addplot [bemphcol,thick] coordinates { (0.7984375, 0) (0.7984375, 0.04304672) }; % q(8)
+	\addplot [bemphcol,thick] coordinates { (0.7992188, 0) (0.7992188, 0.03874205) }; % q(9)
+	\addplot [bemphcol,thick] coordinates { (0.7996094, 0) (0.7996094, 0.3486784) }; % q(10+)
+	\addplot [black,dashed] coordinates { (0.6545455, 0) (0.6545455, 1) }; % Q
+	\node[black] at (axis cs: 0.6,0.25) {$Q$};
+	\node[black] at (axis cs: 0.4,0.12) {\footnotesize$0$};
+	\node[black] at (axis cs: 0.6,0.11) {\footnotesize$1$};
+	\node[black] at (axis cs: 0.7,0.101) {\footnotesize$2$};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\noi The horizontal axis above shows the $q$ values. The red bars show the expected proportions in a very long time series. Most $q$ values are not realized, because the model is in discrete time. So the $q$ values make discrete jumps. The black numbers 0, 1, 2 over the bars are $t$ labels, the number of years after a change in the environment. The very tall red bar lies at $q=d$, the maximum value $q$ can take. For $u=0.1$, the population spends about 35\% of its time near this maximum. 
+
+The analytical problem in this type of model is that the growth rate of $S$ is different for each value of $q$. But the population doesn't spend very long at any particular value of $q$, as you can see above. So the long-term growth rate depends upon the distribution above, and that's what the growth rate expressed in Equation~\ref{eqRogersParadoxGrowthRate} says. 
+
+But such an expression cannot be analyzed in general---there is no way to algebraically manipulate it to close the infinite sum. So we're going to have to approximate it instead.  
+In particular, we're going to assume \bemph{separation of time scales}. This means that we assert that the relative proportion of $S$ is growing (or shrinking) slowly enough that the mean value of $q_t$, call it $Q$, is what matters. 
+
+To understand this, imagine a mountain stream. [need example]
+
+Now to compute the expected value. The definition of the expected value is:
+\begin{align*}
+	Q = \sum_{t=0}^\infty v(t) q_t = \sum_{t=0}^\infty u(1-u)^t d(1-p^t)
+\end{align*}
+This is just an average, each term $q_t$ multiplied by its probability $v(t)$. Then we sum up all the products to get the average. In the box on the next page, I show you how to close this infinite sum, yielding:
+\begin{align}
+	Q = \frac{d(1-u)(1-p)}{1-(1-u)p}
+\end{align}
+This is the expected value of $q$ at the stationary distribution when $p$ changes very slowly relative to $q$. 
+
+
+\begin{mathbox}{ptb}{Solving for the expected value of $q$.}
+Our goal is to close this infinite sum:
+\begin{align*}
+	Q = \sum_{t=0}^\infty v(t) q_t = \sum_{t=0}^\infty u(1-u)^t d(1-p^t)
+\end{align*}
+This is another infinite geometric series. We can start by factoring out $ud$, which is in every term:
+\begin{align*}
+	Q &= ud \sum_{t=0}^\infty (1-u)^{t} (1-p^t) \\
+	&= ud \big( 0 + (1-u)(1-p) + (1-u)^2 (1-p^2) + (1-u)^3 (1-p^3) + ... \big)
+\end{align*}
+The infinite series inside the parentheses can be written as the difference between two different infinite geometric series. That might sound crazy. We already have one infinite series. Why double our trouble? Because we can close each separate series more easily. Let $Z = (1-u)(1-p) + (1-u)^2 (1-p^2) + ...$. Then:
+\begin{align*}
+	Z &= \big( (1-u) + (1-u)^2 + (1-u)^3 + ... \big) - \big( (1-u)p + (1-u)^2 p^2 + (1-u)^3 p^3 + ... \big)\\
+	Z &= A - B
+\end{align*}
+Now we just need to close $A$ and $B$ separately. Both are simple geometric series and can be closed the same way. Here's how to do it for $A$:
+\begin{align*}
+	A &= (1-u) + (1-u)^2 + (1-u)^3 + ... = (1-u) \big( 1 + A ) \\
+	A &= \frac{1-u}{1-(1-u)} = \frac{1-u}{u}
+\end{align*}
+The same steps applied to $B$ yield $B = \frac{(1-u)p}{1-(1-u)p}$. In fact, any geometric series of the form $\sum_{x=1}^\infty a^x = a/(1-a)$. Now let's combine everything and simplify:
+\begin{align*}
+	Q &= ud \left( \frac{1-u}{u} - \frac{(1-u)p}{1-(1-u)p} \right) 
+	= \frac{ d \, (1-u) (1-p) }{ 1 - (1-u)p }
+\end{align*}
+That's the result shown in the main text.
+\end{mathbox}
+
+
+We'll embed $Q$ in our growth expression in a moment. But first, it's useful to evaluate $Q$ at some relevant limits so that we can understand it better. Consider when $u \rightarrow 0$, no environmental change. In that case, $Q = d$. This makes sense, because when the environment never changes, then the proportion of skill is always as its maximum. On the reverse, when $u \rightarrow 1$, then $Q = 0$. If the environment always changes, then adults are never skilled, even though a proportion $d$ of them become skilled in each year. 
+
+Now consider the limits of $p$. When $p \rightarrow 0$, no social learners, $Q = d(1-u)$. When $p \rightarrow 1$, no innovation, $Q=0$. It seems like increasing $p$ reduces $Q$, and in fact you can prove that $Q$ always declines with increasing $p$.\footnote{To prove this, use calculus. Take the derivative of $Q$ with respect to $p$ and evaluate its sign.} Here's a plot of $Q$ against $p$, for $d=0.8$ and $u=0.1$.
+
+\vspace{-6pt}
+\figmarlab{figSl1}
+%%%%% plot of Q against p
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    	axis lines=middle,
+    	axis line style={-},
+    	height=0.4\textwidth,width=0.5\textwidth,
+    	xmin=0,xmax=1.01,ymin=0,ymax=1,
+    	xlabel=$p$,
+    	xtick={0,0.5,1},ytick={0,0.5,1},
+    	extra y ticks={0},
+    	yticklabel style = {font=\scriptsize,xshift=0.5ex},
+        xticklabel style = {font=\scriptsize,yshift=0.5ex},
+        x label style={at={(current axis.right of origin)},anchor=west,right=1mm},
+        y label style={at={(current axis.north west)},above=0.1mm},
+    	samples=50]
+  	\addplot[bemphcol,thick,domain=0:1] {0.8*(1-0.1)*(1-x)/(1-(1-0.1)*x)};
+	\addplot[black,thin,dashed,domain=0:1] {0.8};
+	\node[bemphcol] at (axis cs: 0.4,0.57) {$Q$};
+	\node[black] at (axis cs: 0.1,0.86) {$d$};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\noi Notice that $Q$ is always less than $d$. An $S$ individual will always have lower expected skill than an $I$ individual. This doesn't mean social learning cannot evolve. Instead it means that, in this model, social learning can only evolve when it is sufficiently cheaper than innovation to make up for the less accurate learning.
+
+So let's incorporate the learning costs now. The growth rate of $I$ is just:
+\begin{align*}
+	f_I = b+d(B-b) - C_I
+\end{align*}
+And the expected growth rate of $S$, assuming selection is weak enough that it responds to the expected value $Q$, is:
+\begin{align*}
+	f_S = b+Q(B-b) - C_S
+\end{align*}
+$S$ will increase when $f_S > f_I$:
+\begin{align*}
+	b + Q(B-b) - C_S &> b + d(B-b) - C_I \\
+	(d-Q)(B-b) &< C_I - C_S
+\end{align*}
+The left side is the marginal cost of social learning. In this model, $d-Q$ is always positive, because social learning is always less accurate than innovation. So the left side is essentially the skill advantage of innovation. The right side is the marginal cost of innovation. Social learning, in this model, is always cheaper than innovation. So the above states what is in hindsight obvious: social learning increases faster than innovation, when its marginal benefits outweigh its marginal costs. 
+
+What happens in the long run? Let's consider some special cases. Suppose $p \approx 0$, which means that $S$ is rare. Can it increase in such a population? When $p \approx 0$, then $Q \approx d(1-u)$, so the condition becomes:
+\begin{align*}
+	du(B-b) &< C_I - C_S
+\end{align*}
+This will be more interesting, if we express it as a condition on $u$:
+\begin{align*}
+	u < \frac{C_I - C_S}{d(B-b)}
+\end{align*}
+This says that when the rate of environmental change (the left side) is sufficiently small, $S$ can increase when rare. More stable environments, in this model, favor social learning.
+
+Now consider the opposite, $p \approx 1$. Now $I$ is rare. When $I$ is rare, $Q \approx 0$, yielding the condition for a are $I$ to increase faster than $S$:
+\begin{align*}
+	d(B-b) &> C_I - C_S
+\end{align*}
+The left is the benefit of innovation and the right is the cost of innovation. Again, rather obvious. But note that this condition may not be satisfied. Suppose for example that $d$ is small, so that on average innovation doesn't pay. Sure, once in a whole, a rare innovator gets lucky and finds skilled behavior. But most innovators fail, still paying the cost $C_I$. So selection will not favor innovation over social learning in that case, even though social learning ends up no different than guessing. 
+
+Things are most interesting when both conditions above are satisfied. Then selection favors $S$ when it $I$ is common, and it favors $I$ when $S$ is common. What will happen in that case? There will be some mix in the population. This mix will exist at the value of $p$ that makes $f_S=f_I$. 
+
+So let's find that value of $p$. But first let's plot the fertility expressions, so you can see what we're looking for. Here are $f_I$ and $f_S$ as functions of $p$, for $b=B=C_I=1$, $C_S=0.5$, $u=0.2$, and $d=0.8$.
+
+\vspace{-6pt}
+\figmarlab{figSl1}
+%%%%% plot of f_I and f_S
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    	axis lines=middle,
+    	axis line style={-},
+    	height=0.4\textwidth,width=0.5\textwidth,
+    	xmin=0,xmax=1.01,ymin=0,ymax=1.5,
+    	xlabel=$p$,
+    	xtick={0,0.5,1},ytick={0,0.5,1},
+    	extra y ticks={0},
+    	yticklabel style = {font=\scriptsize,xshift=0.5ex},
+        xticklabel style = {font=\scriptsize,yshift=0.5ex},
+        x label style={at={(current axis.right of origin)},anchor=west,right=1mm},
+        y label style={at={(current axis.north west)},above=0.1mm},
+    	samples=50]
+  	\addplot[black,thick,domain=0:1] {1 + 0.8*1 - 1};
+	\addplot[bemphcol,thick,domain=0:1] {1 + 0.8*(1-0.2)*(1-x)/(1-(1-0.2)*x)*1 - 0.5};
+	\node[bemphcol] at (axis cs: 0.3,1.22) {$f_S$};
+	\node[black] at (axis cs: 0.3,0.68) {$f_I$};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\noi On the left side, $S$ grows faster than $I$. But as $p$ increases, $f_S$ declines until it intersects $f_I$. At the value of $p$ where these functions meet, the two genotypes grow at the same rate. As a result, that value of $p$ is an attractor. It isn't exactly ``stable,'' in the traditional sense, because this model is stochastic and in a more realistic simulation, the population would fluctuate around $p$. But the intuition that the population is attracted to a mix of $S$ and $I$ holds. 
+
+\textbf{And the conclusion from fitness functions shown above is that selection acts to increase social learning until its growth rate is the same as innovation.} There are no population benefits to social learning. 
+
+Let's get more precise. Now let's find that point where $f_I$ and $f_S$ intersect. As usual in mathematics, the way to find the conditions for some situation is the assert the situation exists and then to rearrange the expression. The situation at the intersection is $f_I = f_S$. So we assert that:
+\begin{align*}
+	b + d(B-b) - C_I = b + \frac{d(1-u)(1-p)}{1-(1-u)p} (B-b) - C_S
+\end{align*}
+Then we solve for $p$. No tricks are necessary. But we'll want to rearrange the result until it has a natural grouping of the variables.
+\begin{align*}
+	p = \frac{C_I-C_S + du(B-b)}{(C_I-C_S)(1-u)} = \frac{1 + du \frac{B-b}{C_I-C_S}}{1-u} = 1 - \frac{u}{1-u} \left( d \frac{B-b}{C_I-C_S} - 1 \right)
+\end{align*}
+This will be easier to interpret, if we rewrite this as:
+\begin{align*}
+	p = 1 - U ( \beta - 1 )
+\end{align*}
+where $U = u/(1-u)$ is the odds of environmental change and $\beta=d(B-b)/(C_I-C_S)$ is the ratio of expected benefits of innovation to the expected costs of innovation. Expressed this way, you can see that this model really has only two variables that govern its dynamics, $U$ and $\beta$. These are dimensionless parameters that map out how the system behaves. As the odds $U$ increase, the proportion of $S$ declines. And as $\beta$ increases above 1, the proportion of $S$ declines. 
+
+Okay, so far this model says that social learning can evolve through natural selection. But you've already seen a hint that it doesn't change the population growth rate. We just solved for the mix $p$ of social learning and innovation where the two strategies have the same growth rate. This implies that a population with a proportion $p$ social learners grows at the same rate as a population with zero social learners. Social learning evolves, but it doesn't provide any population benefits.
+
+This result is the one called \bemph{Rogers' paradox}. A long-standing intuition was that social learning is adaptive, because it is efficient.\footnote{Boyd and Richerson 1995 for the receipts.} And that's true, at least in the model we just considered. But this isn't enough to produce any population benefits, implying that culture, defined as socially transmitted behavior, could be very common in nature. But it won't necessarily be any good for the species that have it. This in turn provides another example of the principle that natural selection doesn't necessarily produce adaptive behavior. Rather, if it produces any adaptation at all, it produces adaptive strategies. This in turn makes it much harder to test evolutionary hypotheses, because where behavior can be measured, strategy must always be inferred.
+
+This model is no reason to give up on the idea that social learning produces population benefits. It's just one model, the simplest I know. There are many alternative social learning models in which social learning does produce population benefits. We'll look at some of those in later sections and chapters. 
+
+However, the basic logic of this model holds across very many cultural evolution models. First, the amount of social learning that natural selection might favor is not simultaneously the amount of social learning that is optimal for population growth or persistence. This holds even in \bemph{cumulative cultural evolution} models, in which social learning may provide population benefits. Second, just because natural selection designs learning, that is no reason to expect learned behavior to be fitness enhancing. The \bemph{phenotypic gambit} fails in even remarkably simple models. That is no reason to reject the gambit. It's just a reminder that it is a gambit, not a principle.
+
+%%%%%%%%%%%%%
+\section*{Social learning, strong selection, and bet-hedging}
+
+\begin{precis}Social learning experiences more variation in fitness, which both hurts its growth relative to innovation and favors bet-hedging.
+\end{precis}
+
+In the section above, I escape the trouble of evaluating the long-term growth rate of social learning
+\begin{align*}
+	\log W_S = \sum_{t=0}^\infty v(t) \log f_{S,t}
+\end{align*}
+by asserting that selection was weak enough that it responds only to the mean value of $f_S$, which is determined by the mean value of $q = Q$. 
+
+This approximation is okay for many purposes. The basic lesson of Rogers' paradox is not changed by a more general analysis. But there are some addition lessons to draw from the general analysis.
+
+So how can make a more general analysis? Remember from way back in 1F that variation in growth tends to be bad for a lineage. So even without any further analysis, you can guess that social learning will suffer under stronger selection. Why? Because social learning has higher variance in growth than innovation does. 
+
+There is another important consequence of strong selection. In the analysis in the previous section, we consider competition between two genotypes, a pure $I$ and a pure $S$. But consider a family of genotypes that combine these strategies in different proportions. Let $\sigma$ be the probability that an individual uses social learning instead of innovation. Then there are potentially infinite genotypes with different values of $\sigma$. Which value of $\sigma$ has the highest long-term lineage growth rate? When selection is weak, the optimal $\sigma = p = 1 - U(\beta -1)$. 
+The best mixed strategy has the same mix of social and individual learning as the population does and it has the same long-term growth rate. 
+
+But when selection is strong, it is much better to be a $\sigma$ strategy than either pure strategy. The reason is that the $\sigma$ strategy has lower variance in fitness---it can make it through the bottlenecks of environmental change, because some members of the lineage always innovate.
+
+
+%%%%%%%%%%%%%
+\section*{Conditional innovation}
+
+\begin{precis}Strategies that use costly innovation only when social learning fails can benefit both individuals and populations.
+\end{precis}
+
+Consider a strategy that begins by deploying social learning. It tries to detect whether the socially learnable behavior would be adaptive, whether the social model is skilled. If so, the strategy invests the time to acquire the behavior through social learning. Otherwise, the strategy falls back on innovation.\footnote{Boyd and Richerson (1996) studied a model very similar to the presentation here. However the ``Bayesian horticulturist'' model in Boyd and Richerson 1985 is very similar, in that it deploys innovation conditionally. A later analysis by Enquist et al (2007) presents a more general and thorough analysis, with a focus on population benefits.} This conditional innovation strategy in interesting, because it doesn't seem to require any new fancy cognition and it turns out to have rather different dynamics, both for individuals and the population, than the pure social and innovation strategies considered before.
+
+This model has the same basic components as the previous model. Call the conditional strategy $L$, for ``learner.'' Specifically assume that $L$ samples $n$ adults, paying a fertility cost $K$ to evaluate each. If any of the sampled adults is skilled, the individuals pays an additional fertility cost $C_S$ to acquire skilled behavior. If none of the adults is skilled, the individuals pays $C_I$ to innovate, succeeding to innovate skilled behavior with probability $d$. 
+
+As before, let $u$ be the probability the environment changes. The fertility of $L$ depends crucially upon when the environment most recently changed, because it depends upon the proportion of the adult population that is skilled. When the environment has just changed, it is:
+\begin{align*}
+	(1-d)b + dB - C_I - nK
+\end{align*}
+which is exactly the same as innovation $I$, but with the extra cost $nK$ for sampling. The reason is that when the environment just changed, none of the adults have the correct behavior, so $L$ falls back on innovation. But it still pays the extra cost for sampling.
+
+x
+\begin{align*}
+	( 1 - d )^n ( (1-d)b + dB - C_I ) + ( 1 - (1-d)^n ) ( B - C_S ) - Kn
+\end{align*}
+
+
+\backmatter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\theendnotes
+%\chapter*{Endnotes}
+%\producenotes
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% references cited goes here
+\bibliographystyle{apalike}
+{\small
+\bibliography{eea}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% index goes here
+%\Printindex{index-a}{Index}
+\printindex
+
+% close file for code blocks
+\immediate\closeout\tempfile
+
+\end{document}
+
+
