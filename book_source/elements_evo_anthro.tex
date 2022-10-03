@@ -359,7 +359,7 @@
 % icon macros
 \newcommand{\iconrain}{\raisebox{-3pt}{\includegraphics[height=12pt]{icon_rain.eps}}}
 \newcommand{\iconshine}{\raisebox{-3.3pt}{\includegraphics[height=12pt]{icon_shine.eps}}}
-\newcommand{\julialogo}{\raisebox{-2pt}{\includegraphics[height=11pt,natwidth=220,natheight=142]{julia_logo.svg.png}}}
+\newcommand{\julialogo}{\raisebox{-2pt}{\includegraphics[height=11pt,natwidth=220,natheight=142]{figures/julia_logo.svg.png}}}
 
 \newcommand{\marbleblue}{\hspace{1pt}\tikz[baseline=-0.6ex]\draw[black,thick,fill=myblue] (0,0) circle (.65ex);\hspace{1pt}}%
 \newcommand{\marblewhite}{\hspace{1pt}\tikz[baseline=-0.6ex]\draw[black,thick] (0,0) circle (.65ex);\hspace{1pt}}%
@@ -938,27 +938,353 @@ The conventional view is that probability is defined as the proportion of some e
 \lipsum[15-17]
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Conflict - hawk-dove and basic game theory
+%\setcounter{chapter}{17}
+\def \chapterElement {H}
+\chapter{The Evolution of Conflict}
+
+
+
+Sometimes contemporary evolutionary theory is called ``Neo-Darwinian.'' But it would be better to call it ``Post-Darwinian.'' Darwin employed no formal mathematics, got some big things wrong, and most of contemporary evolutionary theory was created from mathematical scratch afterwards, in the 20th century. 
+
+The cult of prestige surrounding Darwin is misleading. For example, Darwin argued that four postulates make evolution by natural selection adaptive. These postulates are:
+\begin{enumerate}
+	\item Individuals vary in their characteristics
+	\item There is competition to survive and reproduce
+	\item Variation has consequences for this competition
+	\item Offspring resemble parents 
+\end{enumerate}
+If these four things are true, the argument goes, then natural selection occurs and produces adaptations. There are several problems here, as any contemporary evolutionary biologist knows. The postulates are still taught in introductory courses, but we all know they are a kind of white lie. Post-Darwinian evolutionary theory is much more complicated and much more interesting.
+
+One important thing missing from the postulates is \bemph{frequency dependence}. When the consequence of a variable characteristic depends upon the frequency of that characteristic in the population, then natural selection may not produce adaptations at all. What this means is that natural selection need not increase the frequency of characteristics that help a species survive or reproduce in its environment. Sure, we could redefine ``adaptation'' so that it is only about some narrow sense of relative welfare of individuals in the same species. But the original, and I think still meaningful, concept of adaptation is the view of design---a species that is adapted to survival seems designed for it. In that sense, under frequency dependence, favored characteristics can seem designed to destroy the species.
+
+This chapter introduces \bemph{evolutionary game theory}, a method of defining and analyzing theories of the evolution of social behavior, theories in which frequency dependence is important. I won't spend much time talking about game theory in general, because it is diverse and honestly not really coherent---none of its methods are distinct from general methods for modeling dynamical systems. 
+
+But evolutionary game theory does have a distinct style. It's style is that it is profoundly stupid. However, verbal theories are just as stupid. The value of game theory is that it exposes that stupidity, reveals that we still cannot intuit the consequences of simple constellations of assumptions, and provides a framework for deducing the correct consequences. Transparent stupidity is good.
+
+This chapter begins with the topic of conflict, since it is foundational to evolutionary theory. It's right there in Darwin's postulates. But it isn't so simple. To begin, we need a very basic game theoretic model, stripped of ecological and physiological complexity. Then we can ask and answer basic questions step by step, folding in additional complexity as our questions grow. So in the sections that follow, we start with the simplest model I know. Like most simple game theoretic models, it cannot be applied directly to any realistic ecological context. It makes no \bemph{quantitative} predictions, even though it is a mathematical model. But it does provide \bemph{qualitative} insight---few people anticipate its results, and it is possible to understand how the details of the model lead to the results.
+
+%Game theoretic scenarios are weird. But the weirdness has its benefits. Indulge in the analysis like you would a work of fiction. There is a useful lesson at the end. 
+
+\section*{Hawks, doves, and chickens}
+
+\begin{precis}When conflict is very costly, animals may evolve to avoid it. But hardly ever is the evolutionarily stable amount of conflict optimal for population growth or survival.\end{precis}
+
+Rattlesnakes like to eat other snakes. They are convenient to digest, I suppose. But when rattlesnakes meet one another, they don't usually try to eat one another. Instead they wrestle. They twist around one another until one of them grows tired or bored and cedes the battleground to the superior wrestler. 
+
+Darwin's postulates posit conflict as foundational: There is competition for survival and reproduction, and so animals fight over the resources that aid survival and reproduction. But many animals act like the rattlesnake. They have strong natural weapons, like fangs and venom. But when they contest a resource, they do not use these weapons. Instead they engage in ritualized combat. 
+
+How can natural selection explain this restraint? To address this question logically, we have to construct a scenario in which the resources, competitors, strategies, and costs and benefits are defined. Game theory does not provide the assumptions. Those are our responsibility and depend upon many subjective choices in moving from a vague question to a logical scenario. But game theory does give us an objective way to deduce the consequences of our assumptions. And that's a huge help, because intuition alone is terrible at deduction.
+
+So suppose a population of animals in which pairs of adults compete for a non-divisible resource, such as a territory or food item or mate. Suppose that the value of the resource, in units of fitness, is $v$. Suppose also that the species has natural weaponry---such as claws or fangs---and that injury by these weapons reduces fitness by $c$. 
+
+There are two possible behaviors: (1) \bemph{fight} or (2) \bemph{display}. Fight means attack with weaponry, possibly inflicting injury on the competitor. Display means to compete in some way that does not inflict injury. Natural examples include wrestling, dancing, and low-intensity fighting.
+
+Now the theme in game theory is always that behavior has fitness consequences, but behavior isn't what evolves. Instead \bemph{strategies} evolve. A strategy is a program that an animal uses to regulate its behavior. In this model, we will consider two strategies, each mapped unconditionally to one of the two possible behaviors. The first is \bemph{Hawk}, which always fights. The second is \bemph{Dove}, which always displays. If Dove is attacked with weapons, it retreats to avoid injury. 
+
+In each contest, two individuals meet and either can be Hawk or Dove. So there are three kinds of contests: Hawk vs Hawk, Hawk vs Dove, and Dove vs Dove. 
+
+When Hawk meets Hawk, they both fight. One of them wins at random and the other is injured. The winner gains $v$. The loser loses $c$. So each Hawk has a half chance of each of these outcomes, for an expected fitness change of $\tfrac{1}{2}v-\tfrac{1}{2}c$.
+
+When Hawk meets Dove, the Hawk fights, the Dove retreats. So the Hawk gains $v$. And the Dove gains nothing an loses nothing.
+
+When Dove meets Dove, they both display. One of them eventually wins, gaining $v$, but the loser is not injured. So the average payoff is $\tfrac{1}{2}v$.
+
+Now for Hawk-Hawk and Dove-Dove contests, I wrote above that the winner is random. What does this mean? In the chapter on probability, I explained that all that ``random'' ever means is that we lack information required to determine the outcome. It does not mean that the result is not deterministic. In this case, of course differences in fighting ability influence which competitor wins the contest. It's just that none of the information in the model tells us about fighting ability. That is all that ``random'' means. And since which individual is focal is arbitrary, the probability of winning must be symmetric and so it is one-half. In later modifications of the model, this will change.
+
+To summarize the consequences of these contests, let's make a simple table:
+\begin{center}
+\begin{tabular}{ccc}
+	& Hawk & Dove \\
+  Hawk & $\tfrac{1}{2}v-\tfrac{1}{2}c$ & v \\
+  Dove & 0 & $\tfrac{1}{2}v$
+\end{tabular}
+\end{center}
+The rows are a focal individual's behavior. The columns are her opponent's behavior. The cells in the table are fitness changes for the focal individual.
+
+Our goal is to figure out what evolution does in the long term, given the assumptions above. It's easier if we break this down into some simple questions.  First, can Hawk or Dove ever be \bemph{evolutionarily stable}? This means that other strategies cannot invade, when either strategy is common. Second, are there any stable mixes of Hawk and Dove? Third, what would be best for the population growth rate, and when is it different what evolves?
+
+\subsection*{Evolutionary stability of Hawk}
+
+Suppose the only strategy in the population in Hawk. Then a mutant Dove appears. Will the proportion of Doves tend to increase? To rigorously answer that question, we'd need to specify a lot more than we have so far---population regulation, mutation patterns, the nature of heritability, and so on. But heuristically, if we confine our question to what natural selection would do, if it got its way, we can make progress without any additional assumptions. We just assert that higher fitness will increase the representation of that strategy over time, if offspring resemble parents in strategy.
+
+It's not that we should believe that natural selection always gets its way. We know it does not. But this is what models are for: Only in a model can we remove other forces and learn about each force individually. This is very valuable. But it will be equally valuable later to add other forces. But only slowly so that we learn something other than ``things are complicated.'' We knew that already.
+
+In this case, we first note that when Hawk is common, almost every Hawk fights another Hawk. So the average fitness change of a Hawk is just $(v-c)/2$. We are ignoring a Hawk who meets the first mutant Dove. But if the population is large, this is fine. THe single Hawk who gets a different payoff ($v$ for victory!) will have almost no impact on the average fitness of the Hawk strategy.
+
+What about the rare mutant Dove? The Dove meets a Hawk for sure. And so it loses, but without injury. So no change in fitness (zero). 
+
+Now we ask which of these expected fitness changes is greater. If the expected fitness of Hawk is greater, it can resist invasion by rare Doves. This is the condition for Hawk to be evolutionarily stable:
+\begin{align*}
+	\underbrace{\frac{v-c}{2}}_{\text{Hawk-vs-Hawk}} > \underbrace{0 \vphantom{ \frac{v}{2} }}_{\text{Dove-vs-Hawk}}
+\end{align*}
+Before simplifying this condition, pause to make sure you understand what it means. For a strategy to be evolutionarily stable, it must be able to live with itself well enough that a rare alternative strategy cannot do better. So the left side asks how well Hawk lives with itself (Hawk-vs-Hawk), while the right side asks how well the rare Dove does against a Hawk. This is the basic logic of evolutionary stability.
+
+Okay we can simplify the condition above to:
+\begin{align*}
+	v > c
+\end{align*}
+This means: If the value of the resource ($v$) exceeds the cost of injury ($c$), rare Doves cannot invade a population of Hawks. But if $v < c$, because the natural weaponry is dangerous, then Doves can increase when rare. 
+
+\subsection*{Evolutionary stability of Dove}
+
+So now we also have to ask about Doves. When can a population of Doves resist invasion by a rare Hawk? The same logic as before gives us this condition for Dove to be evolutionarily stable:
+\begin{align*}
+	\underbrace{\frac{v}{2}}_{\text{Dove-vs-Dove}} > \underbrace{v \vphantom{ \frac{v}{2} }}_{\text{Hawk-vs-Dove}}
+\end{align*}
+This condition is satisfied only when $v<0$. That would make the model silly, since it implies the resource reduces fitness. So we conclude that Doves are never evolutionarily stable.
+
+\subsection*{Hawk-Dove mixes}
+
+So far we've learned that Dove is never evolutionarily stable. Hawk can be evolutionarily stable when $v>c$. But if $v<c$, then neither strategy is stable. So something must happen as the two strategies interact in a mixed population. Let's figure out what.
+
+Now we have to image that the population has some Hawks and some Doves. We still want to avoid actually modeling all of the population dynamics. So we'll just let $p$ be the proportion of the population that is Hawks. Then $1-p$ is the proportion that is Doves. The total number of individuals might increase or decrease each generation. But each possible value of $p$, between zero and one, will either tend to increase in the next generation, decrease, or stay the same.
+
+Consider for example when $p=1$. This is the Hawk world we already analyzed. We asked if a rare Dove would increase, because it had higher fitness than a Hawk. The answer was yes, if $v<c$. So when $p=1$, the proportio of Hawks tends to decrease, but only if $v<c$. And for $p=0$, a rare Hawk can always increase. So $p$ tends to increase when $p=0$.
+
+What about all of the values between zero and one? To answer what happens for other values of $p$, we need to write expressions for the average fitness change in a mixed population. This requires nothing more than taking an average. Conceptually, the average fitness change of Hawk in a mixed population of Hawks and Doves is:
+\begin{align*}
+	(\text{probability meet a Hawk})(\text{Hawk-Hawk fitness change}) \\
+	~ \quad \quad + (\text{probability meet a Dove})(\text{Hawk-Dove fitness change})
+\end{align*}
+Using the definition of $p$ and the fitness changes in the old table from before, this becomes:
+\begin{align*}
+	p \frac{v-c}{2} + (1-p)v
+\end{align*}
+Similarly, we get an expression for the average fitness change of Doves:
+\begin{align*}
+	p (0) + (1-p)\frac{v}{2}
+\end{align*}
+
+Now we could ask for any specific value of $p$, say $p=0.5$, whether selection tends to increase or decrease the proportion of Hawks. But instead of plugging in numerical values, we should just solve for all the values of $p$ for which $p$ tends to increase. Like this:
+\begin{align*}
+	\underbrace{p \frac{v-c}{2} + (1-p)v}_{\text{Hawk fitness}} > \underbrace{p (0) + (1-p)\frac{v}{2} }_{\text{Dove fitness}}
+\end{align*}
+Simplifying, Hawk tends to increase when $p < v/c$. If we flip the question around and ask when Dove tends to increase, we get the opposite result: $p>v/c$. This implies that when $p=v/c$, natural selection does not favor either strategy. This is an evolutionarily stable mix of Hawk and Dove.
+
+\subsection*{What maximizes population growth?}
+
+We've figured out now what natural selection will do in the long run. If $v>c$, it's all Hawks, because injury isn't sufficient to deter aggression. If instead $v<c$, then the population evolves to a mix of Hawks and Doves at which $v/c$ of the population is Hawks and $1-v/c$ is Doves. So the larger $c$ is relative to $v$, the more Doves you get. So this seems to support to idea that non-lethal contests evolve because they 
+
+But we have one more question to address: What mix of Hawks and Doves would maximize the population growth rate? We can't answer this in a detailed sense, not until we specify more about the demography and population regulation. But we can ask which value of $p$ maximizes average fitness. In this model, average fitness means average offspring. In a very wide range of ecologies, more offspring means more population growth (but not always). So let's figure it out.
+
+Now the orthodox way to figure this out is to define an expression for the average fitness in the population, as a function of $p$. Then we can take the derivative with respect to $p$ and solve for any maxima (and minima). But there is a more intuitive way.
+
+At one extreme, $p=1$, the average fitness is $(v-c)/2$. At the other extreme, $p=0$, the average fitness is $v/2$. Since $v-c < v$ as long as $c>0$, the Dove population has higher average fitness than the Hawk population. Okay, so let's start at $p=0$ and ask if adding a small number of Hawks increases the average fitness in the population. Consider the first Hawk. It meets a single Dove. The Hawk gets $v$, and the Dove gets $0$. The average fitness for these two individuals is $v/2$. But that's just what two Doves get on average as well. So the first Hawk makes no difference at all to mean fitness. If there is a second Hawk, and it meets the first Hawk, there is now injury. And we know that injury reduces mean fitness. So there is no internal $p$ that maximizes population growth. A population Doves is best for the species. In hindsight this may be intuitive, because Doves divide the resource without wasting any of it on injury.
+
+Okay, now here's the calculus proof. The mean fitness change in a population with $p$ proportion Hawks is:
+\begin{align*}
+	\underbrace{ p \left( p \frac{v-c}{2} + (1-p)v \right) }_{\text{Hawks}} + \underbrace{ (1-p) \left( p(0) + (1-p)\frac{v}{2} \right) }_{\text{Doves}}
+\end{align*}
+The derivative of this with respect to $p$ is remarkably simple:
+\begin{align*}
+	-cp
+\end{align*}
+This is always decreasing in $p$, so more Hawks only decreases population growth.
+
+\subsection*{Summary}
+
+The Hawk-Dove game is also known as the \bemph{Chicken} game. It is mathematically similar and the conclusions are qualitatively the same. But the motivating story is instead two foolish young men racing cars towards a cliff or wall. The first driver to swerve loses. But if neither swerves they both suffer some injury, presumably fatal. This version of the game makes it clear that the Hawk-Dove/Chicken game favors behaving in the opposite way from one's opponent. If you knew that your opponent would fight, you should not. If you knew that your opponent would not fight, you should. If strategies are heritable, this tends to result in mixed populations that do not maximize general welfare.
+
+\begin{mathboxmp}{Practice: Hawk-Dove with display costs.} 
+It doesn't make sense that Dove's display has no fitness cost. If nothing else, it costs time and energy. Let $d$ be the cost of display. Assume that Dove pays this cost whenever it meets another Dove, whether it wins the resource or not, but not when it retreats from a Hawk. Analyze this new version of the game. 
+
+%SOLUTION: The condition for Hawk to be evolutionarily stable is unchanged, still $v>c$. The condition for Dove to be evolutionarily stable is now $v/2 - d > v$. But this still never satisfied. So the pure stability conditions are unchanged. Maybe the internal mixed equilibrium is different. The fitness of Dove in a population with proportion $p$ Hawks is $p(0) + (1-p)(v/2-d)$. The fitness of Hawk is $p(v-c)/2 + (1-p)v$. The value of $p$ that makes these equal is $p=(v + 2 d)/(c + 2 d)$. This means there are more Hawks at equilibrium, compared to the model in which $d=0$. But the largest $d$ could be is $v/2$, because otherwise display would consume the value of the resource (on average).
+\end{mathboxmp}
+
+\begin{mathboxmp}{Practice: Escalating display costs.} 
+Suppose the modified game with display costs $d$. Now consider a mutant Dove with a larger display cost $D > d$ who always wins against a regular Dove who pays only $d$. Reanalyze the game.
+
+%SOLUTION: A population of pure Doves cannot exist. But if it did, the mutant Dove would invade if $v - D > v/2 - d$. This requires $D-d < v/2$, which means that the addition display cost $D-d$ must be less than the extra half resource it wins. Obvious in hindsight probably. But it implies $D$ will evolve until it is almost $v/2$. Otherwise another Dove with a larger $D$ could invade. There at the mixed equilibrium we expect $p=(v + 2D)/(c + 2D) = (v+v)/(c+v)$. However, it seems unlikely that $D$ could ever approach $v/2$, because there are other constraints that limit the display cost long before it approaches the value of the resource, unless the resource is insignificant.
+\end{mathboxmp}
+
+\section*{Retaliation doesn't pay}
+
+What happens if Doves fight back, if they displayed but always retaliated against aggression? The intuition is that retaliation could keep Hawks from invading and then peace would reign. But it turns out this doesn't make much difference. Let's figure out why.
+
+Suppose the original Hawk-Dove game as described in the previous section. But now introduce a third strategy \bemph{Retaliator}. Retaliator displays but fights if its opponent fights. This means it plays like Dove with itself and with a Dove. It plays like Hawk with a Hawk.
+
+Let's answer three questions. First, can Retaliator ever be evolutionarily stable? Second, can Retaliator invade a population of Hawks and Doves? Third, what happens in the long run?
+
+\subsection*{Retaliator evolutionary stability}
+
+When Retaliator is common, its average fitness change is $v/2$, because it plays like Dove with itself. A rare Hawk will always make a fight, getting $(v-c)/2$. This always worse than $v/2$. So Hawk cannot invade.
+
+The tricky element is Doves. A rare Dove also gets $v/2$. So natural selection on behavior doesn't keep the Dove out. But it doesn't favor it either. So other forces---mutation, developmental costs---will determine what happens.
+
+Retaliator is never evolutionarily stable.
+
+\subsection*{Retaliator invasion}
+
+There are two scenarios two consider. If $v>c$, then the first Retaliator encounters a population of Hawks. If $v<c$, then the first Retaliator encounters instead a mixture of Hawks and Doves. Let's analyze each.
+
+In a population of Hawks, the first Retaliator also gets into a fight, earning the same $(v-c)/2$ as every Hawk. So Hawk is not stable against Retaliator. And if a small number of Retaliators is present, whenever they interact with one another they do better. So Retaliator can increase when rare, in a world of Hawks.
+
+In a mixed population of Hawks and Doves, the average fitness change is:
+\begin{align*}
+	\frac{v}{c}(0) + \left(1-\frac{v}{c}\right)\frac{v}{2}
+\end{align*}
+This is the average fitness of Doves, who encounter another Dove $1-v/c$ of the time and get zero otherwise. But since the fitness of a Hawk must be the same at evolutionary stability, the expression above is correct for Hawks too. 
+
+A rare Retaliator needs to do better than this. A rare Retaliator earns:
+\begin{align*}
+	\frac{v}{c} \frac{v-c}{2} + \left(1-\frac{v}{c} \right) \frac{v}{2}
+\end{align*}
+Simplifying, this is greater than $(1-v/c)v/2$ only when $v>c$. That's the condition for Hawk to exclude Dove. So if Doves are present, Retaliator cannot invade. 
+
+If Doves are absent, Retaliator can invade and it will increase, gradually replacing Hawk, because in a mixed population of $p$ Hawk and $1-p$ Retaliator, Hawk always gets in to a fight so earns $(v-c)/2$ still. But Retaliator gets:
+\begin{align*}
+	p \frac{v-c}{2} + (1-p) \frac{v}{2}
+\end{align*}
+Retaliator will replace Hawk.
+
+\subsection*{The long run}
+
+In the long run, what happens will still depend upon Doves. There are two scenarios to consider. First $v<c$, in which case Retaliator cannot invade at all. Second $v>c$, in which case Retaliator invades a pure Hawk population and replaces Hawk. But since Dove can invade a pure population of Retaliator, we need to think hard now about what happens next.
+
+Other forces that we haven't modeled will determine whether or not Dove increases in a mixed population of Retaliators and Doves. In the model as we have it, the proportion of Dove will just drift around. 
+If Dove ever becomes sufficiently common, it will allow Hawks to invade. Let $q$ be the proportion the population that is Retaliator. The average fitness in a mix of Retaliator and Dove is always $v/2$, because neither strategy fights. But the average fitness of a rare Hawk will be:
+\begin{align*}
+	q \frac{v-c}{2} + (1-q) v
+\end{align*}
+Hawk can invade if this is greater than $v/2$, which simplifies to:
+\begin{align*}
+	q < \frac{v}{v+c}
+\end{align*}
+So in the long run, if other forces don't prevent this threshold being crossed, Hawks will invade, the population will evolve again towards a mix of Hawk and Retaliator, and the pure Retaliator, and then a mix of Doves and Retaliator, and so on until the end of time.
+
+Retaliator is a poor police officer, because it tolerates lazy Doves.
+
+\begin{mathboxmp}{Practice: Retaliator errors.} 
+Suppose Retaliator sometimes makes an implementation error and judges a display as an attack. This results in a fight, when paired with Hawk or another Retaliator, or a flawless victory, when paired with a Dove. Let $x$ be the probability of an error. When can Retaliator be evolutionarily stable?
+
+%SOLUTION: When common Retaliator has average fitness:
+%\begin{align*}
+%	(1-x)^2 \frac{v}{2} + (1-(1-x)^2) \frac{v-c}{2}
+%\end{align*}
+%A rare Dove earns:
+%\begin{align*}
+%	(1-x) \frac{v}{2} + x (0)
+%\end{align*}
+%So Retaliator resists Dove if $x > 2 - v/c$. Since $x$ cannot exceed 1, this is only possible if $v > c$. A rare Hawk earns $(v-c)/2$ as usual. Hawk still cannot invade, because the worst case is $x=1$ and then Retaliator just acts like Hawk. For any $x<1$, Retaliator does better. So errors can make Retaliator evolutionarily stable, if $v>c$ and errors are common enough. Natural selection might not favor perfect implementation, if $x$ is under genetic control.
+\end{mathboxmp}
+
+
+\section*{Assessment}
+
+Typically there are cues that an animal can use to assess the fighting ability of its opponent. Suppose for example that the competitors vary in size and that size influences fighting ability. Since which individual is focal is arbitrary, there is a half chance that the focal individual is larger than its opponent. Let $x>0.5$ be the probability that the larger individual wins a fight.
+
+Now consider a strategy \bemph{Assessor} that uses size asymmetry to decide whether or not it fights or displays. If Assessor is larger, it fights. If it is smaller, it displays. When Assessor is common, it's average fitness change is $v/2$, because half the time it will be larger and get $v$, because its opponent will retreat. The other half of the time, it will be smaller, so it retreats and earns zero. So Assessor manages to get the socially optimal payoff when common. That's a good start.
+
+Can Hawk invade Assessor? A rare Hawk gets:
+\begin{align*}
+	\underbrace{\frac{1}{2} v }_{\text{Hawk larger}} + \underbrace{\frac{1}{2} ((1-x)v-xc) }_{\text{Hawk smaller}}
+\end{align*}
+Assessor's $v/2$ is larger than this when $x > v/(v+c)$. So for example if $v=2$ and $c=1$, the fighting advantage of body size needs to be greater than $2/3$. But Assessor can potentially be evolutionarily stable against Hawk, even if $v>c$. It pays to choose your fights, if there is a reliable cue of fighting ability.
+
+Can Dove invade Assessor? A rare Dove gets:
+\begin{align*}
+	\underbrace{\frac{1}{2} \frac{v}{2}}_{\text{Dove larger}} + \underbrace{\frac{1}{2} (0) }_{\text{Dove smaller}}
+\end{align*}
+This is also always smaller than $v/2$. Assessor is evolutionarily stable against Dove.
+
+Can Assessor invade a mixed population of Hawks and Doves? As before, at the mixed equilibrium, Hawks and Doves earn average fitness $(1-v/c)v/2$. A rare Assessor earns:
+\begin{align*}
+	\underbrace{\frac{1}{2} \left( \frac{v}{c} (xv-(1-x)c) + (1-v/c)v \right)}_{\text{Assessor larger}} + \underbrace{\frac{1}{2} \left( \frac{v}{c}(0) + (1-v/c)\frac{v}{2} \right) }_{\text{Assessor smaller}}
+\end{align*}
+Invasion requires that this is larger than $(1-v/c)v/2$. You can start reducing and find that this is true whenever $x>1/2$. 
+
+In reality, size is a continuous cue and so the animal needs some function that maps a perceived size difference to $x$. For competitors of similar sizes, $x$ may not be large enough (size may not be predictive of fighting ability), and so other strategies might take over.
+
+\section*{Conventions in conflict}
+
+A \bemph{convention} is a cue that is not associated with fighting ability but that is used to decide contests. A famous convention is which animal arrives first. Suppose there a strategy that fights when it arrives first at the resource and displays when it arrives second. When common, this strategy earns $v/2$, because half the time the focal individual arrives first and the opponent lets it have the resource. So the convention is just a way of randomly allocating the resource without conflict.
+
+Can such a strategy be evolutionarily stable? A rare Hawk gets:
+\begin{align*}
+	\underbrace{\frac{1}{2}v }_{\text{Hawk first}} + \underbrace{\frac{1}{2} \frac{v-c}{2} }_{\text{Hawk second}}
+\end{align*}
+This is always worse than $v/2$. Hawk cannot invade. A rare Dove gets:
+\begin{align*}
+	\underbrace{\frac{1}{2}\frac{v}{2} }_{\text{Dove first}} + \underbrace{\frac{1}{2} v }_{\text{Dove second}}
+\end{align*}
+This is also always less than $v/2$. So the conventional strategy can be evolutionarily stable, at least against simple Hawk and Dove strategies.
+
+Can it also invade? At the mixed Hawk-Dove equilibrium, the convention of fighting when first earns:
+\begin{align*}
+	\underbrace{\frac{1}{2} \left( \frac{v}{c}\frac{v-c}{2} + (1-v/c)v \right) }_{\text{Focal first}} + \underbrace{\frac{1}{2} \left( \frac{v}{c}(0) + (1-v/c)\frac{v}{2} \right) }_{\text{Focal second}}
+\end{align*}
+If you reduce this, you'll find it is equal to $(1-v/c)v/2$. So it gets the same payoff as a Hawk or Dove. The convention can enter the population, and if it becomes more common, it does better against itself than the Hawks and Doves do against it, so it will increase. The convention can evolve and be stable, despite the fact that it has nothing to do with fighting ability. Any other convention would work just as well. 
+
+
+\section*{Summary}
+
+x
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Cooperation
 %\setcounter{chapter}{17}
 \def \chapterElement {C}
-\chapter{Cooperation}
+\chapter{The Evolution of Cooperation}
+
+Hiroo Onoda (小野田 寛郎) was born in 1922 in the Empire of Japan. He herded cattle. In 1940 he joined the army. In 1944, he traveled to a small island in the Philippines with orders to defend the island against the United States. The Empire of Japan surrendered the next year, but no one could find Onoda to tell him the bad news. He surrendered 29 years later. 
+
+\section*{Pure conflict: The prisoner's dilemma}
+
+\begin{precis}Individual costs can undermine the production of common benefits.\end{precis}
+
+x
+
+\section*{Positive assortment}
+
+x
+
+\section*{Partial conflict: Coordination}
+
+Stag Hunts
+
+preference/role games
+
+\section*{Cooperation in large groups}
+
+x
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Reciprocity
+%\setcounter{chapter}{17}
+\def \chapterElement {R}
+\chapter{The Evolution of Relationships}
 
 \lipsum[12-14]
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Kinship systems
 %\setcounter{chapter}{17}
 \def \chapterElement {K}
-\chapter{Kinship}
+\chapter{The Evolution of Families}
 
 \lipsum[12-14]
 
 
 %%%%%%
 \part{Transition Elements}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% senescence
+
+\setcounter{chapter}{6}
+\def \chapterElement {Ki}
+\chapter{Causal Inference}
+
+
+\lipsum[2-4]
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % senescence
