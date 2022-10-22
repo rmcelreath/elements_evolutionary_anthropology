@@ -1228,27 +1228,136 @@ x
 \def \chapterElement {C}
 \chapter{The Evolution of Cooperation}
 
-Hiroo Onoda (小野田 寛郎) was born in 1922 in the Empire of Japan. He herded cattle. In 1940 he joined the army. In 1944, he traveled to a small island in the Philippines with orders to defend the island against the United States. The Empire of Japan surrendered the next year, but no one could find Onoda to tell him the bad news. He surrendered 29 years later. 
+Hiroo Onoda (小野田 寛郎) was born in 1922 in the Empire of Japan. As a boy, he herded cattle. In 1940 he joined the army. In 1944, he traveled to a small island in the Philippines with orders to defend the island against the United States. The Empire of Japan surrendered the next year, but no one could find Onoda to tell him the bad news. 
+
+Onoda surrendered 29 years later. His 29 years of persistence had no effect on the war. No effect aside from his own long deprivation. But no one saw it that way. He returned to Japan a hero, a symbol of dedication, honor, and altruism.
+
+Human societies make role models of people like Onoda, because they recognize  the conflict between the interests of individuals and groups. The groups are not always so large as the Empire of Japan. And the individuals are not always so capable as Hiroo Onoda. But conflict is the context in which cooperation happens. Typically each individual also has ways to achieve its goals that do not promote the goals of others. This creates conflict between the interests of individuals and the interests of the groups and societies they are members of.
+
+In this chapter, you'll meet simple game theoretic models of cooperation. You'll learn how to analyze these models to understand precisely how to express the conflict between individuals and groups. And then you'll study a general mechanism that helps cooperation to evolve. In later chapters, the problem of cooperation continues. But it gets much more complex.
 
 \section*{Pure conflict: The prisoner's dilemma}
 
 \begin{precis}Individual costs can undermine the production of common benefits.\end{precis}
 
-x
+Cooperation is a messy category. So it's useful to study a simple, extreme example. Then we'll consider less simple, less extreme cases.
 
-\section*{Positive assortment}
+Suppose pairs of individuals share a common territory. Each individual can choose to patrol the territory. If either individual patrols, a common benefit $b$ is produced for both individuals. If only one individual patrols, it costs that individual $c$ units of fitness. If both patrol, they split the cost. Each pays only $c/2$. This is the payoff matrix for this game:
+\begin{center}
+	\begin{tabular}{c|cc}
+		& Rest & Patrol \\
+		\hline
+	Rest & 0 & $b$ \\
+	Patrol & $b-c$ & $b-c/2$ 
+	\end{tabular}
+\end{center}
 
-x
+Now analyze the game's evolutionary dynamics. Patrol is evolutionarily stable if $b-c/2 > b$, which is never true when $c>0$. A rare Rest can always invade. Rest is evolutionarily stable if $0 > b-c$, which implies $c > b$. Suppose $b>c$. Then this game has dynamics like the Hawk-Dove game: there will be a stable mix of Rest and Patrol at equilibrium. To be precise, let $p$ be the proportion of Patrol. Then the equilibrium is found where:
+\begin{align*}
+	p(b-c/2) + (1-p)(b-c) = pb + (1-p)0
+\end{align*}
+Solve for $p$:
+\begin{align*}
+	p = \frac{b-c}{b-c/2}
+\end{align*}
+As long as $b>c$, this point implies a mix of Rest (Hawk) and Patrol (Dove).
+
+But now suppose $c>b$. If the cost of patrolling alone is greater than the benefit, no one will patrol. The population does best when someone patrols. But evolution won't sustain it.
+
+When $c>b$, this game is an example of the \bemph{prisoner's dilemma}. In a prisoner's dilemma, non-cooperation is favored, no matter how common cooperation is in the population. Biologists and social scientists study the prisoner's dilemma a lot. Maybe too much. But they study it because it is an extreme example of the basic puzzle of cooperation: How can animals sustain cooperation when costs are private while benefits are shared? In a prisoner's dilemma, the interests of the individual and group are completely opposed. Each individual does better by resting. But the group does better when someone cooperates (patrols).
+
+This dilemma may seem obvious to you. But there were many scholars in both biology and the social sciences who did not realize it. In the early 20th century, is was common for biologists to think that animals were designed for the good of their social groups and for social scientists to believe that people cooperate just because cooperation produces shared benefits.\footnote{For example, the framing of Mancur Olson's \emph{The Logic of Collective Action} (1965) seems weird now. But Olson was writing for an audience that had not thought deeply about the conflict between individual and group interests.} Simple games like the prisoner's dilemma taught us that it isn't so simple.
 
 \section*{Partial conflict: Coordination}
 
-Stag Hunts
+\begin{precis}The interests of individuals and groups are not always perfectly in opposition. But risk and mis-coordination are other reasons it can be hard to achieve cooperation.\end{precis}
 
-preference/role games
+Suppose a pair of animals who can choose to search for food that is easy but low quality or instead risky but high quality. The easy option always produces a payoff $b$, regardless of what the other individual does. But the risky option only produces $B>b$ when both individuals choose it. Otherwise it returns on average zero. This is the payoff matrix:
+\begin{center}
+	\begin{tabular}{c|cc}
+		& Safe & Risky \\
+		\hline
+	Safe & $b$ & $b$ \\
+	Risky & $0$ & $B$ 
+	\end{tabular}
+\end{center}
+The population will be better off if everyone pursues the risky option. Now what happens when Safe is common? Can Risky invade? No, because $b>0$. Can Risky be stable when common? Yes, because $B>b$. So Risky is evolutionarily stable, but it cannot invade. This is a different kind of conflict than in the prisoner's dilemma, but just as serious. Everyone would be better off, if they could agree to choose the risky option. But there is no path for evolution to take, in this simple example. And since Safe always produces $b$, it is hard to evolve away from. The game above is a classic, and it is usually called the \bemph{stag hunt}.
+
+Another kind of cooperation dilemma is \bemph{coordination}. Suppose there are two behaviors, and to receive a non-zero payoff, an individual must match the behavior of its partner. But the different behaviors produce different payoffs. Like this:
+\begin{center}
+	\begin{tabular}{c|cc}
+		& A & B \\
+		\hline
+	A & $b$ & $0$ \\
+	B & $0$ & $B$ 
+	\end{tabular}
+\end{center}
+Again assume $B>b$. The most important thing in this game is to match your partner. But both behaviors are evolutionarily stable. So if a population is fixed on A, evolution cannot evolve to B, even though it would make everyone better off. This is another type of cooperation conflict, one in which the dilemma is how to get everyone to coordinate to choose the better option.
+
+In both of the games above, both options are evolutionarily stable. This implies that there is some proportion of each strategy at which the fitness of each is equal, an equilibrium. But this equilibrium will be unstable. If the population moves to one side or the other, natural selection will push towards an extreme of one behavior or the other dominating the population. This is the opposite dynamic of what we saw in the previous chapter, with Hawk-Dove. In Hawk-Dove, natural selection pushed the population to a stable mix. In these games, natural selection will instead push the population to the extremes.
+
+Still the equilibrium is interesting, because it defines the \bemph{basin of attraction} for each strategy. A basin of attraction is the range of proportions that favor a strategy. For the stag hunt, we find the unstable equilibrium that defines the basins of attraction by setting the average fitness of both strategies equal and solving for the proportions that make the equality true. Let $p$ be the proportion choosing Risky. This implies the equilibrium is found where:
+\begin{align*}
+	p B + (1-p)0 = b
+\end{align*}
+This is true only when $p=b/B$. When $p < b/B$, natural selection favors the safe option. When $p>b/B$, natural selection favors the risky option. So if $b$ is small enough, then it might not be so hard to for other forces to push a population over the equilibrium so it can reach the fitness-enhancing behavior. But if for example $b=1$ and $B=2$, then the unstable point is right in the middle and populations likely get stuck at the inferior behavior, even though the alternative is twice as good.
+
+Can you find the unstable equilibrium in the coordination game?
+
+\section*{Positive assortment}
+
+\begin{precis}A general solution to the problem of evolving cooperation is when cooperative strategies tend to encounter one another more often than chance.\end{precis}
+
+Think again of the patrol game. Suppose pairs were always comprised of the same strategy. So pairs of Rest and pairs of Patrol, but no mixed pairs. So Rest always gets zero, and Patrol always gets $b-c/2$. Cooperation would always evolve. If evolution can find a way for cooperative strategies to \bemph{positively assort}, this would help those strategies to evolve.
+
+There are several mechanisms that biologists and social scientists think can produce positive assortment of cooperative strategies. We'll model some of them in later chapters. For now, let's think of assortment in purely statistical terms, without specifying the mechanism that produces it. Specifically, suppose the probability that an individual with the strategy Patrol is paired with another Patrol is:
+\begin{align*}
+	\Pr(\text{Patrol}|\text{Patrol}) = r + (1-r)p
+\end{align*}
+where $r$ is the probability of assortment and $p$ is the proportion of the population that is Patrol. So when $r=1$, the above evaluates to $\Pr(\text{Patrol}|\text{Patrol})=1$. Perfect assortment. But for $r<1$, the amount of assortment depends upon how common the strategy is in the population. The corresponding chance Patrol meets Rest is:
+\begin{align*}
+	\Pr(\text{Rest}|\text{Patrol}) = (1-r)(1-p)
+\end{align*}
+Patrol meets rest when assortment fails, so no $r$ term, and then meets Rest with chance $1-p$. These two probabilities are the statistical assortment model. They let us explore the general implications of assortment, without worrying yet about the mechanisms that produce it. That comes later.
+
+So let's reconsider when Patrol can be evolutionarily stable. When common, the fitness of Patrol is $b-c/2$, because it meets itself, assortment or not. What is the fitness of a rare Rest? Rest will experience assortment, even when rare. It's fitness is:
+\begin{align*}
+	\underbrace{(r + (1-r)(1-p))0}_{\text{Rest|Rest}} + \underbrace{(1-r)pb}_{\text{Patrol|Rest}} 
+\end{align*}
+When Patrol is common, $p \approx 1$, so the above simplifies to:
+\begin{align*}
+	(1-r)b
+\end{align*}
+And so the condition for Patrol to be evolutionarily stable is:
+\begin{align*}
+	b-c/2 > (1-r)b
+\end{align*}
+Let's rearrange this so it is a condition in terms of $r$:
+\begin{align*}
+	r  > \frac{c}{2b}
+\end{align*}
+This can be satisfied, if $r$ is large enough, even when $c>b$ (a prisoner's dilemma). For example, if $c=3$ and $b=2$, then this requires $r>3/4$. 
+
+Assortment also changes the condition for Patrol to invade. When Rest is common, it always gets zero. A rare Patrol gets:
+\begin{align*}
+	\underbrace{(r + (1-r)p)(b-c/2)}_{\text{Patrol|Patrol}} + \underbrace{(1-r)(1-p)(b-c)}_{\text{Patrol|Rest}} 
+\end{align*}
+Now $p \approx 0$, so this simplifies to:
+\begin{align*}
+	r(b-c/2)+ (1-r)(b-c)
+\end{align*}
+For Patrol to invade a population, we require:
+\begin{align*}
+	r(b-c/2)+ (1-r)(b-c) > 0
+\end{align*}
+This condition simplifies to $r > 2(1-b/c)$. This is not the same condition that Patrol needs for stability. But again, this can be satisfied when $c>b$. But it might require implausible amounts of assortment, so don't start celebrating.
+
+Assortment behaves in different ways in different games. It changes stability conditions, as well as basins of attraction. Then details of the evolutionary process, such as the genetic architecture of the strategies, or whether strategies are learned rather than genetic, can influence whether cooperative strategies succeed in the long run.
 
 \section*{Cooperation in large groups}
 
-x
+[need a section on how cooperation in groups larger than pairs influences the different games]
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Reciprocity
@@ -1256,7 +1365,209 @@ x
 \def \chapterElement {R}
 \chapter{The Evolution of Relationships}
 
-\lipsum[12-14]
+The Portuguese man o' war (\emph{Physalia physalis}) is neither Portuguese nor a warship. It looks like a jellyfish, but it's not. It's not even an animal. Instead it's a colony of individual animals. Each individual has a specialized job, fusing together in cooperation with the others to sail and sting their way through the ocean. Like a pirate ship made of jelly.
+
+Each man o' war colony can last for a year or more. So the evolutionary biologist must ask, how did this cooperation evolve and how is it stable against cheaters? It is the same kind of question we have to ask about more familiar relationships among animals, like cooperating lions or breeding penguins. Or actual pirates.
+
+In all of these examples, the evolutionary game to analyze is unlike those in the previous chapters. In the previous chapters, every example was a group of individuals who met, interacted once, and then never met again. There are animal societies like that. But primate groups and man o' war colonies are not like that. They persist and the same individuals interact many times in their lifetimes. 
+
+To model the evolution of these relationships, we need to learn how to model \bemph{repeated games}. In a repeated game, individuals form groups, interact potentially many times, and use past experience to modify group membership or adjust their own behavior towards other members of the group. The question we want to ask in this framework is: Which strategies lead to the evolution of lasting cooperative relationships?
+
+Nearly all important game theory, as applied to humans and other animal societies, concerns repeated games. And unfortunately simple games, once repeated, are no longer so simple. The longer individuals interact, the larger the possible number of strategies. And even rare errors in the implementation  or the interpretation of behavior can have huge effects. But we'll begin as always with something simple and understandable, before layering on the necessary complexity.
+
+\section*{The iterated prisoner's dilemma}
+
+\begin{precis}In a repeated game with uncertain end, reciprocity can be evolutionarily stable against non-cooperation. But it is never stable against other cooperative strategies.\end{precis}
+
+The most studied repeated game is the \bemph{iterated prisoner's dilemma}. The simple game at its heart an additive prisoner's dilemma. Suppose in a pair of individuals each has the opportunity to help the other. Helping costs the helper $c$. But it produces $b>c$ for the helped. This is the resulting payoff matrix:
+\begin{center}
+	\begin{tabular}{c|cc}
+		& Cooperate & Not \\
+		\hline
+Cooperate & $b-c$ & $-c$ \\
+	Not & $b$ & $0$ 
+	\end{tabular}
+\end{center}
+In this matrix, mutual cooperation is beneficial. But each individual still does better by switching to non-cooperate, because $b>b-c$ (left column) and $0>-c$ (right column).
+
+Now we embed this simple game in some repeating structure, so that the same pair of individuals interact more than once. There are many ways to assume repeat interaction. The structure of repetition itself influences the evolution of behavior. Some structures make it harder for cooperation to evolve. For example, a defined end point to interaction is unhelpful. If for example the pair interacts exactly 10 times, it can be as if the game was not repeated at all. Whatever the pair does in the first 9 plays, the 10th time neither individual has any (evolutionary) incentive to cooperate. It's just like a one-shot game at that point. Then it follows that in the 9th play, it is also a one-shot game, because neither player expects (evolutionarily) the other to cooperate in the 10th play. So there's no incentive to cooperate in the 9th either. And so on, all the way back to the first play.
+
+If there is uncertainty about the end, things can be are different. So to repeat this game, we allow a pair of individuals to play once and then interact again with probability $w$. And then if they do interact again, they get the same chance $w$ again of interacting again. And so on. This $w$ is a constant chance of interacting again after each interaction, and it does not depend upon whether the individuals cooperate or not. Of course you are ready to object. It makes sense that the persistence of the relationship depends upon how the individuals treat one another. But we start here, analyze the consequences, and then consider something more dynamic in a later section.
+
+When the pair has a constant chance $w$ of interacting again after each game, it means that some pairs will interact only once, while others will interact many times. The probability of interacting only once is $1-w$. The probability of interacting twice is $w(1-w)$. The chance of interacting three times is $w^2(1-w)$. And so on out to infinity. Yes, the individuals will die of natural causes before that. But unless $w$ is very close to 1, or the time between interactions is very long, that isn't an event we need to worry about. If selection is strong, then the entire distribution of pair durations could matter (as explained in \bemph{1F}). But if selection is weak, then the average duration will give us a useful approximation. And this is what nearly everyone does, use the average. Later we'll consider what this misses, however.
+
+The average number of interactions is $1/(1-w)$. There are several ways to calculate this average. You could proceed in the orthodox manner of just defining the expected duration using the probability distribution above. Let $R$ be the average length of a relationship. Then $R$ must satisfy:
+\begin{align*}
+	R = \sum_{i=1}^{\infty} w^{i-1}(1-w)(i)
+\end{align*}
+The probability $w^{i-1}(1-w)$ is the chance of persisting exactly $i$ interactions. So the above just takes each $i$ value, multiplies it (weights it) by the chance it happens, and then adds up all these values. That's the average. The expression above is an infinite series. But it's geometric, so it closes easily. If you don't know how to do that, it just means you are a normal and healthy person. I show you how in the box below. Don't worry. It's safe.
+
+\begin{mathbox}{b}{Closing the geometric series.}
+We want to take this infinite series and find a finite expression:
+\begin{align*}
+	R = \sum_{i=1}^{\infty} w^{i-1}(1-w)(i) = (1-w)(1) + w(1-w)2 + w^2(1-w)3 + w^3(1-w)4 + ... 
+\end{align*}
+The trick with a \bemph{geometric infinite series} is to recognize that it is always embedded in itself, because every step of the series has the same future expected value. So what we do to close it is factor it so we reveal this fact. Then it closes almost instantly. Let's factor $w$ out of every term after the first:
+\begin{align*}
+	R = (1-w)(1) + w\big( \underbrace{ (1-w)2 + w(1-w)3 + w^2(1-w)4 + ... }_Q \big) 
+\end{align*}
+Now the term labeled $Q$ is not equal to $R$, but it is close. Each term just has 1 added to it. Like this:
+\begin{align*}
+	R = (1-w)(1) + w\big( \underbrace{ (1-w)(1+1) + w(1-w)(2+1) + w^2(1-w)(3+1) + ... }_Q \big) 
+\end{align*}
+All of the those $+1$ terms just sum to 1. Why? Because the series $(1-w)(1) + w(1-w)(1) + w^2(1-w)(1) + ...$ is the total probability distribution. It must equal 1. This gives us:
+\begin{align*}
+	R = (1-w)(1) + w\big( 1 + \underbrace{ (1-w)1 + w(1-w)2 + w^2(1-w)3 + ... }_R \big) 
+\end{align*}
+And now the sequence in parentheses is equal to $R$. So we have $R = (1-w)(1) + w ( 1 + R ) = 1 + wR$. Solving yields $R=1/(1-w)$.
+
+\end{mathbox}
+
+A much easier way to derive the mean $R=1/(1-w)$ is to realize that since the chance the interaction continues is always the same, no matter how long a pair persists, the expected number of future interactions never changes. It seems weird, but it's true. A pair just meeting for the first time expects $1/(1-w)$ interactions. And so does a pair that has already interacted 100 times. They expect $1/(1-w)$ future interactions. This implies:
+\begin{align*}
+	R = 1 + w R
+\end{align*}
+Why? Because whatever value $R$ takes, it must satisfy the equation above so that it has the property that the expectation never changes as the pair persists. It says that the pair interacts once (1) and then has chance $w$ of having the same expectation that they just had. So solving the above for $R$ and get $R=1/(1-w)$. 
+
+Unless we also introduce strategies that use information about past behavior, repeating the game makes no qualitative difference. For example, let ALLC be a strategy that always cooperates. In a pair of ALLC individuals, each will earn $b-c$ each time they interact. So the expected fitness change is $R(b-c)$. But a rare individual who never cooperates, call this NO-C, gets $b$ every time it interacts with ALLC, so it earns $Rb$. This is still a prisoner's dilemma and cooperation is not stable.
+
+But consider a simple contingent strategy that uses past behavior. Suppose a strategy that begins by cooperating and then copies its opponent's behavior in every interaction afterwards. This strategy is usually called Tit-for-Tat (TFT). Can TFT be evolutionarily stable against NO-C? A pair of TFT individuals always cooperate with one another, because they start by cooperating and then copy one another in each interaction afterwards. So each earns $R(b-c)$. A rare NO-C earns $b$ on the first interaction with TFT, but then TFT copies the non-cooperation on the next interaction. So both individuals earn zero until the pair ends. So TFT can be evolutionarily stable against NO-C if:
+\begin{align*}
+	R(b-c) > b
+\end{align*}
+This is easy to satisfy, if $w$ is large enough. Consider $w=0.9$. Then $R=10$. Even if $b-c$ is small, multiplying it by a lasting relationship can make up for the costs of cooperation. We can also express the condition above after substituting $R=1/(1-w)$, as:
+\begin{align*}
+	wb>c
+\end{align*}
+So if $b/c=2$, then $w$ just needs to be more than $0.5$. That doesn't seem so demanding. Relationships don't even have to last that long, for reciprocity to pay.
+
+But hang on. Tit-for-Tat is rather famous in game theory.\footnote{Robert Axelrod wrote a book talking about how great it is.} It reveals the basic logic of reciprocity and how it can maintain cooperation. But Tit-for-Tat itself is a bad strategy and it is never evolutionary stable. Consider a rare ALLC in a population of TFT. The rare ALLC also earns $R(b-c)$. So ALLC can increase. If there are enough of them, NO-C can increase as well. It's like the problem with retaliation in the chapter on conflict (\bemph{4H}). Tit-for-Tat tolerates strategies that do not guard the wall.
+
+However it seems odd that TFT and ALLC receive exactly the same payoff, in the absence of NO-C. Surely these strategies differ in other ways?
+
+\section*{Errors matter}
+
+\begin{precis}Errors matter in repeated games. If games are repeated enough, then even rare errors can have large consequences.\end{precis}
+
+Suppose an individual who intends to cooperate sometimes fails to do so effectively. This is because cooperate requires action, and sometimes action goes wrong, no matter our intentions. What happens when we add implementation errors to the iterated prisoner's dilemma? 
+Let $x$ be the probability that an individual who intends to cooperation ends up non-cooperating instead. In game theory, this is called an \bemph{implementation error}. Implementation errors differentiate TFT and ALLC. Errors hurt both of these strategies. But TFT retaliates against an error by its opponent---it doesn't know it is an error. ALLC does not. 
+
+To compute the expected payoff in a pair of TFT individuals, we need to account  for all the possible sequences of mistakes in every possible duration of the relationship. That sounds hard. But it is made easier by representing the problem as transitions between \bemph{intention states}. For a pair of TFT individuals, there are four possible pairs of intentions for each play of the prisoner's dilemma: (1) They both intend to cooperate (CC); (2) Partner intends to cooperate but focal does not (NC); (3) Focal intends to cooperate but partner does not (CN); (4) Neither intends to cooperate (NN). Implementation errors influence the transitions between these states. Let's represent it all with a diagram, which I explain below it.
+\vspace{-6pt}
+\figmarlab{figR1}
+\tikzset{every loop/.style={min distance=7mm,looseness=10}}
+\begin{center}
+\begin{tikzpicture}[
+            > = stealth, % arrow head style
+            shorten > = 1pt, % don't touch arrow head to node
+            auto,
+            node distance = 3cm, % distance between nodes
+            semithick % line style
+        ]
+
+        \tikzstyle{every state}=[
+            draw = black,
+            thick,
+            fill = white,
+            minimum size = 4mm
+        ]
+
+        \node[state] (CC) {CC};
+        \node[state] (NC) [below right of=CC] {NC};
+		\node[state] (CN) [below left of=CC] {CN};
+		\node[state] (NN) [below left of=NC] {NN};
+        
+		\path[->] (CC) edge[bend left=30] node[above right] {$(1-x)x$} (NC);
+		\path[->] (CC) edge[bend right=30] node[above left] {$x(1-x)$} (CN);
+		\path[->] (CN) edge[bend right=30] node[below left] {$x$} (NN);
+		\path[->] (NC) edge[bend left=30] node[below right] {$x$} (NN);
+		\path[->] (NN) edge[loop below] node {$1$} (NN);
+		\path[->] (CC) edge[loop above] node {$(1-x)^2$} (CC);
+		\path[->] (CC) edge[bend left=25] node[right] {$x^2$} (NN);
+
+		\path[->] (CN) edge[line width=0.1cm,white,bend left=20] node[above] {} (NC);
+		\path[->] (CN) edge[bend left=20] node[above] {$1-x$} (NC);
+		
+		\path[->] (NC) edge[line width=0.1cm,white,bend left=20] node[below] {} (CN);
+		\path[->] (NC) edge[bend left=20] node[below] {$1-x$} (CN);
+        %\path[->] (CC) edge node {$s_2$} (n2);
+        %\path[->] (n1) edge[densely dashed,loop above] node {$f_1 s_1$} (n1);
+
+    \end{tikzpicture}
+
+	\emph{Two Tit-for-Tats, in a game tree, F-E-U-D-I-N-G}
+\end{center}
+
+The circles are the intention states and the arrows are possible transitions, labeled with probabilities. 
+Start at the top. A pair in the CC state remains there only if neither commits an error. The probability neither commits an error is $(1-x)^2$. If both commit an error in the same play, the relationship moves to NN. This happens with probability $x^2$. For each state of the relationship (CC, NC, CN, NN), the same logic implies the probability of moving to any state (or staying in the same state) in the next play.
+
+We can use this diagram to derive the expected payoff to a TFT paired with another TFT. The intuition is that we write an expression for the expected payoff at each state. We represent future payoffs by adding the other state expressions as needed. This is weird, I know. Consider the payoff for CC. Let $V_\text{CC}$ be the expected payoff of a pair at the CC intention state. If neither individual commits an error, the focal TFT receives $b-c$ and then with chance $w$ the pair interacts again at the same CC state. So the expected future payoff is $wV_\text{CC}$. So the payoff is $b-c + wV_\text{CC}$, but only with chance $(1-x)^2$, the chance neither commits an error. With the same logic, we can build the full expectation at CC and all of the other states. The box on the next page has the details. 
+
+\begin{mathbox}{p}{Calculating payoffs when there are implementation errors.} 
+To calculate the expected payoff for TFT when it is common, $V(\text{TFT}|\text{TFT})$, we need to write an expression for the expected payoff for each pair of \emph{intended} actions. The first is mutual cooperation, CC. The payoff is:
+\begin{align*}
+	V_\text{CC} = \underbrace{(1-x)^2 (b-c+wV_\text{CC})}_\text{neither makes a mistake} 
+	+ \underbrace{x(1-x)(b + wV_\text{CN})}_\text{focal fails to cooperate}
+	+ \underbrace{(1-x)x(-c + wV_\text{NC})}_\text{partner fails to cooperate}
+	+ x^2(0)
+\end{align*}
+On the far right, the last term is just zero, because if ever both TFT simultaneously fail to cooperate, with probability $x^2$, they will non-cooperate until the relationship ends. We need similar expressions for what happens at $V_\text{CN}$ and $V_\text{NC}$. These are easier, because if there is no mistake the pair just moves back-and-forth from CN to NC forever. If there is a mistake, then there is mutual non-cooperation and the relationship is essentially over.
+\begin{align*}
+	V_\text{CN} &= (1-x)(-c + wV_\text{NC}) + x(0)  & 
+	V_\text{NC} &= (1-x)(b + wV_\text{CN}) + x(0)
+\end{align*}
+Now we have three simultaneous equations and three unknowns, $V_\text{CC}$, $V_\text{CN}$ and $V_\text{NC}$. If you aren't going to use some software like Mathematica to do this, I suggest solving for $V_\text{CN}$ and $V_\text{NC}$ first, they are like mirrors of one another and not so complicated. Then solve for $V_\text{CC}$. You should make sure you know how to solve such systems in software like Mathematica however, because eventually systems of equations get too big for a sane person to waste time on doing algebra. Of course you still need to be confident with algebra, since you need to manipulate the solutions and understand them. So practicing on this three equation system might be useful. The solutions are:
+\begin{align*}
+	V_\text{CN} &= (1-x)\frac{w(1-x)b-c}{(1-w(1-x))(1+w(1-x))}  & 
+	V_\text{NC} &= (1-x)\frac{b-w(1-x)c}{(1-w(1-x))(1+w(1-x))} \\
+	V_\text{CC} &= \frac{(1-x)(b-c)}{1-w(1-x)} 
+\end{align*}
+Since a pair of TFT individuals begin at CC, $V(\text{TFT}|\text{TFT}) = V_\text{CC}$ and we are done. Notice that in the limit of $x \rightarrow 0$, we recover the original mutual cooperation payoff, $(b-c)/(1-w)$. To figure out when TFT is evolutionarily stable, we now need $V(\text{NO-C}|\text{TFT})$ and $V(\text{ALLC}|\text{TFT})$. First:
+\begin{align*}
+	V(\text{NO-C}|\text{TFT}) = (1-x)b + x(0) + w(0) = (1-x)b
+\end{align*}
+We require $V(\text{TFT}|\text{TFT}) > V(\text{NO-C}|\text{TFT})$. This simplifies to $(1-x)wb>c$. For ALLC, we just need $V_\text{CC}$ and $V_\text{CN}$, because ALLC always intends to cooperate.
+\begin{align*}
+	V_\text{CC} &= \underbrace{(1-x)^2(b-c+wV_\text{CC})}_\text{no mistakes}
+	+ \underbrace{(1-x)x(-c+wV_\text{CC})}_\text{partner (TFT) error}
+	+ \underbrace{x(1-x)(b+wV_\text{CN})}_\text{focal (ALLC) error}
+	+ \underbrace{x^2(0 + wV_\text{CN})}_\text{both error}
+\end{align*}
+
+\begin{align*}
+	V_\text{CN} &= (1-x)(-c + w V_\text{CC}) + x(0+w V_\text{CN})
+\end{align*}
+Now two equations and two unknowns. Solving for $V_\text{CC}$:
+\begin{align*}
+	V_\text{CC} &= (1-x)\frac{(1-xw)b-c}{1-w} = V(\text{ALLC}|\text{TFT})
+\end{align*}
+We require $V(\text{TFT}|\text{TFT}) > V(\text{ALLC}|\text{TFT})$ for TFT to be stable against ALLC. This simplifies to $(1-x)wb < c$, which is the \emph{opposite} of the condition for TFT to be stable against NO-C. We can reexpress these conditions in terms of $x$. For TFT to resist ALLC, we require $x > 1-c/(wb)$. So if $x$ is large enough, then rare ALLC cannot invade. Nice! But if $x$ is large enough to keep out ALLC, then it is also large enough to allow rare NO-C to invade. %There is a German word for this situation, \emph{Verschlimmbesserung}, which means something that was intended to help but ended up making things worse. Implementation errors can keep ALLC out. But they also place pairs of TFT in feuds that erode their advantage over ALLD.
+
+\end{mathbox}
+
+It turns out that the expected payoff for TFT against TFT is:
+\begin{align*}
+	V(\text{TFT}|\text{TFT}) = \frac{(1-x)(b-c)}{1-w(1-x)}
+\end{align*}
+Errors reduce benefits (the numerator) and the effective duration of the relationship (denominator), because once the pair enters mutual non-cooperation (NN), there is no way out. But notice that when $x=0$, we recover the original $(b-c)/(1-w)$ payoff to sustained cooperation.
+
+How does a rare ALLC do against TFT? Shown in the same box, ALLC receives:
+\begin{align*}
+	V(\text{ALLC}|\text{TFT}) = (1-x)\frac{(1-xw)b-c}{1-w}
+\end{align*}
+This looks more complicated, but it has the same structure. Errors reduce benefits. But in this case, they do not reduce the duration of the relationship (denominator), because ALLC never intentionally non-cooperates. So ALLC never gets trapped in NN like TFT does. Sometimes people say that ALLC is forgiving. But really it has no concept of a grudge in the first place. 
+
+TFT is now evolutionarily stable against ALLC when $(1-x)wb < c$. This is easier to satisfy when $x$ is large. Errors hurt both TFT and ALLC. But TFT retaliates against ALLC's errors, while ALLC never retaliates for TFT's errors.
+
+Errors help TFT against ALLC. But unfortunatley they do the opposite with NO-C. Also in the box, I show that the condition for TFT to be stable against NO-C is $(1-x)wb > c$. This is the opposite of the previous condition. Errors hurt TFT relative to NO-C, because pairs of TFT end up feuding, when errors are common. So TFT is either stable against ALLC or NO-C, but never both.
+
+\section*{Partner choice}
+
+x
+
+\section*{Indirect reciprocity}
+
+x
 
 
 
