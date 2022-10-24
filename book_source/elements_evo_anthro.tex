@@ -1445,14 +1445,14 @@ But hang on. Tit-for-Tat is rather famous in game theory.\footnote{Robert Axelro
 
 However it seems odd that TFT and ALLC receive exactly the same payoff, in the absence of NO-C. Surely these strategies differ in other ways?
 
-\section*{Errors matter}
+\section*{Little mistakes, large consequences}
 
-\begin{precis}Errors matter in repeated games. If games are repeated enough, then even rare errors can have large consequences.\end{precis}
+\begin{precis}Errors matter in repeated games. If games are repeated enough, even rare errors can influence the dynamics of relationships.\end{precis}
 
-Suppose an individual who intends to cooperate sometimes fails to do so effectively. This is because cooperate requires action, and sometimes action goes wrong, no matter our intentions. What happens when we add implementation errors to the iterated prisoner's dilemma? 
-Let $x$ be the probability that an individual who intends to cooperation ends up non-cooperating instead. In game theory, this is called an \bemph{implementation error}. Implementation errors differentiate TFT and ALLC. Errors hurt both of these strategies. But TFT retaliates against an error by its opponent---it doesn't know it is an error. ALLC does not. 
+Suppose an individual who intends to cooperate sometimes fails to do so. This is because cooperation requires action, and sometimes action goes wrong, no matter our intentions. 
+Let $x$ be the probability that an individual who intends to cooperation ends up non-cooperating instead. In game theory, this is called an \bemph{implementation error}. Implementation errors differentiate TFT and ALLC. Errors hurt both of these strategies. But TFT retaliates against an error by its opponent---it doesn't know it is an error. ALLC never retaliates. 
 
-To compute the expected payoff in a pair of TFT individuals, we need to account  for all the possible sequences of mistakes in every possible duration of the relationship. That sounds hard. But it is made easier by representing the problem as transitions between \bemph{intention states}. For a pair of TFT individuals, there are four possible pairs of intentions for each play of the prisoner's dilemma: (1) They both intend to cooperate (CC); (2) Partner intends to cooperate but focal does not (NC); (3) Focal intends to cooperate but partner does not (CN); (4) Neither intends to cooperate (NN). Implementation errors influence the transitions between these states. Let's represent it all with a diagram, which I explain below it.
+To compute the expected payoffs in the presence of errors, we need to account  for all the possible sequences of mistakes in every possible duration of the relationship. That sounds hard. But it is made easier by representing the problem as transitions between \bemph{intention states}. For a pair of TFT individuals, there are four possible pairs of intentions for each play of the prisoner's dilemma: (1) They both intend to cooperate (CC); (2) Partner intends to cooperate but focal does not (NC); (3) Focal intends to cooperate but partner does not (CN); (4) Neither intends to cooperate (NN). Implementation errors influence the transitions between these states. Let's represent it all with a diagram, which I explain below it.
 \vspace{-6pt}
 \figmarlab{figR1}
 \tikzset{every loop/.style={min distance=7mm,looseness=10}}
@@ -1559,11 +1559,91 @@ This looks more complicated, but it has the same structure. Errors reduce benefi
 
 TFT is now evolutionarily stable against ALLC when $(1-x)wb < c$. This is easier to satisfy when $x$ is large. Errors hurt both TFT and ALLC. But TFT retaliates against ALLC's errors, while ALLC never retaliates for TFT's errors.
 
-Errors help TFT against ALLC. But unfortunatley they do the opposite with NO-C. Also in the box, I show that the condition for TFT to be stable against NO-C is $(1-x)wb > c$. This is the opposite of the previous condition. Errors hurt TFT relative to NO-C, because pairs of TFT end up feuding, when errors are common. So TFT is either stable against ALLC or NO-C, but never both.
+Errors help TFT against ALLC. But unfortunately they do the opposite with NO-C. Also in the box, I show that the condition for TFT to be stable against NO-C is $(1-x)wb > c$. This is the opposite of the previous condition. Errors hurt TFT relative to NO-C, because pairs of TFT end up feuding, when errors are common. So TFT is either stable against ALLC or NO-C, but never both.
+
+Before you read too much into this analysis, notice that we assumed that implementation errors apply only to cooperation. Things can look quite different if we also allow errors for non-cooperation. How can a non-cooperator end up accidentally cooperating? Suppose cooperation means ``stinting,'' limiting harvest of a scarce resource, to allow it to regenerate. If both individuals stint, then both can harvest more in the future. Non-cooperation means harvesting. But harvesting can fail, because it requires action. Maybe the resource is a pond with fish, and the non-cooperator is bad at fishing. In the practice box below, I ask you to analyze this situation.
+
+The details of the payoffs can change things as well. The default prisoner's dilemma is \emph{additive}. There are no synergies when multiple individuals cooperate. This can also change things. In the second practice problem, I ask you to analyze one example.
+
+\begin{mathboxmp}{Practice: When cooperation means not doing.}
+Suppose implementation errors happen instead to non-cooperation intentions---an individual who intends to non-cooperate (N) instead cooperates (C) with chance $y$. Rederive the stability conditions for TFT against ALLC and NO-C. If you are feeling lucky, allow at the same time the previous chance $x$ that intent to cooperate (C) results in non-cooperation (N). What qualitative conclusions change?
+\end{mathboxmp}
+
+\begin{mathboxmp}{Practice: Synergistic cooperation.}
+Suppose the payoff when both individuals cooperate is now $B-c$ instead of $b-c$, where $B>b>c$. Analyze the iterated game again. Does this change any of the qualitative conclusions?
+\end{mathboxmp}
 
 \section*{Partner choice}
 
-x
+\begin{precis}Strategies that leave a non-cooperative partner to search for a new one must cope with the cost of search and the market for partners.\end{precis}
+
+The iterated prisoner's dilemma can be interpreted in a variety of ways. We can see it as each individual having a single partner and sicking with for $R=1/(1-w)$ plays. Or we can see it as each individual having many partners all at once. For example, in a group of baboons, every adult interacts repeatedly with every other adult. Some pairs sustain cooperation. Others do not. When non-cooperation means not interacting, as in the default prisoner's dilemma game, the result will look like \bemph{partner choice}: An individual will cooperate with only a subset of the other adults.
+
+As a general model of {partner choice}, the iterated prisoner's dilemma is badly flawed. First, often individuals cannot partner with everyone. Relationships are special and help is limited, and so animals must choose who to help. Second, pairs who sustain cooperation may want to interact more often, so to maximize the benefits of the relationship. To explore these ideas, we need some way to model dynamic partner choice.
+
+Imagine now that individuals interact an iterated prisoner's dilemma with only one partner at a time. Each time step, each individual can decide to interact or to dissolve the pair and search for a new partner. Relationships can end for other reasons, and the $w$ probability of persistence remains. However the relationship ends, search takes time. There is a chance $s$ each time step that a new partner is found. So on average is takes $S=1/(1-s)$ periods to find a new partner. Yes, a constant chance $s$ is odd---what if every other individual in the local community is already in a relationship? But we start easy.
+
+Lifespan is not infinite, and this makes search costly. Time searching is time not interacting, and time is limited. Let $\lambda$ be the probability an individual survives at each time step. So the average lifespan is $L=1/(1-\lambda)$.
+
+The next step is to calculate fitness. What is the lifetime fitness contribution of these pairwise relationships? Suppose TFT is common. Any pair of TFT individuals still earns $R(b-c)$. And then each TFT spends on average $S$ turns searching for another partner. So an individual's lifespan is divided up into segments of length (on average) $R+S$. In a lifespan of length $L$, there will be (on average) $L/(R+S)$ of the these segments. In each segment, the individual receives (on average) $R(b-c)$ increments of fitness. Whew. So in all the lifetime fitness contribution is:
+\begin{align*}
+	V(\text{TFT}|\text{TFT}) = \frac{L}{R+S}R(b-c)
+\end{align*}
+
+Does partner choice help TFT resist invasion by NO-C? A rare NO-C individual will interact once with each TFT partner, earning $b$, before the relationship is terminated by the TFT partner. Then $S$ turns of search before the next victim is found. So NO-C earns:
+\begin{align*}
+	V(\text{NO-C}|\text{TFT}) = \frac{L}{1+S}b
+\end{align*}
+So TFT is evolutionarily stable when:
+\begin{align*}
+	\frac{L}{R+S}R(b-c) > \frac{L}{1+S}b
+\end{align*}
+This condition is not so easy to interpret, because it depends strongly upon both $R$ and $S$. I'm going to plot it, which will help. But first I want to manipulate it so you can see how we can extract insight from these results. 
+
+Recall that in the absence of partner choice TFT is evolutionarily stable when $R(b-c)>b$. This implies that the critical value of $R$ is $R>b/(b-c)$. Let's compare this condition to our new one. Expressing the partner choice stability condition in terms of $R$:
+\begin{align*}
+	R > \frac{Sb}{(1+S)(b-c)-b}
+\end{align*}
+Is this ever easier to satisfy than the previous condition? We can ask the oracle of algebra:
+\begin{align*}
+	\frac{b}{b-c} > \frac{Sb}{(1+S)(b-c)-b}
+\end{align*}
+This simplifies to $c<0$, which is never true. Partner choice never improves the stability of TFT.
+
+It will help to plot the critical value of $R$ as a function of $S$. This means to plot $R={Sb}/{((1+S)(b-c)-b)}$. Above this curve, TFT is stable against rare NO-C. Below it, NO-C invades. Here's what it looks like:
+
+\vspace{-6pt}
+\figmarlab{figR2}
+%%%%% plot of R against S
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    	axis lines=middle,
+    	axis line style={-},
+    	height=0.4\textwidth,width=0.5\textwidth,
+    	xmin=1,xmax=10,ymin=1,ymax=10,
+    	xlabel=$S$,
+		ylabel=$R$,
+    	xtick={0,10},ytick={0,10},
+    	extra y ticks={0},
+    	yticklabel style = {font=\scriptsize,xshift=0.5ex},
+        xticklabel style = {font=\scriptsize,yshift=0.5ex},
+        x label style={at={(current axis.right of origin)},anchor=west,right=1mm},
+        y label style={at={(current axis.north west)},above=0.1mm},
+    	samples=50]
+  	\addplot[bemphcol,thick,domain=2:10] {x*2/((1+x)*(2-1.2)-2)};
+	%\addplot +[mark=none,thin,dashed,black] coordinates {(2.5, -1) (2.5, 11)};
+	\addplot[black,thin,dashed,domain=0:10] {2.5};
+	\node[bemphcol] at (axis cs: 6,6) {TFT stable};
+	\node[black] at (-1,2.5) {$\frac{b}{b-c}$};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+The above is drawn for $b=2$ and $c=1.2$. The dashed horizontal line is $R=b/(b-c)$, the value required for TFT to be stable in the absence of partner choice. Above the red curve, TFT is stable. So you see that partner choice, in this model, never helps. The reason is because partner choice sets rare un-cooperative individuals free to victimize new partners. When a TFT sticks with NO-C, the NO-C can't extract benefits from anyone else.
+
+Don't jump to the conclusion that partner choice never helps. There are lots of dynamics missing from this basic model. For example, when TFT is common the only process that will free up new victims for NO-C is the exogenous $w$ end of relationships. So the expected search time should be a function of $w$. But this model serves as another example of how careful, logical statements of assumptions help us explore social causes in strategies contexts.
+
 
 \section*{Indirect reciprocity}
 
