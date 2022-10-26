@@ -1573,6 +1573,95 @@ Suppose implementation errors happen instead to non-cooperation intentions---an 
 Suppose the payoff when both individuals cooperate is now $B-c$ instead of $b-c$, where $B>b>c$. Analyze the iterated game again. Does this change any of the qualitative conclusions?
 \end{mathboxmp}
 
+\section*{Learning and mistakes}
+
+\begin{precis}Some strategies try to learn which behavior, cooperation or non-cooperation, results in higher rewards. These strategies can do better than TFT in the presence of implementation errors.\end{precis}
+
+Another way to think about the iterated prisoner's dilemma, especially for animals like primates, is that individuals do arrive with fixed strategies for how to behave. Rather they are learning dynamically how to make a relationship work or whether to abandon it. Algorithmically, learning strategies are still strategies, so we don't need any new tricks (yet) to study a simple example.
+
+Consider a learning strategy named \bemph{Pavlov}. Pavlov has an aspiration level for the benefit it derives from an interaction. If it receives a payoff at or above that level, it keeps its behavior (cooperation or non-cooperate). Otherwise it changes behavior. Suppose the aspiration level is set to $b-c$, the payoff to mutual cooperation (CC). So Pavlov doesn't change when it receives $b-c$  or greater, which includes $b$, the payoff to tricking an opponent (NC). If it receives instead $0$ (NN) or $-c$ (CN), it switches behavior. So you see Pavlov is not a nice, moralistic strategy like TFT. It is just learning how to get a satisfactory payoff. 
+
+First consider how Pavlov behaves in the absence of implementation errors. If two Pavlov individuals begin by cooperating, they will receive $b-c$ and stay with cooperation. If they begin instead with mutual defection, they will receive $0$ and switch to CC, where they'll stay. So Pavlov does well when common. That's a good start.
+
+Now let's figure out how they do when there are implementation errors. As in the previous section, suppose $x$ is the probability that an individual who intends to cooperate instead non-cooperates. Let's draw a finite-state diagram again, to help us understand how this calculation is built.
+
+\vspace{-6pt}
+\figmarlab{figR2pavlovpavlov}
+\tikzset{every loop/.style={min distance=7mm,looseness=10}}
+\begin{center}
+\begin{tikzpicture}[
+            > = stealth, % arrow head style
+            shorten > = 1pt, % don't touch arrow head to node
+            auto,
+            node distance = 3cm, % distance between nodes
+            semithick % line style
+        ]
+        \tikzstyle{every state}=[
+            draw = black,
+            thick,
+            fill = white,
+            minimum size = 4mm
+        ]
+
+        \node[state] (CC) {CC};
+		\node[state] (NN) [right of=CC] {NN};
+        
+		\path[->] (CC) edge[loop left] node {$(1-x)^2 + x^2$} (CC);
+		\path[->] (CC) edge[bend left=25] node[above] {$2x(1-x)$} (NN);
+		\path[->] (NN) edge[bend left=25] node[below] {$1$} (CC);
+    \end{tikzpicture}
+
+	\emph{A pair of Pavlov individuals: Meet, play, love}
+	\vspace{6pt}
+\end{center}
+
+Begin with the CC node. If no mistake it made, the pair remains at CC. But they also remain at CC if \emph{both} make a mistake. Why? These are implementation errors. To the players know when they make a mistake. So when both make a mistake, they play NN, which results in zero for both. So Pavlov decides zero is bad, and then both play C on the next turn.
+When only one makes a mistake, they play CN or NC. Either way, one of the Pavlov individuals receives $b$ and the other $-c$. The one who received $b$ stays at N. The one who received $-c$ changes to N. So the next turn, they play NN. But then they immediately revert back to CC. Pavlov recovers from mistakes very quickly, because it is trying to find a good payoff. In the box on the next page, I show that when Pavlov is common, it receives on average:
+\begin{align*}
+	V(\text{Pavlov}|\text{Pavlov}) = \frac{(1-x) (b-c)}{(1-w) (1 + 2 w x(1-x))}
+\end{align*}
+This is a bit of a mess. But notice that when $x=0$, we recover $(b-c)/(1-w)$, the payoff to sustained cooperation. Errors reduce benefits (top), as well as the effective duration of cooperation (bottom).
+
+We want to compare this payoff to a rare ALLC. Why? Because failing to keep out rare nice strategies was the basic flaw of TFT, remember. And errors didn't help. ALLC will never intend to non-cooperate. So we only have to consider the CC and CN nodes. In the box, I show that rare ALLC cannot invade common Pavlov. The reason is that ALLC lets Pavlov exploit at the CN node. Pavlov likes getting $b$, and ALLC will just keep paying $-c$, until it makes a mistake. Then both get zero, and Pavlov decides to cooperate again. This phenomenon highlights that Pavlov is not really a ``cooperative'' strategy in the typical sense. It just wants a good enough payoff, $b-c$ or more. And it is happy to exploit a partner to get it.
+
+Pavlov's weakness is NO-C. It will keep trying to cooperate with NO-C, bouncing from CN to NN and back, until the relationship ends. If errors are not too common, Pavlov can be stable against rare NO-C, but it is not as easy as with TFT, which just stops cooperating with NO-C right away. See the box for the details.
+
+
+
+\begin{mathbox}{b}{Pavlovian payoffs.}
+The calculations are analogous to the TFT example in the previous section. We need only two equations for this calculation:
+\begin{align*}
+	V_\text{CC} &= (1-x)^2(b-c + w V_\text{CC}) + x(1-x)(b+wV_\text{NN}) \\
+	& \quad + (1-x)x(-c+wV_\text{NN}) + x^2(0+wV_\text{CC}) \\
+	V_\text{NN} &= 0 + wV_\text{CC}
+\end{align*}
+Solving for $V_\text{CC}$ gives us:
+\begin{align*}
+	V_\text{CC} = \frac{(1-x) (b-c)}{(1-w) (1 + 2 w x(1-x))} = V(\text{Pavlov}|\text{Pavlov})
+\end{align*}
+This doesn't look so nice. But we want to compare it to the payoffs for rare invading strategies. A rare ALLC visits CC and CN nodes. These are the implied expressions for each:
+\begin{align*}
+	V_\text{CC} &= (1-x)^2(b-c + w V_\text{CC}) + x(1-x)(b+wV_\text{CN}) \\
+	& \quad + (1-x)x(-c+wV_\text{CN}) + x^2(0+wV_\text{CC}) \\
+	V_\text{CN} &= (1-x)(-c + w V_\text{CN}) + x(0+w V_\text{CC})
+\end{align*}
+Solving for $V_\text{CC}$, we find:
+\begin{align*}
+	V_\text{CC} = \frac{(1-x) (b (1-w (1-x))-c (1-w (1-(3-x) x)))}{(1-w) (1-w (1-(3-x) x))} = V(\text{ALLC}|\text{Pavlov})
+\end{align*}
+This expression is even worse. We ask when $V(\text{Pavlov}|\text{Pavlov}) > V(\text{ALLC}|\text{Pavlov})$, and the answer is whenever $b>c$. ALLC cannot invade. What about are NO-C? We need only consider the NC and NN nodes.
+\begin{align*}
+	V_\text{NC} &= (1-x)(b+w V_\text{NN}) + x(0 + w V_\text{NC}) \\
+	V_\text{NN} &= 0 + w V_\text{NC}
+\end{align*}
+Solving or $V_\text{NC}$:
+\begin{align*}
+	V_\text{NC} = \frac{(1-x) b }{(1-w) (1+w (1-x))} = V(\text{NO-C}|\text{Pavlov})
+\end{align*}
+These expressions are not so nice to work with, so I suggest plotting $V(\text{NO-C}|\text{Pavlov})$ and $V(\text{Pavlov}|\text{Pavlov})$ as functions of $x$. As long as errors aren't too common, and $b$ is large enough, Pavlov can be stable against both NO-C and ALLC.
+
+\end{mathbox}
+
 \section*{Partner choice}
 
 \begin{precis}Strategies that leave a non-cooperative partner to search for a new one must cope with the cost of search and the market for partners.\end{precis}
