@@ -1577,7 +1577,7 @@ Suppose the payoff when both individuals cooperate is now $B-c$ instead of $b-c$
 
 \begin{precis}Some strategies try to learn which behavior, cooperation or non-cooperation, results in higher rewards. These strategies can do better than TFT in the presence of implementation errors.\end{precis}
 
-Another way to think about the iterated prisoner's dilemma, especially for animals like primates, is that individuals do arrive with fixed strategies for how to behave. Rather they are learning dynamically how to make a relationship work or whether to abandon it. Algorithmically, learning strategies are still strategies, so we don't need any new tricks (yet) to study a simple example.
+Another way to think about the iterated prisoner's dilemma, especially for animals like primates, is that individuals do not arrive with fixed strategies for how to behave. Rather they learn dynamically how to make a relationship work or whether to abandon it. Algorithmically, learning strategies are still strategies, so we don't need any new tricks (yet) to study a simple example.
 
 Consider a learning strategy named \bemph{Pavlov}. Pavlov has an aspiration level for the benefit it derives from an interaction. If it receives a payoff at or above that level, it keeps its behavior (cooperation or non-cooperate). Otherwise it changes behavior. Suppose the aspiration level is set to $b-c$, the payoff to mutual cooperation (CC). So Pavlov doesn't change when it receives $b-c$  or greater, which includes $b$, the payoff to tricking an opponent (NC). If it receives instead $0$ (NN) or $-c$ (CN), it switches behavior. So you see Pavlov is not a nice, moralistic strategy like TFT. It is just learning how to get a satisfactory payoff. 
 
@@ -1662,6 +1662,10 @@ These expressions are not so nice to work with, so I suggest plotting $V(\text{N
 
 \end{mathbox}
 
+\section*{Standing and contrition}
+
+[section on standing-based stategies and Contrite-TFT]
+
 \section*{Partner choice}
 
 \begin{precis}Strategies that leave a non-cooperative partner to search for a new one must cope with the cost of search and the market for partners.\end{precis}
@@ -1731,14 +1735,16 @@ It will help to plot the critical value of $R$ as a function of $S$. This means 
 
 The above is drawn for $b=2$ and $c=1.2$. The dashed horizontal line is $R=b/(b-c)$, the value required for TFT to be stable in the absence of partner choice. Above the red curve, TFT is stable. So you see that partner choice, in this model, never helps. The reason is because partner choice sets rare un-cooperative individuals free to victimize new partners. When a TFT sticks with NO-C, the NO-C can't extract benefits from anyone else.
 
-Don't jump to the conclusion that partner choice never helps. There are lots of dynamics missing from this basic model. For example, when TFT is common the only process that will free up new victims for NO-C is the exogenous $w$ end of relationships. So the expected search time should be a function of $w$. But this model serves as another example of how careful, logical statements of assumptions help us explore social causes in strategies contexts.
+Don't jump to the conclusion that partner choice never helps. There are lots of dynamics missing from this basic model. For example, when TFT is common the only process that will free up new victims for NO-C is the exogenous $w$ end of relationships. So the expected search time should be a function of $w$. But this model serves as another example of how careful, logical statements of assumptions help us explore social causes in strategic contexts.
 
 
 \section*{Indirect reciprocity}
 
 x
 
+\section*{Variance reduction and risk pooling}
 
+x
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Kinship systems
@@ -1746,7 +1752,236 @@ x
 \def \chapterElement {K}
 \chapter{The Evolution of Families}
 
-\lipsum[12-14]
+%\lipsum[12-14]
+
+From an evolutionary perspective, the family is a hostage situation. Offspring are gametes (eggs and sperm) who run away together with stolen copies of parental genes. Their stolen goods put offspring in a position of power. A genetic variant in a parent that hurts offspring very likely hurts a copy of itself. A genetic variant that helps offspring very likely helps a copy of itself. This is not an entirely cooperative scenario, because offspring are not their parents. They do not have exactly the same interests. They may use their power to extract more help than they really need. ``Give me another worm,'' the baby bird cries, ``or your lineage gets it!''
+
+Animal societies scaffold on this hostage scenario. Everywhere in nature, common descent is an important source of \bemph{positive assortment}. But this engenders always a mix of conflict and cooperation. If there is cooperation within the family, there is also competition between families. In many mammals for example, social groups are sisterhoods. And these sisterhoods compete intensely with one another for space, food, and a safe future for their offspring. Sisters also compete with one another. And the balance between conflict and cooperation can tip suddenly to either side. The baboon says: \emph{I against my sister. I and my sister against my cousin. I, my sister, and my cousin against the world.}\footnote{This is a slightly modified proverb (Nafisa Haji, The Sweetness of Tears).}
+
+Human societies build absurd and amazing institutions on top of hostages. In medieval Europe, royalty dominated political power. And royalty is a family. But royal families routinely raised one another's children, literal royal hostages, to ensure that they could remain at peace. ``Don't invade my lands,'' the princess cries, ``or your princess gets it!''\footnote{Peacemaking in Middle Ages citation}  %The mafia is sometimes called a ``family,'' but no human family is that large. More accurately a mafia uses family ties to bind people to the organization. 
+
+This chapter is about \bemph{kin selection}. 
+
+
+\section*{Hamilton's rule}
+
+\begin{precis}When relatives interact, it can promote cooperation. Under strong assumptions, there is a simple rule.\end{precis}
+
+Suppose two relatives interact in a one-shot \bemph{prisoner's dilemma}. When will selection favor cooperation instead of non-cooperation? Countless students have been taught in introductory evolutionary biology and anthropology courses that there is a simple answer to this question:
+\begin{align*}
+	r b > c
+\end{align*}
+where $r$ is the \bemph{coefficient of relatedness} between the pair, and $b$ and $c$ have their usual meanings in the prisoner's dilemma. This condition is usually called \bemph{Hamilton's rule}.\footnote{cite Hamilton} This rule is a valuable qualitative result. It tells us that recent common descent, which increases $r$, can increase the range of conditions under which natural selection favors cooperation. The model it is derived from also helps us understand why.
+
+Here is a very simple and sloppy derivation. The rest of this section derives the rule in a more careful and educational way. Recall the statistical positive assortment model from \bemph{5C}. In this model, the probability an individual of any strategy X is paired with another individual with the same strategy is:
+\begin{align*}
+	\Pr(\text X|\text X) = r + (1-r)p
+\end{align*}
+where $r$ is a coefficient of assortment and $p$ the proportion of the population with strategy X. Now imagine pairs of individuals interact once in the additive prisoner's dilemma from the previous chapter. The condition for rare cooperative (C) individuals to invade a population of non-cooperators (N) is:
+\begin{align*}
+	\Pr(\text C|\text C) (b-c) + \Pr(\text N|\text C)(-c) > 0
+\end{align*}
+The left side of the condition above is the expected fitness of the rare C individual. The right side is the average fitness of a common N. Now we fill in the abstract interaction probabilities with the statistical assortment model:
+\begin{align*}
+	(r+(1-r)p) (b-c) + (1-r)(1-p)(-c) > 0
+\end{align*}
+When C is rare, $p \approx 0$, so this simplifies to $rb-c>0$. This is Hamilton's rule.
+
+Like most results in evolutionary game theory, this rule is a result of very specific set of assumptions. So it is not completely general. But there is a tendency to exaggerate its generality, especially in the human evolutionary sciences. And this leads to mistakes. For example, the founders of Evolutionary Psychology wrote that it ``should be true of any species on any planet at any time.''\footnote{Page 168 of Berkow, Cosmides, Tooby (1992) The Adapted Mind. It is tempting to dismiss this, because few people expect evolutionary psychologists to have a strong grasp of evolutionary theory. But many biologists are equally confused. They are just less likely to put it in writing.} But consider the following two puzzles.
+
+In many species of bird, offspring do not sexually mature in the first year but can instead stay behind and help their parents at the nest. Suppose a situation arises in which the helper can sacrifice her own life to save four siblings. So $b=4$, $c=1$, and $r=0.5$. Hamilton's rule is satisfied, but any individual in which a gene arises that leads to this self-sacrifice would die and remove the allele from the population. Why does Hamilton's rule arrive at the wrong answer?
+
+The coefficient of relatedness $r$ is $1/2$ for full siblings, $1/4$ for cousins, and so on, declining with genealogical distance. This coefficient is often interpreted as the probability a pair of individuals share an allele. But this can't be right, because at many sites in the genome, in most species, there are only a few alleles. So many distantly related individuals will share alleles. Instead $r$ is the probability the individuals share an allele by common descent. They must have inherited it from a common ancestor. But again, this can't be right. If mutations are rare, and a population is not very large, then most individuals who share an allele must share it by common descent. In such populations, why doesn't natural selection favor universal cooperation? Or why doesn't Hamilton's rule predict that it should, if indeed $r$ is the probability of sharing an allele by common descent?
+
+
+\subsection*{The Price equation}
+To sort out Hamilton's rule, we need to back up and start over. We need a more general statement of natural selection. Then we can introduce assumptions, until we get the rule back. The place to start is the \bemph{Price equation}:
+\begin{align*}
+	\bar w \Delta p = \cov(w_i,p_i)
+\end{align*}
+This equation states a simple fact about evolution: The change in the proportion of the population $p$ that has any particular allele is equal to the covariance between individual fitness $w_i$ and individual alle frequency $p_i$. I show you how to derive this equation in the box on the next page. 
+
+\begin{mathbox}{p}{Deriving the Price equation.}
+We focus on a particular allele ``S'' and derive an expression for its expected change in frequency in the population. Let $n_i$ be the number of copies of any allele that individual $i$ could possess, its \emph{ploidy}. So for example, humans are $n=2$ for most chromosomes. Let $N$ be the size of the allele population, $N=\sum_i n_i$. Let $p_i$ be the proportion of individual $i$'s alleles that are S. Then just by definition, the proportion of S in the population is:
+\begin{align*}
+	p = \sum_i \frac{n_i p_i}{N}
+\end{align*}
+Now we use a prime symbol $\prime$ to indicate the value of a variable in the next generation. So the proportion of S in the next generation is just $p^\prime = \sum_i (n_i^\prime p_i^\prime)/{N^\prime}$. Now let $w_i$ be the ``fitness'' of individual $i$, the number of offspring it produces. Let $\bar w = \sum_i (n_i/N) w_i$ be the average fitness. Then we can substitute $n_i^\prime=w_i n_i$ and $N^\prime=\bar w N$.
+\begin{align*}
+	p^\prime = \sum_i \frac{w_i n_i p_i^\prime}{\bar w N}
+\end{align*}
+So far, nothing but definitions of random variables. Let's make the above into a difference equation, instead of a recursion, $\Delta p = p^\prime - p$:
+\begin{align*}
+	\Delta p = \sum_i \frac{w_i n_i p_i^\prime}{\bar w N} - p
+\end{align*}
+Multiplying both sides by $\bar w$:
+\begin{align*}
+	\bar w \Delta p = \sum_i \frac{ n_i }{N} w_i p_i^\prime - p \bar w 
+	= \sum_i \frac{ n_i }{N} w_i p_i^\prime - p \sum_i \frac{n_i}{N}w_i
+\end{align*}
+Now just for fun, let's add and subtract the term $\sum_i (n_i/N)w_i p_i$ to the right side. This doesn't change the value, because we added it and subtracted it at the same time. But then we can arrange and factor to make a simpler expression. Like this:
+\begin{align*}
+	\bar w \Delta p = 
+	\underbrace{\sum_i \frac{ n_i }{N} w_i p_i^\prime }_\text{A}
+	- \underbrace{p \sum_i \frac{n_i}{N}w_i }_\text{B}
+	+ \underbrace{ \sum_i \frac{n_i}{N} w_i p_i }_\text{C}
+	- \underbrace{ \sum_i \frac{n_i}{N} w_i p_i }_\text{D}
+\end{align*}
+The terms A and B are the originals. We added C and subtracted D. Now let's rearrange:
+\begin{align*}
+	\bar w \Delta p &= 
+	\bigg( 
+	  \underbrace{ \sum_i \frac{n_i}{N} w_i p_i }_\text{C}
+	- \underbrace{p \sum_i \frac{n_i}{N}w_i }_\text{B}
+	\bigg) + 
+	\bigg(
+		\underbrace{\sum_i \frac{ n_i }{N} w_i p_i^\prime }_\text{A}
+	- \underbrace{ \sum_i \frac{n_i}{N} w_i p_i }_\text{D}
+	\bigg) \\
+	&= \sum_i \frac{n_i}{N} w_i(p_i - p) + \sum_i \frac{n_i}{N} w_i(p_i^\prime - p_i)
+\end{align*}
+Now the last step. The definition of covariance is $\cov(x,y) = \E  ( x(y- \bar y ) )$. So the term on the left above is the covariance between $w_i$ and $p_i$, since $p$ is the average $p_i$. And the term on the right above is an average. Using these definitions, we arrive at the Price equation:
+\begin{align*}
+	\bar w \Delta p = \cov(w_i,p_i) +  \E ( w_i \Delta p_i )
+\end{align*}
+The term $\Delta p_i = p_i^\prime - p_i$ is the change within individual $i$. In most cases, this is zero, because the frequency of an allele does not change within an individual within its lifetime. But it's not impossible. Setting $\Delta p_i=0$ gives us the simplified form in the text.
+\end{mathbox}
+
+The Price equation is a very general statement about evolutionary change. It isn't about natural selection, specifically. If $w_i$ is random, then it's a neutral model of evolutionary change. It is also perfectly general to a wide variety of inheritance systems, which is important when modeling some social insects for example, where females are diploid and males haploid.
+
+Now what we'll do is make one assumption at a time until we recover Hamilton's rule.\footnote{This derivation is a simplified version of Grafen's geometric view of relatedness article.}
+
+\subsection*{Additive fitness}
+
+To start, we assume an additive prisoner's dilemma as the cooperation game. Remember, there is nothing necessarily additive about cooperation payoffs. Assume:
+\begin{align*}
+	w_i = \omega + h_i (-c) + y_i b
+\end{align*}
+The symbol $\omega$ is baseline fitness unrelated to the cooperation game. The variables $b$ and $c$ have their usual meanings. Now $h_i$ is the probably that individual $i$ provides help, and $y_i$ is the probability that same individual receives help from its partner.
+
+Additive fitness is a very special case that disallows synergies and diminishing returns. For most resources, if you give me twice as much, my benefit is not twice as large.
+
+\vspace{-6pt}
+\figmarlab{figK1}
+%%%%% plot of resources against fitness change
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    	axis lines=middle,
+    	axis line style={-},
+    	height=0.4\textwidth,width=0.5\textwidth,
+    	xmin=0,xmax=10,ymin=0,ymax=10,
+    	xlabel=Resources,
+		ylabel=Change in fitness,
+    	xtick={0},ytick={0},
+    	extra y ticks={0},
+    	yticklabel style = {font=\scriptsize,xshift=0.5ex},
+        xticklabel style = {font=\scriptsize,yshift=0.5ex},
+        x label style={at={(current axis.right of origin)},anchor=west,right=1mm},
+        y label style={at={(current axis.north west)},above=0.1mm},
+    	samples=50]
+	\addplot[black,thick,domain=0:10] {1*x^0.8};
+	
+	\addplot +[mark=none,thin,dashed,black] coordinates {(3, -1) (3, 3^0.8)};
+	\addplot +[mark=none,thin,dashed,black] coordinates {(-1, 3^0.8) (3, 3^0.8)};
+
+	\addplot +[mark=none,thin,dashed,black] coordinates {(9, -1) (9, 9^0.8)};
+	\addplot +[mark=none,thin,dashed,black] coordinates {(-1, 9^0.8) (9, 9^0.8)};
+
+  	\addplot[bemphcol,thick,domain=0:10] {1*x};
+	\node[bemphcol] at (axis cs: 5,8) {Additive};
+	\node[black] at (axis cs: 6.5,2) {Diminishing};
+	%\node[black] at (-1,2.5) {$\frac{b}{b-c}$};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+Now insert our definition for $w_i$ into the Price equation:
+\begin{align*}
+	\bar w \Delta p = \cov( \omega + h_i (-c) + y_i b , p_i )
+\end{align*}
+Now since a covariance is an expectation, and an expectation is a sum, we can decompose the above across addition, giving us a sum of three covariances:
+\begin{align*}
+	\bar w \Delta p = \cov( \omega , p_i ) + \cov( h_i (-c) , p_i ) + \cov( y_i b , p_i )
+\end{align*}
+The first covariance, $\cov( \omega , p_i )$, is zero. The reason is that $\omega$ is a constant, and constants don't vary, so they also don't covary. This leaves the second and third covariances. For these, we factor out the constants:
+\begin{align*}
+	\bar w \Delta p = (-c)\cov( h_i  , p_i ) + b \cov( y_i , p_i )
+\end{align*}
+And this is greater than zero, meaning cooperation increases, when:
+\begin{align*}
+	b \frac{ \cov( y_i , p_i ) }{\cov( h_i  , p_i )}  > c
+\end{align*}
+This is not yet Hamilton's rule. Not even close. But it does resemble it. Instead of $r$, we have the ratio of the covariance between receiving help and genotype to the covariance between giving help and genotype. 
+
+\subsection*{Additive genetics}
+Next we need to specify how genotype $p_i$ relates to phenotypes $h_i$ and $y_i$. We make each phenotype an additive function of allele frequency $p_i$.
+\begin{align*}
+	h_i &= a + kp_i\\
+	y_i &= a + kp_j
+\end{align*}
+where $p_j$ is the allele frequency in the partner $j$. There are other possibilities. Many alleles are dominant, and so two copies and one copy produce the same phenotype. This model doesn't allow that. Also no recessive alleles. Each additional cooperation allele produces a dose $k$ of helping. 
+
+We insert these definitions into our rule and simplify:
+\begin{align*}
+	b \frac{ \cov( a + kp_j , p_i ) }{\cov( a + kp_i  , p_i )}  > c
+\end{align*}
+As before, constants don't vary and so they don't covary, so the $a$ terms vanish. This leaves us:
+\begin{align*}
+	b \frac{ k \cov( p_j , p_i ) }{k \cov( p_i  , p_i )}  > c
+\end{align*}
+The covariance of a variable with itself is its variance, and so we arrive at:
+\begin{align*}
+	b \frac{ \cov( p_j , p_i ) }{\var( p_i )}  > c
+\end{align*}
+This is usually expressed as:
+\begin{align*}
+	b { \beta( p_j , p_i ) }  > c
+\end{align*}
+where $\beta(p_j,p_i)$ is the regression coefficient for the line regressing the partner's genotype $p_j$ on the focal individual's $p_i$. In other words, it expresses how the focal's genotype predicts the partner's genotype.
+
+This implies there is linear equation that satisfies:
+\begin{align*}
+	\E(p_j|p_i) &= \E(p_j) + \beta(p_j,p_i)(p_i-\E(p_i)) \\
+	&= p + \beta(p_j,p_i)(p_i-p)
+\end{align*}
+Solving for $\beta(p_j,p_i)$:
+\begin{align*}
+	\beta(p_j,p_i) = \frac{\E(p_j|p_i)-p}{p_i-p}
+\end{align*}
+Okay, this still isn't $r$. But it is a function of the genotypes of the two individuals. Any process that makes $\E(p_j|p_i) > p$ would support the evolution of cooperation in this model. But what does relatedness have to do with it?
+
+\subsection*{Very weak selection}
+
+We need a way to make $\beta(p_j,p_i) = r$. And it turns out that as we let the strength of natural selection become weak, $\beta(p_j,p_i) \approx r$. We'll proceed by constructing an expression for $\E(p_j|p_i)$, the expected genotype of $j$ given $i$, and relating it to shared ancestry. Then we'll see why our expression requires weak selection to be valid.
+
+Define $r$ as the proportion of genes that are \bemph{identical by descent} (IBD) in individuals $i$ and $j$. When a gene is IBD, it means $i$ and $j$ have the same allele and they got it from a common ancestor. Now when an allele at the cooperation locus is IBD, it may or may not also be an allele that increases cooperation. Suppose for example individual $i$ has $p_i=0.5$, which means perhaps a diploid species and one copy of the cooperation allele. So while $i$ and $j$ share overall $r$ alleles by common descent, there's only a half chance it's a cooperation allele, because $i$ only has half cooperation alleles. This means the chance $j$ shared a cooperation allele with $i$ through common descent is $rp_i$.
+
+The pair may also share cooperation alleles through the non-IBD part of their genomes, which is of size $1-r$. For that part of the genome, the expected proportion of cooperation alleles is the population average, $p$. So the chance $j$ shares a cooperation allele with $i$ that is not IBD is $(1-r)p$.
+
+Together we get:
+\begin{align*}
+	\E(p_j|p_i) = \underbrace{ r p_i }_\text{IBD} + \underbrace{ (1-r) p }_\text{not-IBD}
+\end{align*}
+Now solve for $r$:
+\begin{align*}
+	r = \frac{\E(p_j|p_i)-p}{p_i-p}
+\end{align*}
+And this is equal to $\beta(p_j,p_i)$, the regression from the previous section.
+
+Okay, so where's the weak selection? It's already in there, smuggled in under shadows. When I asserted that the proportion of cooperation alleles that are IBD is $rp_i$, I implicitly assumed that cooperation and non-cooperation alleles have the same chances of being passed down from a common ancestor. But if there is selection, this can't be true. The fact that you exist implies for example that you didn't inherit any lethal alleles from any ancestor. So if selection has favored cooperation (or non-cooperation) in past generations, then inheritance won't be fair in the way we usually calculate $r$, by just counting links in the pedigree. Technically we need to assume very weak selection (neutrality) to do that. 
+
+For close relatives, selection doesn't have to be neutral for $r$ to be a good approximation. But for distant relatives, even weak selection will make $r$ a terrible device for predicting shared alleles. Once an allele goes to fixation in a population, then almost everyone shares it by common descent. But that isn't what's relevant to understanding the evolution of cooperation. What's relevant is knowing what happens to a mutant allele. Close relatives tend to share recent mutations, but only if those mutations are lethal or too strongly selected against. And that creates positive assortment of phenotypes among close relatives. 
+
+Okay, if we are comfortable letting selection be weak, then we have now recovered Hamilton's rule. If you make other assumptions about the game or about genetics or about the strength of selection, you get a different rule. At least on this planet.
+
+\section*{Group selection}
+
+x [or do this in its own chapter?]
+
+\section*{Neighbor-modulated fitness}
+
+x
 
 
 %%%%%%
