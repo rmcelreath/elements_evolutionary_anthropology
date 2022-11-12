@@ -1975,13 +1975,237 @@ For close relatives, selection doesn't have to be neutral for $r$ to be a good a
 
 Okay, if we are comfortable letting selection be weak, then we have now recovered Hamilton's rule. If you make other assumptions about the game or about genetics or about the strength of selection, you get a different rule. At least on this planet.
 
+\section*{Making kin selection models}
+
+The lack of generality in Hamilton's rule means you shouldn't use it to make models. It is a result of a very specific combination of assumptions. What you should do instead is specify how social groups form, whether they are comprised of relatives, and then derive the implications of those assumptions. 
+
+This has to be emphasized, because sometimes biologists attempt an analysis by writing an \bemph{inclusive fitness} expression for each strategy. Inclusive fitness in this context means an individual's own personal payoffs plus a fraction $r$ of a relative's payoffs. This by analogy to Hamilton's rule, because it's as if the individual receive $-c + rb$, with the benefits to the partner discounted by relatedness $r$.
+
+Consider as an example the Hawk-Dove game from \bemph{4H}. The Hawk-Dove game is not additive in its payoffs. To remind you:
+\begin{center}
+	\begin{tabular}{ccc}
+		& Hawk & Dove \\
+	  Hawk & $(v-c)/2$ & $v$ \\
+	  Dove & 0 & $v/2$
+	\end{tabular}
+\end{center}
+What happens depends upon what both players do. So instead of trying to write some additive inclusive fitness expression, and possibly botching it, just use the statistical assortment model. The fitness of Hawk is:
+
+\section*{Reproductive skew}
+x
+
+\section*{What is inclusive fitness and does selection maximize it?}
+x
+
 \section*{Group selection}
 
 x [or do this in its own chapter?]
 
-\section*{Neighbor-modulated fitness}
+\section*{Local competition}
 
-x
+Kinship can be a powerful source of assortment. But that assortment does not always lead to more cooperation. It really depends upon how families interact and the broader population structure, and even the life cycle of the organism. 
+
+Let's consider two examples. The first asks whether offspring should disperse away from where they were born. The second asks about how many daughters and sons a mother should produce, if she could choose.
+
+\subsection*{Dispersal}
+
+Suppose a environment in which there are $n$ sites where an adult can mature and reproduce. Only one adult can reside at each site, so the adult population is at most size $n$. Each adult produces on average $k$ offspring and then dies. A proportion $v$ of offspring disperse to another random site. A proportion $1-v$ remain at their natal site. Dispersal is dangerous, and only a proportion $p$ of dispersers survive to arrive at another site. Whether at a natal site or a new site, all offspring at a site compete to mature, and only one can succeed.
+
+If natural selection could adjust $v$, which value would it end up at? To answer that question, we need to find a value of $v$ that is evolutionarily stable. This means that a mutant with a similar value of $v$ could not grow faster and replace a common-type $v$. So suppose a population in which $n-1$ sites have resident adults with dispersal value $v$. But one site has a mutant, and the mutant programs $v+\delta$ of its offspring to disperse, where $\delta$ is small.
+
+As usual, we need common-type fitness and mutant fitness. Common-type fitness in this model is easy. It is always 1. Why? Because at most 1 adult can survive at each site. So the expected reproductive success of each adult is also 1. 
+
+What about the mutant? To calculate mutant fitness, we need to think about who arrives and leaves each type of site. Here's a diagram to help us:
+
+\vspace{-6pt}
+\figmarlab{figKdispersal1}
+\tikzset{every loop/.style={min distance=7mm,looseness=10}}
+\begin{center}
+\begin{tikzpicture}[
+            > = stealth, % arrow head style
+            shorten > = 1pt, % don't touch arrow head to node
+            auto,
+            node distance = 3cm, % distance between nodes
+            semithick % line style
+        ]
+        \tikzstyle{every state}=[
+            draw = black,
+            thick,
+            fill = white,
+            minimum size = 4mm
+        ]
+
+        \node[state] (home) {C};
+		\node[] (a) [draw=white,left of=home] {$vpk$};
+		\node[] (b) [draw=white,above left of=home] {$(n-2)\dfrac{vpk}{n-1}$};
+		\node[] (c) [draw=white,above right of=home] {$\dfrac{(v+\delta)pk}{n-1}$};
+		%\node[state] (NN) [right of=CC] {NN};
+        
+		\path[->] (home) edge[loop below] node {$(1-v)k$} (home);
+		\path[->] (home) edge[bend left=25] node[above] {dispersers} (a);
+		\path[->] (b) edge[bend left=25] node[left] {Common-type immigrants} (home);
+		\path[->] (c) edge[bend right=25] node[right] {~Mutant immigrants} (home);
+		%\path[->] (NN) edge[bend left=25] node[below] {$1$} (CC);
+    \end{tikzpicture}
+
+	\vspace{6pt}
+	\emph{A common-type site: They come from the land of the ice and snow}
+	\vspace{6pt}
+\end{center}
+
+The C in the middle is the site with an adult common-type resident. Each C resident produces $k$ offspring, and $vk$ disperse, and $vpk$ survive to arrive at another site. Dispersers from other sites arrive randomly at this site. There are $n-2$ other common-type sites. Each produces $vpk$ dispersers, and there's a chance $1/(n-1)$ that any disperser lands at this site. So in all $(n-2)vpk/(n-1)$ expected common-type immigrants. The single mutant site produces $(v+\delta)pk$ dispersers, and each has a chance $1/(n-1)$ of landing at this site. Finally, $(1-v)k$ offspring who were born at this site remain (the loop at the bottom).
+
+All of the offspring at this site compete for it. So the probability the winner is a mutant offspring is:
+\begin{align*}
+	\Pr(M|C) = (n-1) \times \frac{\dfrac{(v+\delta)pk}{n-1}}{(1-v)k + \dfrac{(v+\delta)pk}{n-1} + \dfrac{(n-2)vpk}{n-1} }
+\end{align*}
+The numerator is the expected number of mutant arrivals. The denominator is the sum of all arrivals and non-dispersing offspring. This is for only one common-type site. There are $n-1$ such sites. That's why there is an $n-1$ in front. This expression can be simplified. But we'll worry about that later.
+
+The expression above is only part of a mutant's fitness. We also need to know the probability a mutant offspring wins the natal site. Again a diagram to help:
+
+\vspace{-6pt}
+\figmarlab{figKdispersal2}
+\tikzset{every loop/.style={min distance=7mm,looseness=10}}
+\begin{center}
+\begin{tikzpicture}[
+            > = stealth, % arrow head style
+            shorten > = 1pt, % don't touch arrow head to node
+            auto,
+            node distance = 3cm, % distance between nodes
+            semithick % line style
+        ]
+        \tikzstyle{every state}=[
+            draw = black,
+            thick,
+            fill = white,
+            minimum size = 4mm
+        ]
+
+        \node[state] (home) {M};
+		\node[] (a) [draw=white,left of=home] {$(v+\delta)pk$};
+		\node[] (b) [draw=white,above left of=home] {$(n-1)\dfrac{vpk}{n-1}$};
+		%\node[state] (NN) [right of=CC] {NN};
+        
+		\path[->] (home) edge[loop below] node {$(1-v-\delta)k$} (home);
+		\path[->] (home) edge[bend left=25] node[above] {dispersers} (a);
+		\path[->] (b) edge[bend left=25] node[right] {Common-type immigrants} (home);
+		%\path[->] (NN) edge[bend left=25] node[below] {$1$} (CC);
+    \end{tikzpicture}
+
+	\vspace{6pt}
+	\emph{A mutant site: How soft your fields so green}
+	\vspace{6pt}
+\end{center}
+
+There are no mutant immigrants here, because there are no other mutant sites. The probability one of the $(1-v-\delta)k$ mutants wins the site is:
+\begin{align*}
+	\Pr(M|M) = \frac{ (1-v-\delta)k }{ (1-v-\delta)k + \dfrac{(n-1)vpk}{n-1} }
+\end{align*}
+Now we want to evaluate the total fitness $\Pr(M|C) + \Pr(M|M)$. To make this easier, let's imagine $n$ is large, large enough that the ratio $(n-2)/(n-1) \approx 1$. This gives us mutant fitness $V_M$:
+\begin{align*}
+	V_M &\approx \frac{ (v+\delta)p }{1-v + vp } 
+	+ \frac{ 1-v-\delta }{ 1-v-\delta + vp }
+\end{align*}
+The common-type with dispersal probability $v$ will be evolutionarily stable when $V_M<1$, because the common-type has fitness 1. This might not be intuitive, but you can confirm it by setting $\delta=0$ above and simplifying.
+
+To evaluate the condition, we assume $\delta$ is small enough that $\delta^2 \approx 0$. So you can cancel any term with $\delta^2$ as a factor. After much algebra (see box on next page), we get the result that the only stable value of $v$ is:
+\begin{align*}
+	v^\star = \frac{1}{2-p}
+\end{align*}
+A good habit with results like this is to begin by interpreting extremes. Suppose $p \rightarrow 0$. That means dispersal is nearly always lethal. Then $v^\star = 1/2$. So even if dispersal is almost always certain death, selection favors half of the parent's offspring dispersing. At the other extreme, $p \rightarrow 1$, dispersal is nearly always safe. Then $v^\star=1$. 
+
+Why does selection favor so much dispersal? The reason is that competition in this model is not global, at the population level. Rather it is local, within each site. So if siblings remain at their natal site, they compete with one another. If a fraction of them disperse, they end up at non-natal sites and compete instead with individuals who are not close kin. So ironically this is a model in which close relatives do not want to positively assort. Instead they want to negatively assort. If you change the model so that $m>1$ adults can succeed at each site, then the evolutionarily stable proportion of dispersal declines. Hey, that sounds like a good exercise!
+
+
+\begin{mathbox}{t}{Dispersal math.}
+[show both the $\delta^2=0$ method and the calculus method]
+
+An equivalent method that is usually easier is to define an invader fitness function and make the resident strategy $v^\star$:
+\begin{align*}
+	V_M &\approx \frac{ v p }{1-v^\star + v^\star p } 
+	+ \frac{ 1-v }{ 1-v + v^\star p }
+\end{align*}
+Now $v$ is the mutant and $v^\star$ is the common-type. Take the derivative of this function with respect to the mutant $v$, $dV_M/dv$. Then set $v = v^\star$ and solve:
+\begin{align*}
+	\left. \frac{d V_M}{dv} \right|_{v=v^\star} = 0
+\end{align*}
+for $v^\star$. You'll get $v^\star = 1/(2-p)$ again. Why does this work? It's exactly equivalent to the $\delta^2=0$ method, because both are just constructing a linear approximation of the mutant fitness when the mutant is similar to the common-type. Or you could say the $\delta^2=0$ method is covert calculus. It takes a derivative, but you never realize it.
+
+\end{mathbox}
+
+
+\subsection*{Sex allocation}
+
+Normally in evolutionary theory, we ignore males. In a well-mixed animal population in which males provide no post-fertilization parental care (quite common), ignoring males does little harm. All the interesting stuff concerns females. But there are cases in which ignoring males is not harmless. The evolution of sex allocation, how many sons and daughters a mother produces, is an example.
+
+The basic model of sex allocation takes place in a well-mixed population in which males and females are randomly mated. There is no spatial structure. At first it seems like sex allocation should make no difference at all. If family size is $b$, how that is allocated among sons and daughters doesn't change a mother's fitness at all. And it doesn't, not initially. But it can change the number of grandchildren. So let's count grandchildren.
+
+Suppose in a population the common-type proportion of sons is $r$. So each mother produces on average $rb$ sons and $(1-r)b$ daughters. Grandchildren will be:
+\begin{align*}
+	V_r = \underbrace{ (1-r)b^2 }_\text{daughters} 
+	+ \underbrace{ rb^2 \frac{n(1-r)b}{nrb} }_\text{sons}
+\end{align*}
+Each son competes for fertilizations with other males (including brothers). So the fraction above gives the chance a son fertilizes a female in a population with $n$ mothers. Simplifying:
+\begin{align*}
+	V_r = b^2 \left( 1-r
+	+  r \frac{1-r}{r} \right) = 2b^2(1-r)
+\end{align*}
+This expression is fun, because it seems to say fitness is proportional to the number of daughters, $b(1-r)$. 
+
+By the same logic, a mutant with $r^\prime = r + \delta$ will expect:
+\begin{align*}
+	V_{r^\prime} = b^2 \left( 1-r^\prime
+	+  r^\prime \frac{1-r}{r} \right)
+\end{align*}
+The ratio of females to males is based on the common-type $r$, not the mutant, because in a large population the mutant won't have any noticeable influence on sex ratio. It plays the market.
+
+The common-type is stable when $V_r > V_{r^\prime}$. After some simplification, and substituting $r^\prime = r + \delta$, this requires:
+\begin{align*}
+	\delta \left( 1 - \frac{1-r}{r} \right) > 0
+\end{align*}
+Suppose the sex ratio $(1-r)/r < 1$, so there are more sons than daughters. Then the term in the parentheses is positive. So a mutant with $\delta>0$ who produces even more sons cannot invade. But a mutant who produces more daughters can invade. Likewise, if $(1-r)/r > 1$, then a mutant who produces more daughters cannot invade, but one who produces more sons could. So the only stable value for $r$ is $r^\star=0.5$. The $r$ that would maximize population growth would be smaller (more daughters), but natural selection again doesn't favor that.
+
+%\begin{mathbox}{b}{Fisherian algebra.}
+%We want to simplify:
+%\begin{align*}
+%	2(1-r) > 1-r^\prime +  r^\prime \frac{1-r}{r} 
+%\end{align*}
+%\end{mathbox}
+
+When we introduce spatial structure, things change. There are lots of animals that have very skewed sex ratios at birth. For example, fig wasps. Figs are fruit that is pollinated internally by special wasps. These fig wasps reproduce inside figs. Females lay eggs inside the fig, and then fly off to die. The wasps hatch inside the fig, mature, mate, and then the females emerge and explore the universe outside. The males die inside the fig, having never seen the light of day. Many fig wasp species have strongly female-biased sex ratios. They produce very few sons. Why?
+
+Suppose $n$ females each lay $b$ eggs in a fig. Let $r$ be the common-type proportion of male offspring. Let $r^\prime$ be a mutant. We need to write an expression for mutant fitness. It'll be easier if we think about fitness through daughters and sons separately. 
+
+First, a mutant female expects $(1-r^\prime)b$ daughters. Let's assume each will be fertilized (if there are any males in the fig). So a mother wasp can expect $b$ grand-wasps through each daughter. So fitness through daughters is $(1-r^\prime)b^2$. This is just like before.
+
+Second, a mutant female expects $r^\prime b$ sons. The sons must compete with other males in the same fig for fertilizations. The chance a male fertilizes a female is the ratio of females to males. The number of females in the fig is:
+\begin{align*}
+	f = (1-r^\prime)b + (n-1)(1-r)b
+\end{align*}
+The number of males is:
+\begin{align*}
+	m = r^\prime b + (n-1)rb
+\end{align*}
+And so expected grand-wasps through each son is $b f/m$. What has changed is that now, for small $n$, the mutant influences the local sex ratio. 
+Combining fitness through daughters and sons:
+\begin{align*}
+	V_{r^\prime} = (1-r^\prime)b^2 + r^\prime b^2 \frac{f}{m} = (1-r^\prime)b^2 + r^\prime b^2 \frac{ (1-r^\prime)b + (n-1)(1-r)b }{ r^\prime b + (n-1)rb }
+\end{align*}
+
+We want to find a value for $r$ such that no $r^\prime = r + \delta$ can invade. This is easy to do if $\delta$ is small, because then we can approximate:
+\begin{align*}
+	V_{r^\prime} \approx V_{r} + \delta \left.\frac{\partial V_{r^\prime} }{\partial r^\prime} \right|_{r^\prime = r}
+\end{align*}
+This is just a linear approximation of mutant fitness, adding a linear estimate of its fitness difference from the common-type $r$. The derivative just gives us a linear approximation. So in practice all we need to do is find a value for $r = r^\star$ that satisfies:
+\begin{align*}
+	\left.\frac{\partial V_{r^\prime} }{\partial r^\prime} \right|_{r^\prime = r} = 0
+\end{align*}
+The answer is:
+\begin{align*}
+	r^\star = \frac{n-1}{2n}
+\end{align*}
+For large $n$, this is approximately one-half. That's the same result we get in a well-mixed population without local mate competition. But for small $n$, there is substantial skew favoring daughters. For $n=2$, $r^\star = 1/4$. In the limit $n \rightarrow 1$, a single female oviposits in each fig, there are no sons at all.
+
 
 
 %%%%%%
